@@ -295,7 +295,7 @@ export default function Home() {
                     href={link.href}
                     className={`relative font-medium transition-all duration-300 hover:text-violet-500 ${
                       link.label === activeLinkLabel
-                        ? "px-2.5 py-1 text-violet-300 after:absolute after:-bottom-1.5 after:left-2.5 after:h-0.5 after:w-[calc(100%-1.25rem)] after:rounded-full after:bg-gradient-to-r after:from-blue-500 after:to-violet-500"
+                        ? "px-2.5 py-1 text-violet-700 after:absolute after:-bottom-1.5 after:left-2.5 after:h-0.5 after:w-[calc(100%-1.25rem)] after:rounded-full after:bg-gradient-to-r after:from-blue-500 after:to-violet-500"
                         : `${themeClass.textSecondary} px-2.5 py-1 after:absolute after:-bottom-1.5 after:left-2.5 after:h-px after:w-0 after:bg-gradient-to-r after:from-blue-500 after:to-violet-500 after:transition-all after:duration-300 hover:after:w-[calc(100%-1.25rem)]`
                     }`}
                     aria-current={link.label === activeLinkLabel ? "page" : undefined}
