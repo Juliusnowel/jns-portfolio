@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --page-bg: #09090b;
+  --surface-bg: rgba(24, 24, 27, 0.5);
+  --surface-solid: #18181b;
+  --border-color: #27272a;
+  --text-primary: #f4f4f5;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --chip-bg: #18181b;
+  --chip-border: #3f3f46;
+  --outline-btn-border: #52525b;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html[data-theme="dark"] {
+  --page-bg: #09090b;
+  --surface-bg: rgba(24, 24, 27, 0.5);
+  --surface-solid: #18181b;
+  --border-color: #27272a;
+  --text-primary: #f4f4f5;
+  --text-secondary: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --chip-bg: #18181b;
+  --chip-border: #3f3f46;
+  --outline-btn-border: #52525b;
+}
+
+html[data-theme="light"] {
+  --page-bg: #f8fafc;
+  --surface-bg: rgba(255, 255, 255, 0.78);
+  --surface-solid: #ffffff;
+  --border-color: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --chip-bg: #ffffff;
+  --chip-border: #cbd5e1;
+  --outline-btn-border: #94a3b8;
+}
+
+.theme-page {
+  background: var(--page-bg);
+  color: var(--text-primary);
+}
+
+.theme-border {
+  border-color: var(--border-color) !important;
+}
+
+.theme-surface {
+  background: var(--surface-bg);
+}
+
+.theme-surface-solid {
+  background: var(--surface-solid);
+}
+
+.theme-text-primary {
+  color: var(--text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--text-secondary);
+}
+
+.theme-text-muted {
+  color: var(--text-muted);
+}
+
+.theme-chip {
+  background: var(--chip-bg);
+  border-color: var(--chip-border) !important;
+  color: var(--text-secondary);
+}
+
+.theme-outline-btn {
+  border-color: var(--outline-btn-border) !important;
+  color: var(--text-primary);
+}
