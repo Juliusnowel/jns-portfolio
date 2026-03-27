@@ -45,40 +45,48 @@ const aboutVisualCards = [
 
 const featuredProjects = [
   {
-    title: "Custom WordPress Store Locator Plugin",
+    title: "Allegiant Air Tickets",
+    tags: ["WordPress", "PHP", "Custom Build"],
+    description:
+      "One and only developer for this client website task, delivered with a custom child-theme implementation.",
+    image: "/project_image_bg/allegiants.webp",
+    href: "https://allegiantairtickets.com/",
+    size: "secondary",
+    imagePosition: "object-center",
+    imageInset: "px-6",
+  },
+  {
+    title: "Viteseo",
     tags: ["WordPress", "PHP", "JavaScript"],
     description:
-      "Built a custom store finder with search, map markers, region filters, and admin-managed entries for scalable updates.",
-    image: "/Julius.webp",
+      "One and only developer for the company website, using a child-theme approach and custom business-focused implementations.",
+    image: "/project_image_bg/viteseo.png",
+    href: "https://viteseo.ph/",
     size: "featured",
-    imagePosition: "object-[50%_28%]",
+    imagePosition: "object-center",
+    imageInset: "px-2",
   },
   {
-    title: "Python Bulk Image Optimizer",
-    tags: ["Python", "WebP", "Automation"],
+    title: "Creceri",
+    tags: ["WordPress", "Maintenance", "Child Theme"],
     description:
-      "Developed an internal automation tool to convert images to WebP in bulk and compress assets for faster web delivery.",
-    image: "/Julius.webp",
+      "Handled maintenance and iterative updates with a child-theme workflow to keep the website stable and easy to improve.",
+    image: "/project_image_bg/creceri.png",
+    href: "https://creceri.com/",
     size: "secondary",
-    imagePosition: "object-[50%_18%]",
+    imagePosition: "object-center",
+    imageInset: "px-6",
   },
   {
-    title: "Vue + Laravel OJT Project",
-    tags: ["Vue", "Laravel", "MySQL"],
+    title: "Noyona Cosmetics",
+    tags: ["WordPress", "WooCommerce", "Child Theme"],
     description:
-      "Delivered a practical full stack internship project with responsive Vue interfaces and Laravel-powered backend APIs.",
-    image: "/Julius.webp",
-    size: "secondary",
-    imagePosition: "object-[50%_24%]",
-  },
-  {
-    title: "React Native + Laravel Thesis",
-    tags: ["React Native", "Laravel", "Expo"],
-    description:
-      "Built a mobile-first thesis application with React Native and Expo, integrated with a Laravel backend for reliable data flow.",
-    image: "/Julius.webp",
+      "One and only developer for the WooCommerce website, focused on practical ecommerce structure and maintainable customizations.",
+    image: "/project_image_bg/noyona.webp",
+    href: "https://noyonacosmetics.com/",
     size: "featured",
-    imagePosition: "object-[50%_20%]",
+    imagePosition: "object-center",
+    imageInset: "px-6",
   },
 ] as const;
 
@@ -194,17 +202,27 @@ export default function Home() {
     tags,
     description,
     image,
+    href,
     size,
     imagePosition,
+    imageInset,
   }: {
     title: string;
     tags: readonly string[];
     description: string;
     image: string;
+    href: string;
     size: "featured" | "secondary";
     imagePosition: string;
+    imageInset: string;
   }) => (
-    <article className="group relative h-[360px] cursor-pointer">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open ${title}`}
+      className="group relative block h-[360px] cursor-pointer"
+    >
       <div
         className={`pointer-events-none absolute inset-0 rounded-2xl bg-violet-500/12 blur-[0.5px] ${
           size === "featured"
@@ -225,7 +243,7 @@ export default function Home() {
           src={image}
           alt={title}
           fill
-          className={`object-cover ${imagePosition}`}
+          className={`object-contain py-2 ${imageInset} ${imagePosition}`}
         />
         <div
           className={`absolute inset-0 transition-colors duration-300 ${
@@ -261,7 +279,7 @@ export default function Home() {
           </p>
         </div>
       </div>
-    </article>
+    </a>
   );
 
   return (
@@ -310,7 +328,7 @@ export default function Home() {
                 aria-label="Toggle theme"
                 className={`inline-flex h-10 w-10 items-center justify-center rounded-full border transition-all duration-300 hover:scale-105 ${themeClass.border} ${themeClass.surface}`}
               >
-                <span className="text-base">{isDark ? "☀" : "☾"}</span>
+                <span className="text-2xl">{isDark ? "☀" : "☾"}</span>
               </button>
             </div>
           </div>
@@ -504,8 +522,10 @@ export default function Home() {
                         tags={project.tags}
                         description={project.description}
                         image={project.image}
+                        href={project.href}
                         size={project.size}
                         imagePosition={project.imagePosition}
+                        imageInset={project.imageInset}
                       />
                     </div>
                   );
@@ -582,7 +602,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="relative py-8 sm:py-10">
+        <section className={`relative py-8 sm:py-10 ${sectionContentInset}`}>
           <div
             className={`relative overflow-hidden border-y rounded-xl ${themeClass.border} py-10 text-center sm:py-12`}
           >
@@ -590,7 +610,7 @@ export default function Home() {
             <div className="pointer-events-none absolute -left-20 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-blue-500/15 blur-3xl" />
             <div className="pointer-events-none absolute -right-20 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-violet-500/15 blur-3xl" />
 
-            <div className={`relative ${pageGutter}`}>
+            <div className="relative">
               <p className={`font-semibold uppercase tracking-[0.2em] ${themeClass.textMuted}`}>
                 Ready to Collaborate?
               </p>
