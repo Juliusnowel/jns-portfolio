@@ -564,11 +564,11 @@ export default function Home() {
                 >
                   Download CV
                 </a> */}
-                <div className="relative inline-block">
+                <div className="relative inline-block w-full sm:w-auto">
                   <button
                     type="button"
                     onClick={handleClick}
-                    className="group inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 px-6 py-3 font-semibold text-white shadow-lg shadow-violet-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(99,102,241,0.42)] cursor-not-allowed opacity-80"
+                    className="group inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 px-6 py-3 font-semibold text-white shadow-lg shadow-violet-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(99,102,241,0.42)] cursor-not-allowed opacity-80 sm:w-auto"
                   >
                     Download CV
                   </button>
@@ -576,7 +576,7 @@ export default function Home() {
                   {/* Tooltip */}
                   <div
                     className={`
-                      pointer-events-none absolute left-4/5 top-full z-20 mt-2 w-max -translate-x-1/2 rounded-md bg-black/80 px-3 py-1.5 text-xs text-white
+                      pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-max -translate-x-1/2 rounded-md bg-black/80 px-3 py-1.5 text-xs text-white
                       transition-all duration-200
                       ${showTooltip ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"}
                       group-hover:opacity-100 group-hover:translate-y-0
