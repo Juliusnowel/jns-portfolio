@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useThemeMode } from "../hooks/useThemeMode";
 
 type Project = {
   title: string;
@@ -133,6 +134,7 @@ const projects: Project[] = [
 ];
 
 export default function ProjectsPage() {
+  const { isDark } = useThemeMode();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("All");
 
   const languageFilters = useMemo(() => {
@@ -161,35 +163,31 @@ export default function ProjectsPage() {
   return (
     <main className="theme-page min-h-screen">
       <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:px-10 sm:py-14 lg:px-12 lg:py-16">
-        <header className="theme-border flex flex-wrap items-center justify-between gap-3 border-b pb-6">
-          <div>
-            <p className="theme-text-muted text-sm font-medium uppercase tracking-[0.18em]">
-              Projects
-            </p>
-            <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">
-              Project Showcase
-            </h1>
-            <p className="theme-text-secondary mt-3 max-w-3xl">
-              Filter projects by language or stack. Demo CTA appears only for
-              projects with a demo URL.
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            {/* <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="theme-outline-btn rounded-xl border px-3 py-2 text-sm font-semibold transition-colors hover:border-violet-400 hover:text-violet-300"
-            >
-              {isDark ? "Light Mode" : "Dark Mode"}
-            </button> */}
+        <header className="theme-border border-b pb-6">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p className="theme-text-muted text-sm font-medium uppercase tracking-[0.18em]">
+                Projects
+              </p>
+              <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">
+                Project Showcase
+              </h1>
+            </div>
             <Link
               href="/"
-              className="theme-outline-btn rounded-xl border px-4 py-2 text-sm font-semibold transition-colors hover:border-violet-400 hover:text-violet-300"
+              className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-colors ${
+                isDark
+                  ? "border-zinc-600 text-zinc-100 hover:border-violet-400 hover:text-violet-300"
+                  : "border-slate-300 text-slate-700 hover:border-violet-500 hover:text-violet-600"
+              }`}
             >
               Back to Home
             </Link>
           </div>
+          <p className="theme-text-secondary mt-3 max-w-3xl">
+            Filter projects by language or stack. Demo CTA appears only for
+            projects with a demo URL.
+          </p>
         </header>
 
         <section className="pt-8">
@@ -204,8 +202,12 @@ export default function ProjectsPage() {
                   onClick={() => setSelectedLanguage(language)}
                   className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
-                      ? "border-violet-400 bg-violet-500/15 text-violet-200"
-                      : "theme-chip hover:border-violet-400/70"
+                      ? isDark
+                        ? "border-violet-400 bg-violet-500/15 text-violet-200"
+                        : "border-violet-500 bg-violet-600 text-white"
+                      : isDark
+                        ? "theme-chip hover:border-violet-400/70"
+                        : "border-slate-200 bg-white text-slate-600 hover:border-violet-400 hover:text-violet-600"
                   }`}
                 >
                   {language}
@@ -219,7 +221,11 @@ export default function ProjectsPage() {
           {filteredProjects.map((project) => (
             <article
               key={project.title}
-              className="theme-border theme-surface rounded-2xl border p-5"
+              className={`rounded-2xl border p-5 ${
+                isDark
+                  ? "theme-border theme-surface"
+                  : "bg-slate-100 border-slate-200 shadow-[0_6px_20px_rgba(15,23,42,0.08)]"
+              }`}
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className="theme-text-primary text-xl font-semibold">{project.title}</h3>
@@ -228,7 +234,11 @@ export default function ProjectsPage() {
                     href={project.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex shrink-0 items-center rounded-lg border border-violet-400/70 px-3 py-2 text-sm font-semibold text-violet-200 transition-colors hover:bg-violet-500/10"
+                    className={`inline-flex shrink-0 items-center rounded-lg border px-3 py-2 text-sm font-semibold transition-colors ${
+                      isDark
+                        ? "border-violet-400/70 text-violet-200 hover:bg-violet-500/10"
+                        : "border-violet-300 bg-violet-50 text-violet-700 hover:bg-violet-100 hover:border-violet-400"
+                    }`}
                   >
                     View Demo
                   </a>

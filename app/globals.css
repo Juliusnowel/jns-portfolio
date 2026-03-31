@@ -49,16 +49,16 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="light"] {
-  --page-bg: #f8fafc;
-  --surface-bg: rgba(255, 255, 255, 0.78);
+  --page-bg: #f1f5f9;
+  --surface-bg: #ffffff;
   --surface-solid: #ffffff;
   --border-color: #cbd5e1;
   --text-primary: #0f172a;
-  --text-secondary: #334155;
+  --text-secondary: #475569;
   --text-muted: #64748b;
   --chip-bg: #ffffff;
   --chip-border: #cbd5e1;
-  --outline-btn-border: #94a3b8;
+  --outline-btn-border: #64748b;
 }
 
 .theme-page {
