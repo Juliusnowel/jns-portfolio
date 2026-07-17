@@ -1,0 +1,40 @@
+/* Showcase-scoped tokens — does not touch app/globals.css */
+.showcase-root {
+  --sc-bg: #f7f6f3;
+  --sc-bg-elevated: #ffffff;
+  --sc-ink: #141414;
+  --sc-ink-soft: #3d3d3a;
+  --sc-muted: #6f6e69;
+  --sc-line: rgba(20, 20, 20, 0.1);
+  --sc-accent: #2c4a6e;
+  --sc-accent-soft: rgba(44, 74, 110, 0.08);
+  --sc-wash: radial-gradient(
+      ellipse 80% 55% at 15% 0%,
+      rgba(44, 74, 110, 0.07),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 70% 50% at 90% 20%,
+      rgba(180, 160, 130, 0.12),
+      transparent 50%
+    ),
+    linear-gradient(180deg, #f7f6f3 0%, #f3f1ec 45%, #f7f6f3 100%);
+
+  background: var(--sc-wash);
+  color: var(--sc-ink);
+  font-family: var(--font-showcase-sans), ui-sans-serif, sans-serif;
+}
+
+.showcase-root h1,
+.showcase-root h2,
+.showcase-root h3,
+.showcase-root .sc-display {
+  font-family: var(--font-showcase-display), ui-serif, Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.showcase-root ::selection {
+  background: var(--sc-accent-soft);
+  color: var(--sc-ink);
+}
