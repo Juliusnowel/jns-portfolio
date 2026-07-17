@@ -83,11 +83,7 @@ export const capabilities = [
   },
 ] as const;
 
-/** Easy-to-correct contact — PLACEHOLDER until confirmed */
 export const CONTACT = {
-  /** PLACEHOLDER email — confirm before treating as final */
-  email: "juliusnowels@gmail.com",
-  emailIsPlaceholder: true as const,
   portfolioHref: "/",
   contactHref: "/contact",
 } as const;

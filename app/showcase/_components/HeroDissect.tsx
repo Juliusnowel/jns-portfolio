@@ -13,24 +13,25 @@ import { selectedWork, capabilities, BRAND } from "../_lib/work";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 /**
- * The whole opening act in ONE pinned cinematic (replaces the old separate
- * hero + skills-pin + selected-work sections):
+ * The whole opening act in ONE pinned cinematic:
  *
- *   1. HERO — copy beside the assembled, front-facing workstation (intro
- *      assemble on load lives in the 3D scene itself).
+ *   1. HERO — copy beside the assembled, front-facing workstation.
  *   2. FOCUS — copy translates up + fades out; the stage centers and scales
  *      up; the scene turns to a 3/4 angle.
- *   3. DISSECT + EMIT — the workstation explodes while projects emerge one
- *      by one “out of the monitor screen” toward the viewer (DOM cards,
- *      transform+opacity only, anchored over the screen's spot). Subtle
- *      skill chips sit on the exploded parts.
- *   4. CLOSE — the workstation reassembles; the pin releases into the
- *      capabilities/range/CTA flow.
+ *   3. DISSECT + EMIT — the workstation explodes while projects fly out of
+ *      the center monitor to the CORNERS, each tethered back to the monitor
+ *      by an L-shaped connector (horizontal + vertical segments only).
+ *   4. CLOSE — the workstation reassembles; the pin releases.
  *
- * One ScrollTrigger (pin, scrub 0.8) drives everything: its onUpdate writes
- * progress into scrollStore (read + lerped by the R3F scene in useFrame), and
- * the same scrubbed timeline (0–10 = progress × 10) runs the DOM beats, so 3D
- * and DOM stay in lockstep and fully reverse on scroll-up.
+ * One ScrollTrigger (pin, scrub 0.8) drives everything: onUpdate writes
+ * progress into scrollStore (read + lerped by the R3F scene in useFrame) and
+ * the same scrubbed timeline (0–10 = progress × 10) runs the DOM beats.
+ * All DOM state uses fromTo so progress 0 is EXACTLY the rest layout — no
+ * snapping at the pin boundaries (anticipatePin is deliberately off; it
+ * jumps with smooth-scroll libraries like Lenis).
+ *
+ * The 3D stage fills the whole pinned viewport and the camera is framed with
+ * margin, so the model is never clipped by a container at any scroll pos.
  */
 
 // Timeline windows (0–10). Scene phases: turn 0.8→2.8, explode 3→5, reassemble 8.6→10.
@@ -40,12 +41,54 @@ const CARD_WINDOWS = [
   { in: 7.1, out: 8.55 },
 ];
 
-const CHIP_POS = [
-  "left-[4%] top-[10%]",
-  "right-[4%] top-[16%]",
-  "left-[6%] bottom-[18%]",
-  "right-[6%] bottom-[12%]",
+/**
+ * Corner layout (desktop). The monitor sits at viewport center, so every
+ * connector is a right-angle elbow: a vertical run on the center axis, then
+ * a horizontal run to the card — never a diagonal.
+ * Elbows: top cards at y=21%, bottom card at y=76%; center axis x=50%.
+ */
+const CARD_LAYOUT = [
+  {
+    // top-left
+    card: "left-[4%] top-[7%]",
+    v: "left-1/2 top-[21%] h-[26%]",
+    vOrigin: "50% 100%", // draws upward from the monitor
+    h: "left-[26%] top-[21%] w-[24%]",
+    hOrigin: "100% 50%", // draws leftward from the center axis
+    fromX: 190,
+    fromY: 170,
+  },
+  {
+    // top-right
+    card: "right-[4%] top-[7%]",
+    v: "left-1/2 top-[21%] h-[26%]",
+    vOrigin: "50% 100%",
+    h: "right-[26%] top-[21%] w-[24%]",
+    hOrigin: "0% 50%", // draws rightward from the center axis
+    fromX: -190,
+    fromY: 170,
+  },
+  {
+    // bottom-left
+    card: "left-[4%] bottom-[8%]",
+    v: "left-1/2 top-[53%] h-[23%]",
+    vOrigin: "50% 0%", // draws downward from the monitor
+    h: "left-[26%] top-[76%] w-[24%]",
+    hOrigin: "100% 50%",
+    fromX: 190,
+    fromY: -170,
+  },
 ];
+
+/** Skill chips hug the model (the corners now belong to the project cards) */
+const CHIP_POS = [
+  "left-[21%] top-[34%]",
+  "right-[21%] top-[30%]",
+  "left-[23%] bottom-[32%]",
+  "right-[23%] bottom-[28%]",
+];
+
+const LINE_CLASS = "absolute bg-[#1f1f1f]/35 will-change-transform";
 
 export default function HeroDissect({
   reducedMotion,
@@ -64,18 +107,9 @@ export default function HeroDissect({
       if (reducedMotion) return;
 
       const cards = gsap.utils.toArray<HTMLElement>(".hd-card");
+      const vLines = gsap.utils.toArray<HTMLElement>(".hd-linkv");
+      const hLines = gsap.utils.toArray<HTMLElement>(".hd-linkh");
       const chips = gsap.utils.toArray<HTMLElement>(".hd-chip");
-
-      // Initial states — hero layout: copy left (mobile: top), stage offset
-      gsap.set(
-        ".hd-stage",
-        isMobile ? { y: "16vh", scale: 0.72 } : { xPercent: 24, scale: 0.82 },
-      );
-
-      // Cards start AT the screen (small, transparent) — they scale toward
-      // the viewer as they emit
-      gsap.set(cards, { xPercent: -50, y: 0, scale: 0.55, autoAlpha: 0 });
-      gsap.set(chips, { autoAlpha: 0, y: 8 });
 
       const pinEnd = isMobile ? 3000 : 4400;
 
@@ -87,7 +121,6 @@ export default function HeroDissect({
           end: `+=${pinEnd}`,
           pin: true,
           scrub: 0.8,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             scrollStore.progress = self.progress;
@@ -99,49 +132,75 @@ export default function HeroDissect({
       tl.to({}, { duration: 10 }, 0);
 
       // —— FOCUS SHIFT: copy hides, workstation becomes sole focus ——
-      tl.to(
+      // fromTo everywhere: the recorded start state IS the rest layout,
+      // so scrolling back to the very top can never snap.
+      tl.fromTo(
         ".hd-copy",
+        { y: 0, autoAlpha: 1 },
         { y: -90, autoAlpha: 0, duration: 1.3, ease: "power2.in" },
         0.15,
       );
-      tl.to(
+      tl.fromTo(
         ".hd-stage",
+        isMobile ? { y: "17vh", scale: 0.85 } : { xPercent: 20, scale: 0.9 },
         isMobile
-          ? { y: 0, scale: 0.98, duration: 1.7 }
-          : { xPercent: 0, scale: 1.08, duration: 1.7 },
+          ? { y: 0, scale: 1, duration: 1.7 }
+          : { xPercent: 0, scale: 1.05, duration: 1.7 },
         0.2,
       );
       tl.to(".hd-aurora", { autoAlpha: 0.22, duration: 1.6 }, 0.4);
 
       // —— Subtle skill chips on the exploded parts ——
       chips.forEach((chip, i) => {
-        tl.to(chip, { autoAlpha: 0.8, y: 0, duration: 0.5 }, 2.7 + i * 0.12)
-          .to(chip, { autoAlpha: 0, y: -8, duration: 0.4 }, 8.5);
+        tl.fromTo(
+          chip,
+          { autoAlpha: 0, y: 8 },
+          { autoAlpha: 0.8, y: 0, duration: 0.5 },
+          2.7 + i * 0.12,
+        ).to(chip, { autoAlpha: 0, y: -8, duration: 0.4 }, 8.5);
       });
 
-      // —— EMIT: projects out of the screen, one per scroll segment ——
+      // —— EMIT: projects fly from the monitor to the corners ——
       cards.forEach((card, i) => {
         const w = CARD_WINDOWS[i];
-        if (!w) return;
-        tl.to(
+        const layout = CARD_LAYOUT[i];
+        if (!w || !layout) return;
+
+        // Connector draws first: vertical run off the monitor, then the
+        // horizontal run to the card slot (desktop only — lines are hidden
+        // on mobile via CSS)
+        if (vLines[i] && hLines[i]) {
+          tl.fromTo(
+            vLines[i],
+            { scaleY: 0, autoAlpha: 0, transformOrigin: layout.vOrigin },
+            { scaleY: 1, autoAlpha: 1, duration: 0.3, ease: "power1.inOut" },
+            w.in,
+          )
+            .fromTo(
+              hLines[i],
+              { scaleX: 0, autoAlpha: 0, transformOrigin: layout.hOrigin },
+              { scaleX: 1, autoAlpha: 1, duration: 0.3, ease: "power1.inOut" },
+              w.in + 0.22,
+            )
+            .to([vLines[i], hLines[i]], { autoAlpha: 0, duration: 0.3 }, w.out);
+        }
+
+        tl.fromTo(
           card,
           {
-            autoAlpha: 1,
-            scale: 1,
-            y: isMobile ? 84 : 116,
-            duration: 0.7,
-            ease: "power3.out",
+            // GSAP owns the transform, so mobile centering (xPercent) lives
+            // here rather than in a CSS translate class it would overwrite
+            xPercent: isMobile ? -50 : 0,
+            x: isMobile ? 0 : layout.fromX,
+            y: isMobile ? 60 : layout.fromY,
+            scale: 0.55,
+            autoAlpha: 0,
           },
-          w.in,
+          { x: 0, y: 0, scale: 1, autoAlpha: 1, duration: 0.65, ease: "power3.out" },
+          w.in + 0.15,
         ).to(
           card,
-          {
-            autoAlpha: 0,
-            scale: 1.12,
-            y: isMobile ? 120 : 160,
-            duration: 0.5,
-            ease: "power2.in",
-          },
+          { autoAlpha: 0, scale: 0.94, duration: 0.45, ease: "power2.in" },
           w.out,
         );
       });
@@ -191,11 +250,10 @@ export default function HeroDissect({
           <AuroraCanvas reducedMotion={reducedMotion} isMobile={isMobile} />
         </div>
 
-        {/* 3D stage — centered; initial offset/scale applied via GSAP */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="hd-stage h-[52vh] w-[min(92vw,64rem)] will-change-transform sm:h-[64vh]">
-            <Workstation3D staticScene={false} isMobile={isMobile} />
-          </div>
+        {/* 3D stage — fills the whole pinned viewport so nothing clips the
+            model; the camera framing provides the margin */}
+        <div className="hd-stage absolute inset-0 will-change-transform">
+          <Workstation3D staticScene={false} isMobile={isMobile} />
         </div>
 
         {/* Subtle skill chips on the exploded parts (desktop only) */}
@@ -210,14 +268,27 @@ export default function HeroDissect({
           ))}
         </div>
 
-        {/* Projects — emitted from the monitor screen, one per segment */}
+        {/* L-connectors: horizontal + vertical segments only, monitor-centered.
+            Hidden on mobile (cards stack centered there). */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden sm:block">
+          {CARD_LAYOUT.map((layout, i) => (
+            <div key={i}>
+              <span className={`hd-linkv ${LINE_CLASS} w-[2px] ${layout.v}`} />
+              <span className={`hd-linkh ${LINE_CLASS} h-[2px] ${layout.h}`} />
+            </div>
+          ))}
+        </div>
+
+        {/* Projects — fly from the monitor to the corners, one per segment */}
         <div aria-live="polite" className="pointer-events-none absolute inset-0 z-20">
           {selectedWork.map((item, i) => (
             <div
               key={item.id}
-              className="hd-card absolute left-1/2 top-[16%] w-[min(88vw,24rem)] will-change-transform sm:top-[15%]"
+              className={`hd-card absolute w-[min(88vw,21rem)] will-change-transform ${
+                isMobile ? "left-1/2 top-[10%]" : CARD_LAYOUT[i]?.card ?? ""
+              }`}
             >
-              <div className="rounded-2xl border border-[var(--sc-line)] bg-white/95 p-5 shadow-[0_24px_60px_rgba(20,20,20,0.16)] sm:p-6">
+              <div className="rounded-2xl border border-[var(--sc-line)] bg-white/95 p-5 shadow-[0_24px_60px_rgba(20,20,20,0.16)]">
                 <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-[var(--sc-accent)]">
                   0{i + 1} / 03 · {item.domain}
                 </p>
@@ -236,8 +307,8 @@ export default function HeroDissect({
           ))}
         </div>
 
-        {/* Hero copy — hides as the pin begins */}
-        {/* Mobile: extra bottom padding keeps copy in the upper half, clear of the workstation */}
+        {/* Hero copy — hides as the pin begins.
+            Mobile: extra bottom padding keeps copy clear of the workstation. */}
         <div className="hd-copy relative z-10 flex min-h-[100svh] flex-col justify-center px-6 pb-[32vh] pt-24 will-change-transform sm:px-10 sm:pb-20 sm:pt-28 lg:px-16">
           <div className="mx-auto w-full max-w-6xl">
             <HeroCopy reducedMotion={reducedMotion} />
@@ -249,6 +320,10 @@ export default function HeroDissect({
 }
 
 function HeroCopy({ reducedMotion }: { reducedMotion: boolean }) {
+  // Reveals wait for the preloader veil to clear (~0.9s); reduced motion
+  // renders statically so the offset is irrelevant there
+  const base = reducedMotion ? 0 : 0.95;
+
   return (
     <div className="max-w-xl">
       <div data-magnetic="12" className="inline-block will-change-transform">
@@ -258,7 +333,7 @@ function HeroCopy({ reducedMotion }: { reducedMotion: boolean }) {
           reducedMotion={reducedMotion}
           playOnMount
           className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--sc-muted)] sm:text-base"
-          delay={0.05}
+          delay={base + 0.05}
         />
       </div>
 
@@ -269,7 +344,7 @@ function HeroCopy({ reducedMotion }: { reducedMotion: boolean }) {
           reducedMotion={reducedMotion}
           playOnMount
           className="sc-display max-w-xl text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] text-[var(--sc-ink)]"
-          delay={0.18}
+          delay={base + 0.18}
           stagger={0.12}
         />
       </div>
@@ -284,7 +359,7 @@ function HeroCopy({ reducedMotion }: { reducedMotion: boolean }) {
           reducedMotion={reducedMotion}
           playOnMount
           className="max-w-md text-base leading-relaxed text-[var(--sc-ink-soft)] sm:text-lg"
-          delay={0.45}
+          delay={base + 0.45}
           stagger={0.08}
         />
       </div>

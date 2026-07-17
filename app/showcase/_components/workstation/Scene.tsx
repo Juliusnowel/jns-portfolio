@@ -167,22 +167,33 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
     return arr;
   }, [isMobile]);
 
+  const firstFrame = useRef<number | null>(null);
+
   useFrame((state, delta) => {
     if (staticScene) return;
     const root = rootRef.current;
     if (!root) return;
 
     // Lerp toward the scrubbed scroll progress (scrub already smooths; this
-    // just removes the last bit of stepping).
-    lerped.current += (scrollStore.progress - lerped.current) * Math.min(1, delta * 7);
+    // just removes the last bit of stepping). Clamped so the pose at
+    // progress 0 / 1 EXACTLY matches the rest state — no boundary snap.
+    const target = clamp01(scrollStore.progress);
+    lerped.current = clamp01(
+      lerped.current + (target - lerped.current) * Math.min(1, delta * 7),
+    );
     const t = lerped.current;
 
     const turn = smooth(clamp01((t - 0.08) / 0.2));
     const ret = smooth(clamp01((t - 0.86) / 0.14));
     let explode = smooth(clamp01((t - 0.3) / 0.2)) * (1 - ret);
 
-    // Intro assemble — one-shot, independent of scroll
-    const intro = 1 - smooth(clamp01(state.clock.elapsedTime / 1.6));
+    // Intro assemble — one-shot, timed from the first rendered frame (the
+    // canvas is lazy-loaded and sits behind the preloader veil for ~1s).
+    // Blended with max(): both curves are continuous, so the intro hands
+    // off to the scrubbed value with no jump at either pin boundary.
+    if (firstFrame.current === null) firstFrame.current = state.clock.elapsedTime;
+    const elapsed = state.clock.elapsedTime - firstFrame.current;
+    const intro = 1 - smooth(clamp01((elapsed - 1.05) / 1.5));
     explode = Math.max(explode, intro);
 
     // Root pose: front → 3/4 angle → back toward front on reassemble
@@ -216,6 +227,9 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
       ref={rootRef}
       rotation={staticScene ? [0.1, -0.55, 0] : [0, 0, 0]}
       position={[0, 0.1, 0]}
+      // Down-scaled on narrow viewports so the rotated/exploded model always
+      // fits the camera frustum with margin — never clipped at any scroll pos
+      scale={isMobile ? 0.62 : 1}
     >
       {/* —— MONITOR —— */}
       <group ref={bezelRef} position={[0, BASE.bezel.y, BASE.bezel.z]}>
@@ -290,7 +304,9 @@ export default function Scene({ staticScene, isMobile }: SceneProps) {
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       dpr={isMobile ? [1, 1] : [1, 1.5]}
       frameloop={staticScene ? "demand" : "always"}
-      camera={{ position: [0, 0.35, 6.4], fov: 34 }}
+      // Pulled back with a wider FOV so the workstation stays fully visible
+      // with margin even at the stage's largest DOM scale
+      camera={{ position: [0, 0.25, isMobile ? 8.6 : 7.6], fov: isMobile ? 38 : 36 }}
       style={{ width: "100%", height: "100%", background: "transparent" }}
     >
       <ambientLight intensity={0.95} />

@@ -82,14 +82,17 @@ function FloaterCard({
   path,
   children,
   className = "",
+  kind = "accent",
 }: {
   path: Path;
   children: ReactNode;
   className?: string;
+  kind?: "logo" | "snip" | "accent";
 }) {
   return (
     <div
       data-floater
+      data-kind={kind}
       data-x0={path.x0}
       data-y0={path.y0}
       data-x1={path.x1}
@@ -111,9 +114,18 @@ function FloaterCard({
 const CARD =
   "flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--sc-line)] bg-white/70 shadow-[0_8px_20px_rgba(20,20,20,0.06)] sm:h-11 sm:w-11";
 
+/** Post-scatter resting opacity — low + blurred so content always wins */
+const SETTLE = { desktop: 0.38, mobile: 0.28, blur: "blur(2px)" };
+
 /**
- * Quiet backdrop constellation — behind content, low opacity, gutter paths.
- * Intro assemble on mount; scroll scatter separate.
+ * Preloader + backdrop constellation.
+ *
+ * On first load the logos act as the PRELOADER: they pop in clustered at the
+ * viewport center on a solid #f7f6f3 veil (the root is temporarily raised to
+ * z-60), then SCATTER outward to their gutter resting spots while the veil
+ * fades — load + scatter ≈ 2.5s total. After scattering, the root drops back
+ * to z-0 and the logos settle to low opacity with a slight blur, staying
+ * behind content. Scroll paths/orbits take over from there.
  */
 export default function TechFloaters({
   reducedMotion,
@@ -135,13 +147,21 @@ export default function TechFloaters({
       const nodes = gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-floater]"));
       if (!nodes.length) return;
 
+      const logoNodes = nodes.filter((n) => n.dataset.kind === "logo");
+      const otherNodes = nodes.filter((n) => n.dataset.kind !== "logo");
+      const settleOpacity = isMobile ? SETTLE.mobile : SETTLE.desktop;
+
       if (reducedMotion) {
+        // Instant state — no preloader, nothing blocking
+        gsap.set(root, { zIndex: 0 });
+        gsap.set(".tf-veil", { autoAlpha: 0 });
         nodes.forEach((node) => {
           gsap.set(node, {
             x: `${node.dataset.x0}vw`,
             y: `${node.dataset.y0}vh`,
             rotation: Number(node.dataset.r0) || 0,
-            opacity: 0.32,
+            opacity: settleOpacity,
+            filter: SETTLE.blur,
           });
         });
         return;
@@ -149,37 +169,70 @@ export default function TechFloaters({
 
       const amp = isMobile ? 0.6 : 1;
 
-      // Start scattered
-      nodes.forEach((node) => {
-        const x0 = Number(node.dataset.x0);
-        const y0 = Number(node.dataset.y0);
-        const sx = Number(node.dataset.sx) * amp;
-        const sy = Number(node.dataset.sy) * amp;
+      // —— PRELOADER: logos clustered center, crisp, on the solid veil ——
+      const cols = isMobile ? 3 : 4;
+      const rows = Math.ceil(logoNodes.length / cols);
+      logoNodes.forEach((node, i) => {
+        const col = i % cols;
+        const row = Math.floor(i / cols);
         gsap.set(node, {
-          x: `${x0 + sx}vw`,
-          y: `${y0 + sy}vh`,
-          rotation: (Number(node.dataset.r0) || 0) * 1.6,
-          scale: 0.75,
+          x: `${50 + (col - (cols - 1) / 2) * (isMobile ? 16 : 7)}vw`,
+          y: `${44 + (row - (rows - 1) / 2) * (isMobile ? 9 : 11)}vh`,
+          xPercent: -50,
+          yPercent: -50,
+          rotation: 0,
+          scale: 0.4,
+          opacity: 0,
+        });
+      });
+      // Snips/accents wait at their resting spots, hidden until after scatter
+      otherNodes.forEach((node) => {
+        gsap.set(node, {
+          x: `${node.dataset.x0}vw`,
+          y: `${node.dataset.y0}vh`,
+          rotation: Number(node.dataset.r0) || 0,
           opacity: 0,
         });
       });
 
-      // INTRO assemble → resting spots
-      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
-      nodes.forEach((node, i) => {
-        intro.to(
-          node,
+      // Load-in (~0.9s) → scatter (~1.2s) → settle: ≈ 2.4s total
+      gsap.set(".tf-label", { autoAlpha: 0, y: 8 });
+      const intro = gsap.timeline();
+      intro
+        .to(".tf-label", { autoAlpha: 1, y: 0, duration: 0.35, ease: "power2.out" }, 0.05)
+        .to(
+          logoNodes,
+          { scale: 1, opacity: 1, duration: 0.45, stagger: 0.05, ease: "back.out(1.6)" },
+          0.1,
+        )
+        // SCATTER outward to the gutter resting spots
+        .to(
+          logoNodes,
           {
-            x: `${node.dataset.x0}vw`,
-            y: `${node.dataset.y0}vh`,
-            rotation: Number(node.dataset.r0) || 0,
-            scale: 1,
-            opacity: isMobile ? 0.3 : 0.5,
-            duration: 1.45,
+            x: (_, el) => `${(el as HTMLElement).dataset.x0}vw`,
+            y: (_, el) => `${(el as HTMLElement).dataset.y0}vh`,
+            rotation: (_, el) => Number((el as HTMLElement).dataset.r0) || 0,
+            duration: 1.2,
+            stagger: 0.035,
+            ease: "power3.inOut",
           },
-          i * 0.05,
+          0.95,
+        )
+        .to(".tf-label", { autoAlpha: 0, duration: 0.3 }, 0.95)
+        .to(".tf-veil", { autoAlpha: 0, duration: 0.6, ease: "power1.inOut" }, 1.0)
+        // Hand the layer back to the background
+        .set(root, { zIndex: 0 }, 1.65)
+        // Settle: stay visible but blurred + low opacity behind content
+        .to(
+          logoNodes,
+          { opacity: settleOpacity, filter: SETTLE.blur, duration: 0.7, ease: "power1.inOut" },
+          1.7,
+        )
+        .to(
+          otherNodes,
+          { opacity: settleOpacity, filter: "blur(1px)", duration: 0.7 },
+          1.9,
         );
-      });
 
       // SCROLL paths — explicit fromTo from rest so intro doesn't fight scrub
       const scrollTl = gsap.timeline({
@@ -233,7 +286,8 @@ export default function TechFloaters({
             ease: "sine.inOut",
             yoyo: true,
             repeat: -1,
-            delay: i * 0.2,
+            // Idle orbits start after the preloader scatter settles
+            delay: 2.2 + i * 0.2,
           });
         }
       });
@@ -245,17 +299,21 @@ export default function TechFloaters({
     <div
       ref={rootRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-      style={{ opacity: 1 }}
+      className="pointer-events-none fixed inset-0 overflow-hidden"
+      // Raised above content only while the preloader plays; GSAP drops it
+      // back to 0 as the veil clears (reduced motion sets 0 immediately)
+      style={{ opacity: 1, zIndex: 60 }}
     >
-      {/* Soft blur + low opacity so content always wins */}
-      <div className="h-full w-full blur-[0.5px]">
+      {/* Solid light veil — never a black flash */}
+      <div className="tf-veil absolute inset-0 bg-[#f7f6f3]" />
+
+      <div className="h-full w-full">
         {logos.map((tech) => {
           const path = LOGO_PATHS[tech.id];
           if (!path) return null;
           const Icon = tech.Icon;
           return (
-            <FloaterCard key={tech.id} path={path}>
+            <FloaterCard key={tech.id} path={path} kind="logo">
               <div className={CARD}>
                 <Icon size={20} color={tech.color} aria-label={tech.label} />
               </div>
@@ -267,7 +325,7 @@ export default function TechFloaters({
           const path = SNIP_PATHS[snip.id];
           if (!path) return null;
           return (
-            <FloaterCard key={snip.id} path={path} className="hidden sm:block">
+            <FloaterCard key={snip.id} path={path} kind="snip" className="hidden sm:block">
               <div className="w-[8.5rem] rounded-xl border border-[var(--sc-line)] bg-white/65 p-2 shadow-[0_8px_20px_rgba(20,20,20,0.05)]">
                 <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[var(--sc-muted)]">
                   {snip.title}
@@ -302,6 +360,13 @@ export default function TechFloaters({
             </FloaterCard>
           </>
         )}
+      </div>
+
+      {/* Preloader caption — fades with the scatter */}
+      <div className="absolute inset-x-0 top-[72%] flex justify-center">
+        <p className="tf-label font-mono text-[0.65rem] uppercase tracking-[0.26em] text-[var(--sc-muted)] opacity-0">
+          Julius Nowel — loading
+        </p>
       </div>
     </div>
   );

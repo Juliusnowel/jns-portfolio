@@ -21,8 +21,10 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
           className="mt-5 max-w-lg text-lg text-[var(--sc-ink-soft)]"
         />
 
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <span data-magnetic="20" className="inline-flex will-change-transform">
+        {/* Stable flow layout with generous gap; magnetic drift is small
+            (≤10px) so the buttons can never overlap each other */}
+        <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <span data-magnetic="10" className="inline-flex will-change-transform">
             <Link
               href={CONTACT.portfolioHref}
               className="inline-flex items-center justify-center rounded-full bg-[var(--sc-ink)] px-7 py-3.5 text-sm font-medium text-[#f7f6f3] transition-opacity hover:opacity-90"
@@ -30,7 +32,7 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
               View full portfolio →
             </Link>
           </span>
-          <span data-magnetic="16" className="inline-flex will-change-transform">
+          <span data-magnetic="8" className="inline-flex will-change-transform">
             <Link
               href={CONTACT.contactHref}
               className="inline-flex items-center justify-center rounded-full border border-[var(--sc-line)] bg-transparent px-7 py-3.5 text-sm font-medium text-[var(--sc-ink)] transition-colors hover:bg-white/60"
@@ -38,18 +40,6 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
               Contact
             </Link>
           </span>
-          <a
-            href={`mailto:${CONTACT.email}`}
-            className="text-sm text-[var(--sc-muted)] underline-offset-4 hover:text-[var(--sc-ink)] hover:underline"
-            title={CONTACT.emailIsPlaceholder ? "PLACEHOLDER email — confirm address" : undefined}
-          >
-            {CONTACT.email}
-            {CONTACT.emailIsPlaceholder ? (
-              <span className="ml-2 font-mono text-[0.65rem] uppercase tracking-wider text-[var(--sc-accent)]">
-                placeholder
-              </span>
-            ) : null}
-          </a>
         </div>
 
         <p className="mt-16 text-sm text-[var(--sc-muted)]">
