@@ -10,11 +10,13 @@ import { scrollStore } from "../../_lib/scrollStore";
  * Stylized low-poly dev workstation (monitor + keyboard) built from primitives.
  * NO external model. Scroll progress arrives via scrollStore (see _lib/scrollStore).
  *
- * Journey mapping (t = smoothed scrollStore.progress):
- *   0.00–0.22  TURN      — rotate to a 3/4 angle so depth reads
- *   0.24–0.44  EXPLODE   — parts translate outward along their axes
- *   0.44–0.80  HOLD      — exploded; annotations cycle (DOM overlay, WorkstationPin)
- *   0.80–1.00  REASSEMBLE— parts return, rotation eases back
+ * Journey mapping (t = smoothed scrollStore.progress) — synced with the
+ * HeroDissect timeline (0’10 scale = t × 10):
+ *   0.00–0.14  FOCUS     — DOM side: hero copy hides, stage centers/scales
+ *   0.08–0.28  TURN      — rotate to a 3/4 angle so depth reads
+ *   0.30–0.50  EXPLODE   — parts translate outward along their axes
+ *   0.50–0.86  HOLD      — exploded; projects emit from the screen (DOM overlay)
+ *   0.86–1.00  REASSEMBLE— parts return, rotation eases back
  *
  * Intro: on mount the parts start slightly exploded and assemble (~1.6s),
  * independent of scroll (explode = max(scrollExplode, introFactor)).
@@ -175,9 +177,9 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
     lerped.current += (scrollStore.progress - lerped.current) * Math.min(1, delta * 7);
     const t = lerped.current;
 
-    const turn = smooth(clamp01(t / 0.22));
-    const ret = smooth(clamp01((t - 0.8) / 0.18));
-    let explode = smooth(clamp01((t - 0.24) / 0.2)) * (1 - ret);
+    const turn = smooth(clamp01((t - 0.08) / 0.2));
+    const ret = smooth(clamp01((t - 0.86) / 0.14));
+    let explode = smooth(clamp01((t - 0.3) / 0.2)) * (1 - ret);
 
     // Intro assemble — one-shot, independent of scroll
     const intro = 1 - smooth(clamp01(state.clock.elapsedTime / 1.6));
