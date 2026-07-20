@@ -79,15 +79,16 @@ const CARD_LAYOUT = [
   },
   {
     // bottom-left — routed off the MONITOR's left edge (screen height, 40%),
-    // then down to the card, so the tether never crosses the keyboard zone
-    card: "left-[4%] bottom-[8%]",
+    // then a SHORT drop to the card. The card is anchored by its TOP edge
+    // (not bottom) so the arrow meets it exactly on every viewport height.
+    card: "left-[4%] top-[58%]",
     first: "h" as const, // horizontal leaves the monitor first, then drops
-    v: "left-[16%] top-[40%] h-[28%]",
+    v: "left-[16%] top-[40%] h-[16%]",
     vOrigin: "50% 0%", // draws downward from the elbow
     h: "left-[16%] top-[40%] w-[34%]",
     hOrigin: "100% 50%", // draws leftward out of the monitor
     dot: "left-1/2 top-[40%]",
-    arrow: "left-[16%] top-[calc(68%+1px)]",
+    arrow: "left-[16%] top-[calc(56%+1px)]",
     arrowDir: "down" as const,
     fromX: 190,
     fromY: -170,
