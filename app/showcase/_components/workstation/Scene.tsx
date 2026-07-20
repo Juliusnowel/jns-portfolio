@@ -176,13 +176,14 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
     const root = rootRef.current;
     if (!root) return;
 
-    // Lerp toward the scrubbed scroll progress. Kept TIGHT (delta*12):
-    // Lenis + ScrollTrigger scrub already smooth the input, and stacking a
-    // slow lerp on top made the model keep resizing for ~2s after the user
-    // stopped scrolling. Clamped so progress 0 / 1 EXACTLY matches rest.
+    // Track the scroll progress in LOCKSTEP. The progress is already smooth
+    // (Lenis eases the scroll itself, scrub is 1:1), so heavy easing here
+    // only detached the model from the page — it trailed the scroll and
+    // visibly "caught up" after every pause. delta*24 is a ~40ms damper:
+    // imperceptible lag, just enough to absorb single-frame refresh jumps.
     const target = clamp01(scrollStore.progress);
     lerped.current = clamp01(
-      lerped.current + (target - lerped.current) * Math.min(1, delta * 12),
+      lerped.current + (target - lerped.current) * Math.min(1, delta * 24),
     );
     const t = lerped.current;
 

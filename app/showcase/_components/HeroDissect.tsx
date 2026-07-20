@@ -120,9 +120,10 @@ export default function HeroDissect({
           start: "top top",
           end: `+=${pinEnd}`,
           pin: true,
-          // Lenis already smooths wheel input; a lighter scrub keeps the
-          // model from drifting in size for seconds after the user pauses
-          scrub: 0.45,
+          // 1:1 with the scroll position. Lenis already eases the scroll
+          // itself, so any scrub delay here made the workstation trail the
+          // page and visibly "catch up" (grow/shrink) after every pause.
+          scrub: true,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             scrollStore.progress = self.progress;
