@@ -23,7 +23,11 @@ export function useLenis(enabled: boolean = true): void {
     const lenis = new Lenis({
       duration: 0.92,
       smoothWheel: true,
-      touchMultiplier: 1.1,
+      // Don't smooth touch — native momentum + ScrollTrigger pin feel stuck
+      // when Lenis also owns the gesture (we also disable Lenis entirely on
+      // compact/touch in page.tsx; this is a safety net).
+      syncTouch: false,
+      touchMultiplier: 1,
       // Slightly snappier than pure expo — premium weight without lag
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });

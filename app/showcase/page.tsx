@@ -17,7 +17,9 @@ import TechFloaters from "./_components/TechFloaters";
 export default function ShowcasePage() {
   const { prefersReducedMotion, isMobile, isCompact, ready } = useMotionPrefs();
 
-  useLenis(!prefersReducedMotion);
+  // Lenis + pinned ScrollTrigger fights native touch momentum on phones and
+  // feels "locked". Use native scroll on compact/touch; Lenis on desktop only.
+  useLenis(ready && !prefersReducedMotion && !isCompact);
   // Magnetic hover is pointer-only — skip on touch/compact devices
   usePointerField(ready && !prefersReducedMotion && !isCompact);
 
