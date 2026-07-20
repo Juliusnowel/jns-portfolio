@@ -118,10 +118,26 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
           </div>
 
           <p className="mt-5 text-sm text-white/40">Build · debug · decide.</p>
+
+          {/* Sub-nav — no border / container; just open type */}
+          <div className="mt-14 flex w-full flex-col gap-4 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/55 sm:justify-start">
+              <span className="sc-display text-base text-[#f7f6f3]">{BRAND.name}</span>
+              <Link href="/projects" className="transition-colors duration-200 hover:text-[#f7f6f3]">
+                Projects
+              </Link>
+              <Link href="/about" className="transition-colors duration-200 hover:text-[#f7f6f3]">
+                About
+              </Link>
+            </div>
+            <p className="text-sm text-white/40 sm:text-right">
+              © {year} Copyright
+            </p>
+          </div>
         </div>
 
-        {/* Peek strip */}
-        <div className="relative z-10 mx-auto w-[min(92%,36rem)] translate-y-3 overflow-hidden rounded-t-2xl border border-white/10 border-b-0 bg-[#1a1b1f] shadow-[0_-12px_40px_rgba(0,0,0,0.25)]">
+        {/* IDE peek sits at the bottom of the band */}
+        <div className="relative z-10 mx-auto mt-10 w-[min(92%,36rem)] overflow-hidden rounded-t-2xl border border-white/10 border-b-0 bg-[#1a1b1f] shadow-[0_-12px_40px_rgba(0,0,0,0.25)] sm:mt-14">
           <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
             <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
             <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
@@ -138,24 +154,6 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
             </p>
             <p className="pl-4 text-[#7ee787]">return &quot;let&apos;s build&quot;;</p>
             <p className="text-white/70">{"}"}</p>
-          </div>
-        </div>
-
-        {/* Sub-footer — Projects + About only (Portfolio/Contact live in the CTAs) */}
-        <div className="relative z-10 border-t border-white/10 px-6 py-5 sm:px-10 lg:px-16">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/55">
-              <span className="sc-display text-base text-[#f7f6f3]">{BRAND.name}</span>
-              <Link href="/projects" className="transition-colors duration-200 hover:text-[#f7f6f3]">
-                Projects
-              </Link>
-              <Link href="/about" className="transition-colors duration-200 hover:text-[#f7f6f3]">
-                About
-              </Link>
-            </div>
-            <p className="text-sm text-white/40">
-              © {year} {BRAND.name}
-            </p>
           </div>
         </div>
       </div>
