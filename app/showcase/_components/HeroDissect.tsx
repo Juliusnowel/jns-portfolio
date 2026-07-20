@@ -51,6 +51,7 @@ const CARD_LAYOUT = [
   {
     // top-left
     card: "left-[4%] top-[7%]",
+    first: "v" as const,
     v: "left-1/2 top-[21%] h-[26%]",
     vOrigin: "50% 100%", // draws upward from the monitor
     h: "left-[26%] top-[21%] w-[24%]",
@@ -65,6 +66,7 @@ const CARD_LAYOUT = [
   {
     // top-right
     card: "right-[4%] top-[7%]",
+    first: "v" as const,
     v: "left-1/2 top-[21%] h-[26%]",
     vOrigin: "50% 100%",
     h: "right-[26%] top-[21%] w-[24%]",
@@ -76,15 +78,17 @@ const CARD_LAYOUT = [
     fromY: 170,
   },
   {
-    // bottom-left
+    // bottom-left — routed off the MONITOR's left edge (screen height, 40%),
+    // then down to the card, so the tether never crosses the keyboard zone
     card: "left-[4%] bottom-[8%]",
-    v: "left-1/2 top-[53%] h-[23%]",
-    vOrigin: "50% 0%", // draws downward from the monitor
-    h: "left-[26%] top-[76%] w-[24%]",
-    hOrigin: "100% 50%",
-    dot: "left-1/2 top-[53%]",
-    arrow: "left-[calc(26%+1px)] top-[76%]",
-    arrowDir: "left" as const,
+    first: "h" as const, // horizontal leaves the monitor first, then drops
+    v: "left-[16%] top-[40%] h-[28%]",
+    vOrigin: "50% 0%", // draws downward from the elbow
+    h: "left-[16%] top-[40%] w-[34%]",
+    hOrigin: "100% 50%", // draws leftward out of the monitor
+    dot: "left-1/2 top-[40%]",
+    arrow: "left-[16%] top-[calc(68%+1px)]",
+    arrowDir: "down" as const,
     fromX: 190,
     fromY: -170,
   },
@@ -102,12 +106,12 @@ const CHIP_POS = [
  *  (Literal class strings only: Tailwind can't compile interpolated names.) */
 const LINE_CLASS =
   "absolute bg-[#d92d20] shadow-[0_0_0_1px_rgba(217,45,32,0.15)] will-change-transform";
-/** CSS border-triangle arrowheads, vertically centered on the 3px line */
-const ARROW_BASE =
-  "absolute h-0 w-0 -mt-[5px] border-y-[6px] border-y-transparent will-change-transform";
+/** CSS border-triangle arrowheads, centered on the 3px line */
+const ARROW_BASE = "absolute h-0 w-0 will-change-transform";
 const ARROW_DIR = {
-  left: "border-r-[10px] border-r-[#d92d20]", // apex points left, at the card
-  right: "border-l-[10px] border-l-[#d92d20]",
+  left: "-mt-[5px] border-y-[6px] border-y-transparent border-r-[10px] border-r-[#d92d20]",
+  right: "-mt-[5px] border-y-[6px] border-y-transparent border-l-[10px] border-l-[#d92d20]",
+  down: "-ml-[7px] border-x-[6px] border-x-transparent border-t-[10px] border-t-[#d92d20]",
 };
 
 export default function HeroDissect({
@@ -199,6 +203,11 @@ export default function HeroDissect({
         // horizontal run to the card slot (large screens only — lines are
         // hidden below lg via CSS, so skip the tweens too)
         if (!isCompact && vLines[i] && hLines[i]) {
+          // `first` says which segment leaves the monitor (draws at w.in);
+          // the other segment continues from the elbow 0.22 later
+          const vAt = layout.first === "v" ? w.in : w.in + 0.22;
+          const hAt = layout.first === "h" ? w.in : w.in + 0.22;
+
           tl.fromTo(
             linkDots[i],
             { autoAlpha: 0 },
@@ -209,13 +218,13 @@ export default function HeroDissect({
               vLines[i],
               { scaleY: 0, autoAlpha: 0, transformOrigin: layout.vOrigin },
               { scaleY: 1, autoAlpha: 1, duration: 0.3, ease: "power1.inOut" },
-              w.in,
+              vAt,
             )
             .fromTo(
               hLines[i],
               { scaleX: 0, autoAlpha: 0, transformOrigin: layout.hOrigin },
               { scaleX: 1, autoAlpha: 1, duration: 0.3, ease: "power1.inOut" },
-              w.in + 0.22,
+              hAt,
             )
             // Arrowhead pops as the line reaches the card
             .fromTo(
