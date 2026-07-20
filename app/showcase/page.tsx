@@ -29,11 +29,17 @@ export default function ShowcasePage() {
       <TechFloaters reducedMotion={prefersReducedMotion} isMobile={isMobile} />
 
       <div className="relative z-10">
-        <HeroDissect
-          reducedMotion={prefersReducedMotion}
-          isMobile={isMobile}
-          isCompact={isCompact}
-        />
+        {/* Wait for matchMedia so phones don't mount the desktop hero layout
+            first (that left the 3D stage invisible / zero-sized on iOS). */}
+        {ready ? (
+          <HeroDissect
+            reducedMotion={prefersReducedMotion}
+            isMobile={isMobile}
+            isCompact={isCompact}
+          />
+        ) : (
+          <div className="min-h-[100svh] bg-[#f7f6f3]" aria-hidden="true" />
+        )}
         <div className="relative">
           <KineticMarquee reducedMotion={prefersReducedMotion} />
           <Capabilities reducedMotion={prefersReducedMotion} />

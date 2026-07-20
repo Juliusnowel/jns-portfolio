@@ -174,11 +174,13 @@ export default function HeroDissect({
         { y: -90, autoAlpha: 0, duration: 1.3, ease: "power2.in" },
         0.15,
       );
+      // Compact/phone: stage already sits in a dedicated bottom slot — only
+      // scale up. Don't shove it with y/vh (that was pushing it off-screen).
       tl.fromTo(
         ".hd-stage",
-        isCompact ? { y: "17vh", scale: 0.85 } : { xPercent: 20, scale: 0.9 },
+        isCompact ? { y: 0, scale: 0.92 } : { xPercent: 20, scale: 0.9 },
         isCompact
-          ? { y: 0, scale: 1, duration: 1.7 }
+          ? { y: 0, scale: 1.06, duration: 1.7 }
           : { xPercent: 0, scale: 1.05, duration: 1.7 },
         0.2,
       );
@@ -297,30 +299,33 @@ export default function HeroDissect({
     );
   }
 
+  // Compact/phone: copy on top + dedicated 3D stage below (explicit height
+  // so the canvas always has a real size — absolute full-bleed was leaving
+  // phones with a zero/hidden WebGL view behind the hero text).
+  // Desktop: full-bleed absolute stage beside the copy.
   return (
     <section ref={rootRef} className="relative">
-      {/* No opaque bg here — <main> paints #f7f6f3 below the fixed logo
-          layer, so the constellation stays visible in the gutters */}
-      <div ref={pinRef} className="relative min-h-[100svh] overflow-hidden">
+      <div
+        ref={pinRef}
+        className={`relative overflow-hidden ${
+          isCompact
+            ? "flex min-h-[100svh] flex-col"
+            : "min-h-[100svh]"
+        }`}
+      >
         <div className="hd-aurora pointer-events-none absolute inset-[-8%] -z-10 opacity-40 will-change-transform sm:opacity-50">
           <AuroraCanvas reducedMotion={reducedMotion} isMobile={isMobile} />
         </div>
 
-        {/* 3D stage — fills the whole pinned viewport so nothing clips the
-            model; the camera framing provides the margin */}
-        {/* L-connectors sit BELOW the canvas (z-0 vs z-[5]): the canvas is
-            transparent outside the model, so the tether shows around the
-            workstation but passes behind the monitor, not over it */}
+        {/* L-connectors — desktop only, below the canvas */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
           {CARD_LAYOUT.map((layout, i) => (
             <div key={i}>
-              {/* Origin dot on the monitor end of the tether */}
               <span
                 className={`hd-linkdot absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d92d20] shadow-[0_0_0_3px_rgba(217,45,32,0.2)] ${layout.dot}`}
               />
               <span className={`hd-linkv ${LINE_CLASS} w-[3px] -ml-px ${layout.v}`} />
               <span className={`hd-linkh ${LINE_CLASS} h-[3px] ${layout.h}`} />
-              {/* Arrowhead pointing into the card */}
               <span
                 className={`hd-linkarrow ${ARROW_BASE} ${ARROW_DIR[layout.arrowDir]} ${layout.arrow}`}
               />
@@ -328,15 +333,35 @@ export default function HeroDissect({
           ))}
         </div>
 
-        <div className="hd-stage absolute inset-0 z-[5] will-change-transform">
+        {/* Hero copy */}
+        <div
+          className={`hd-copy relative z-10 will-change-transform ${
+            isCompact
+              ? "flex shrink-0 flex-col justify-end px-6 pb-4 pt-20 sm:px-10"
+              : "flex min-h-[100svh] flex-col justify-center px-6 pb-20 pt-24 sm:px-10 sm:pt-28 lg:px-16"
+          }`}
+        >
+          <div className="mx-auto w-full max-w-6xl">
+            <HeroCopy reducedMotion={reducedMotion} />
+          </div>
+        </div>
+
+        {/* 3D stage — dedicated height on compact so WebGL always paints */}
+        <div
+          className={`hd-stage will-change-transform ${
+            isCompact
+              ? "relative z-[5] mx-auto h-[min(52svh,420px)] w-full max-w-lg shrink-0 px-2"
+              : "absolute inset-0 z-[5]"
+          }`}
+        >
           <Workstation3D
             staticScene={false}
-            isMobile={isMobile}
+            isMobile={isMobile || isCompact}
             tilt={!isCompact}
           />
         </div>
 
-        {/* Subtle skill chips on the exploded parts (large screens only) */}
+        {/* Subtle skill chips — large screens only */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
           {capabilities.map((cap, i) => (
             <span
@@ -348,13 +373,13 @@ export default function HeroDissect({
           ))}
         </div>
 
-        {/* Projects — fly from the monitor to the corners, one per segment */}
+        {/* Project cards */}
         <div aria-live="polite" className="pointer-events-none absolute inset-0 z-20">
           {selectedWork.map((item, i) => (
             <div
               key={item.id}
               className={`hd-card absolute w-[min(88vw,21rem)] will-change-transform ${
-                isCompact ? "left-1/2 top-[10%]" : CARD_LAYOUT[i]?.card ?? ""
+                isCompact ? "left-1/2 top-[8%]" : CARD_LAYOUT[i]?.card ?? ""
               }`}
             >
               <div className="rounded-2xl border border-[var(--sc-line)] bg-white/95 p-5 shadow-[0_24px_60px_rgba(20,20,20,0.16)]">
@@ -374,15 +399,6 @@ export default function HeroDissect({
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Hero copy — hides as the pin begins. Below lg (compact layout):
-            extra bottom padding keeps copy in the upper half, clear of the
-            workstation sitting lower-center */}
-        <div className="hd-copy relative z-10 flex min-h-[100svh] flex-col justify-center px-6 pb-[32vh] pt-24 will-change-transform sm:px-10 sm:pt-28 lg:px-16 lg:pb-20">
-          <div className="mx-auto w-full max-w-6xl">
-            <HeroCopy reducedMotion={reducedMotion} />
-          </div>
         </div>
       </div>
     </section>
