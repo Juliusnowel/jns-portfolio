@@ -26,6 +26,22 @@ export default function RangeReveal({
     () => {
       if (reducedMotion) return;
 
+      // 2D parallax: heading and stage drift at different speeds across the
+      // whole section scroll (transform-only, independent of the zoom)
+      const drift = (target: gsap.TweenTarget, fromY: number, toY: number) =>
+        gsap.fromTo(target, { y: fromY }, {
+          y: toY,
+          ease: "none",
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.6,
+          },
+        });
+      drift(".range-head", 44, -32);
+      drift(".range-stage", 70, -20);
+
       const startScale = isMobile ? 1.45 : 1.85;
 
       gsap.set(".range-tile", { autoAlpha: 0, scale: 0.85, y: 24 });
@@ -65,22 +81,24 @@ export default function RangeReveal({
   return (
     <section ref={rootRef} className="relative px-6 py-28 sm:px-10 sm:py-36 lg:px-16">
       <div className="mx-auto w-full max-w-6xl">
-        <LineReveal
-          as="p"
-          lines={["Range"]}
-          reducedMotion={reducedMotion}
-          className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--sc-muted)]"
-        />
-        <LineReveal
-          as="h2"
-          lines={["One focus. Broader practice."]}
-          reducedMotion={reducedMotion}
-          className="sc-display mt-4 max-w-3xl text-[clamp(2rem,5vw,3.25rem)] leading-[1.1] text-[var(--sc-ink)]"
-        />
+        <div className="range-head will-change-transform">
+          <LineReveal
+            as="p"
+            lines={["Range"]}
+            reducedMotion={reducedMotion}
+            className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--sc-muted)]"
+          />
+          <LineReveal
+            as="h2"
+            lines={["One focus. Broader practice."]}
+            reducedMotion={reducedMotion}
+            className="sc-display mt-4 max-w-3xl text-[clamp(2rem,5vw,3.25rem)] leading-[1.1] text-[var(--sc-ink)]"
+          />
+        </div>
 
         <div
           ref={stageRef}
-          className="mt-14 overflow-hidden rounded-3xl border border-[var(--sc-line)] bg-[#f3f1ec] px-4 py-10 sm:px-8 sm:py-14"
+          className="range-stage mt-14 overflow-hidden rounded-3xl border border-[var(--sc-line)] bg-[#f3f1ec] px-4 py-10 will-change-transform sm:px-8 sm:py-14"
         >
           <div className="range-stage-inner origin-center will-change-transform">
             <ul className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">

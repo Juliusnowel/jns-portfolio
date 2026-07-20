@@ -114,8 +114,8 @@ function FloaterCard({
 const CARD =
   "flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--sc-line)] bg-white/70 shadow-[0_8px_20px_rgba(20,20,20,0.06)] sm:h-11 sm:w-11";
 
-/** Post-scatter resting opacity — low + blurred so content always wins */
-const SETTLE = { desktop: 0.38, mobile: 0.28, blur: "blur(2px)" };
+/** Post-scatter resting opacity — soft but clearly visible in the gutters */
+const SETTLE = { desktop: 0.52, mobile: 0.38, blur: "blur(1.5px)" };
 
 /**
  * Preloader + backdrop constellation.

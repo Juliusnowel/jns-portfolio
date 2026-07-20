@@ -149,6 +149,8 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
   const caseRef = useRef<THREE.Group>(null);
 
   const lerped = useRef(0);
+  const tiltX = useRef(0);
+  const tiltY = useRef(0);
   const codeTex = useCodeTexture();
 
   const keyPositions = useMemo(() => {
@@ -174,12 +176,13 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
     const root = rootRef.current;
     if (!root) return;
 
-    // Lerp toward the scrubbed scroll progress (scrub already smooths; this
-    // just removes the last bit of stepping). Clamped so the pose at
-    // progress 0 / 1 EXACTLY matches the rest state — no boundary snap.
+    // Lerp toward the scrubbed scroll progress. Kept TIGHT (delta*12):
+    // Lenis + ScrollTrigger scrub already smooth the input, and stacking a
+    // slow lerp on top made the model keep resizing for ~2s after the user
+    // stopped scrolling. Clamped so progress 0 / 1 EXACTLY matches rest.
     const target = clamp01(scrollStore.progress);
     lerped.current = clamp01(
-      lerped.current + (target - lerped.current) * Math.min(1, delta * 7),
+      lerped.current + (target - lerped.current) * Math.min(1, delta * 12),
     );
     const t = lerped.current;
 
@@ -200,6 +203,16 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
     root.rotation.y = -0.85 * turn * (1 - 0.75 * ret) - 0.3 * intro;
     root.rotation.x = 0.12 * turn * (1 - ret) + 0.05 * intro;
     root.position.y = 0.15 * explode;
+
+    // Pointer parallax — damped tilt toward the cursor for a tangible,
+    // "alive" 3D feel (desktop only; additive over the scroll pose)
+    if (!isMobile) {
+      const k = Math.min(1, delta * 4);
+      tiltY.current += (state.pointer.x * 0.12 - tiltY.current) * k;
+      tiltX.current += (-state.pointer.y * 0.07 - tiltX.current) * k;
+      root.rotation.y += tiltY.current;
+      root.rotation.x += tiltX.current;
+    }
 
     const set = (
       ref: React.RefObject<THREE.Group | null>,

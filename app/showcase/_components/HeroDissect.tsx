@@ -120,7 +120,9 @@ export default function HeroDissect({
           start: "top top",
           end: `+=${pinEnd}`,
           pin: true,
-          scrub: 0.8,
+          // Lenis already smooths wheel input; a lighter scrub keeps the
+          // model from drifting in size for seconds after the user pauses
+          scrub: 0.45,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             scrollStore.progress = self.progress;
@@ -211,7 +213,7 @@ export default function HeroDissect({
   // —— REDUCED MOTION: static hero + assembled workstation + projects listed ——
   if (reducedMotion) {
     return (
-      <section className="relative bg-[#f7f6f3] px-6 pb-20 pt-24 sm:px-10 sm:pt-28 lg:px-16">
+      <section className="relative px-6 pb-20 pt-24 sm:px-10 sm:pt-28 lg:px-16">
         <div className="mx-auto w-full max-w-6xl">
           <HeroCopy reducedMotion />
           <div className="mt-10 h-[300px] w-full sm:h-[420px]">
@@ -243,9 +245,9 @@ export default function HeroDissect({
 
   return (
     <section ref={rootRef} className="relative">
+      {/* No opaque bg here — <main> paints #f7f6f3 below the fixed logo
+          layer, so the constellation stays visible in the gutters */}
       <div ref={pinRef} className="relative min-h-[100svh] overflow-hidden">
-        <div aria-hidden="true" className="absolute inset-0 -z-20 bg-[#f7f6f3]" />
-
         <div className="hd-aurora pointer-events-none absolute inset-[-8%] -z-10 opacity-40 will-change-transform sm:opacity-50">
           <AuroraCanvas reducedMotion={reducedMotion} isMobile={isMobile} />
         </div>
