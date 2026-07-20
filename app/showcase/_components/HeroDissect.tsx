@@ -298,7 +298,27 @@ export default function HeroDissect({
 
         {/* 3D stage — fills the whole pinned viewport so nothing clips the
             model; the camera framing provides the margin */}
-        <div className="hd-stage absolute inset-0 will-change-transform">
+        {/* L-connectors sit BELOW the canvas (z-0 vs z-[5]): the canvas is
+            transparent outside the model, so the tether shows around the
+            workstation but passes behind the monitor, not over it */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 hidden lg:block">
+          {CARD_LAYOUT.map((layout, i) => (
+            <div key={i}>
+              {/* Origin dot on the monitor end of the tether */}
+              <span
+                className={`hd-linkdot absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d92d20] shadow-[0_0_0_3px_rgba(217,45,32,0.2)] ${layout.dot}`}
+              />
+              <span className={`hd-linkv ${LINE_CLASS} w-[3px] -ml-px ${layout.v}`} />
+              <span className={`hd-linkh ${LINE_CLASS} h-[3px] ${layout.h}`} />
+              {/* Arrowhead pointing into the card */}
+              <span
+                className={`hd-linkarrow ${ARROW_BASE} ${ARROW_DIR[layout.arrowDir]} ${layout.arrow}`}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className="hd-stage absolute inset-0 z-[5] will-change-transform">
           <Workstation3D
             staticScene={false}
             isMobile={isMobile}
@@ -315,25 +335,6 @@ export default function HeroDissect({
             >
               {cap.title}
             </span>
-          ))}
-        </div>
-
-        {/* L-connectors: horizontal + vertical segments only, monitor-centered.
-            Hidden below lg (cards emit centered on tablets/phones). */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
-          {CARD_LAYOUT.map((layout, i) => (
-            <div key={i}>
-              {/* Origin dot on the monitor end of the tether */}
-              <span
-                className={`hd-linkdot absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d92d20] shadow-[0_0_0_3px_rgba(217,45,32,0.2)] ${layout.dot}`}
-              />
-              <span className={`hd-linkv ${LINE_CLASS} w-[3px] -ml-px ${layout.v}`} />
-              <span className={`hd-linkh ${LINE_CLASS} h-[3px] ${layout.h}`} />
-              {/* Arrowhead pointing into the card */}
-              <span
-                className={`hd-linkarrow ${ARROW_BASE} ${ARROW_DIR[layout.arrowDir]} ${layout.arrow}`}
-              />
-            </div>
           ))}
         </div>
 
