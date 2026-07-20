@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox, Instances, Instance } from "@react-three/drei";
 import * as THREE from "three";
 import { scrollStore } from "../../_lib/scrollStore";
@@ -29,6 +29,8 @@ export interface SceneProps {
   /** Reduced motion — render a still, assembled 3/4 view; no animation loop */
   staticScene: boolean;
   isMobile: boolean;
+  /** Cursor-follow tilt — desktop pointer devices only */
+  tilt?: boolean;
 }
 
 const CODE_LINES = [
@@ -137,8 +139,13 @@ const EXPLODE = {
   case_: { y: -0.34 },
 };
 
-function Workstation({ staticScene, isMobile }: SceneProps) {
+function Workstation({ staticScene, isMobile, tilt = false }: SceneProps) {
   const rootRef = useRef<THREE.Group>(null);
+  // Aspect-aware fit: down-scale the model as the viewport narrows so the
+  // rotated/exploded workstation always fits the frustum with margin —
+  // laptop, tablet portrait, and phone all self-fit (live on resize).
+  const aspect = useThree((s) => s.size.width / s.size.height);
+  const fit = Math.min(1, Math.max(0.5, aspect * 0.82));
   const screenRef = useRef<THREE.Group>(null);
   const bezelRef = useRef<THREE.Group>(null);
   const neckRef = useRef<THREE.Group>(null);
@@ -206,8 +213,8 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
     root.position.y = 0.15 * explode;
 
     // Pointer parallax — damped tilt toward the cursor for a tangible,
-    // "alive" 3D feel (desktop only; additive over the scroll pose)
-    if (!isMobile) {
+    // "alive" 3D feel (pointer devices only; additive over the scroll pose)
+    if (tilt) {
       const k = Math.min(1, delta * 4);
       tiltY.current += (state.pointer.x * 0.12 - tiltY.current) * k;
       tiltX.current += (-state.pointer.y * 0.07 - tiltX.current) * k;
@@ -241,9 +248,7 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
       ref={rootRef}
       rotation={staticScene ? [0.1, -0.55, 0] : [0, 0, 0]}
       position={[0, 0.1, 0]}
-      // Down-scaled on narrow viewports so the rotated/exploded model always
-      // fits the camera frustum with margin — never clipped at any scroll pos
-      scale={isMobile ? 0.62 : 1}
+      scale={fit}
     >
       {/* —— MONITOR —— */}
       <group ref={bezelRef} position={[0, BASE.bezel.y, BASE.bezel.z]}>
@@ -311,7 +316,7 @@ function Workstation({ staticScene, isMobile }: SceneProps) {
 }
 
 /** R3F canvas — ONLY loaded via next/dynamic { ssr: false } (Workstation3D). */
-export default function Scene({ staticScene, isMobile }: SceneProps) {
+export default function Scene({ staticScene, isMobile, tilt }: SceneProps) {
   return (
     <Canvas
       // Transparent over the light section bg — the 3D area is never black.
@@ -326,7 +331,7 @@ export default function Scene({ staticScene, isMobile }: SceneProps) {
       <ambientLight intensity={0.95} />
       <directionalLight position={[3.5, 4, 5]} intensity={0.85} />
       <directionalLight position={[-3, 2, -2]} intensity={0.25} />
-      <Workstation staticScene={staticScene} isMobile={isMobile} />
+      <Workstation staticScene={staticScene} isMobile={isMobile} tilt={tilt} />
     </Canvas>
   );
 }

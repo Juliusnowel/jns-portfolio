@@ -15,10 +15,11 @@ import TechFloaters from "./_components/TechFloaters";
  * so section text stays fully legible.
  */
 export default function ShowcasePage() {
-  const { prefersReducedMotion, isMobile, ready } = useMotionPrefs();
+  const { prefersReducedMotion, isMobile, isCompact, ready } = useMotionPrefs();
 
   useLenis(!prefersReducedMotion);
-  usePointerField(ready && !prefersReducedMotion && !isMobile);
+  // Magnetic hover is pointer-only — skip on touch/compact devices
+  usePointerField(ready && !prefersReducedMotion && !isCompact);
 
   return (
     // The solid page bg lives on <main> — BELOW the fixed logo layer.
@@ -28,7 +29,11 @@ export default function ShowcasePage() {
       <TechFloaters reducedMotion={prefersReducedMotion} isMobile={isMobile} />
 
       <div className="relative z-10">
-        <HeroDissect reducedMotion={prefersReducedMotion} isMobile={isMobile} />
+        <HeroDissect
+          reducedMotion={prefersReducedMotion}
+          isMobile={isMobile}
+          isCompact={isCompact}
+        />
         <div className="relative">
           <KineticMarquee reducedMotion={prefersReducedMotion} />
           <Capabilities reducedMotion={prefersReducedMotion} />

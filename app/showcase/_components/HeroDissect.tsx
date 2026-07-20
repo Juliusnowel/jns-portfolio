@@ -93,9 +93,13 @@ const LINE_CLASS = "absolute bg-[#1f1f1f]/35 will-change-transform";
 export default function HeroDissect({
   reducedMotion,
   isMobile,
+  isCompact,
 }: {
   reducedMotion: boolean;
+  /** Perf tier (phones): shorter pin, lighter 3D */
   isMobile: boolean;
+  /** Layout tier (tablets + phones + touch): centered cards, no connectors */
+  isCompact: boolean;
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -111,7 +115,7 @@ export default function HeroDissect({
       const hLines = gsap.utils.toArray<HTMLElement>(".hd-linkh");
       const chips = gsap.utils.toArray<HTMLElement>(".hd-chip");
 
-      const pinEnd = isMobile ? 3000 : 4400;
+      const pinEnd = isMobile ? 3000 : isCompact ? 3400 : 4400;
 
       const tl = gsap.timeline({
         defaults: { ease: "power2.inOut" },
@@ -145,8 +149,8 @@ export default function HeroDissect({
       );
       tl.fromTo(
         ".hd-stage",
-        isMobile ? { y: "17vh", scale: 0.85 } : { xPercent: 20, scale: 0.9 },
-        isMobile
+        isCompact ? { y: "17vh", scale: 0.85 } : { xPercent: 20, scale: 0.9 },
+        isCompact
           ? { y: 0, scale: 1, duration: 1.7 }
           : { xPercent: 0, scale: 1.05, duration: 1.7 },
         0.2,
@@ -170,9 +174,9 @@ export default function HeroDissect({
         if (!w || !layout) return;
 
         // Connector draws first: vertical run off the monitor, then the
-        // horizontal run to the card slot (desktop only — lines are hidden
-        // on mobile via CSS)
-        if (vLines[i] && hLines[i]) {
+        // horizontal run to the card slot (large screens only — lines are
+        // hidden below lg via CSS, so skip the tweens too)
+        if (!isCompact && vLines[i] && hLines[i]) {
           tl.fromTo(
             vLines[i],
             { scaleY: 0, autoAlpha: 0, transformOrigin: layout.vOrigin },
@@ -191,11 +195,11 @@ export default function HeroDissect({
         tl.fromTo(
           card,
           {
-            // GSAP owns the transform, so mobile centering (xPercent) lives
+            // GSAP owns the transform, so compact centering (xPercent) lives
             // here rather than in a CSS translate class it would overwrite
-            xPercent: isMobile ? -50 : 0,
-            x: isMobile ? 0 : layout.fromX,
-            y: isMobile ? 60 : layout.fromY,
+            xPercent: isCompact ? -50 : 0,
+            x: isCompact ? 0 : layout.fromX,
+            y: isCompact ? 60 : layout.fromY,
             scale: 0.55,
             autoAlpha: 0,
           },
@@ -208,7 +212,7 @@ export default function HeroDissect({
         );
       });
     },
-    { scope: rootRef, dependencies: [reducedMotion, isMobile] },
+    { scope: rootRef, dependencies: [reducedMotion, isMobile, isCompact] },
   );
 
   // —— REDUCED MOTION: static hero + assembled workstation + projects listed ——
@@ -256,11 +260,15 @@ export default function HeroDissect({
         {/* 3D stage — fills the whole pinned viewport so nothing clips the
             model; the camera framing provides the margin */}
         <div className="hd-stage absolute inset-0 will-change-transform">
-          <Workstation3D staticScene={false} isMobile={isMobile} />
+          <Workstation3D
+            staticScene={false}
+            isMobile={isMobile}
+            tilt={!isCompact}
+          />
         </div>
 
-        {/* Subtle skill chips on the exploded parts (desktop only) */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden sm:block">
+        {/* Subtle skill chips on the exploded parts (large screens only) */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
           {capabilities.map((cap, i) => (
             <span
               key={cap.id}
@@ -272,8 +280,8 @@ export default function HeroDissect({
         </div>
 
         {/* L-connectors: horizontal + vertical segments only, monitor-centered.
-            Hidden on mobile (cards stack centered there). */}
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden sm:block">
+            Hidden below lg (cards emit centered on tablets/phones). */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
           {CARD_LAYOUT.map((layout, i) => (
             <div key={i}>
               <span className={`hd-linkv ${LINE_CLASS} w-[2px] ${layout.v}`} />
@@ -288,7 +296,7 @@ export default function HeroDissect({
             <div
               key={item.id}
               className={`hd-card absolute w-[min(88vw,21rem)] will-change-transform ${
-                isMobile ? "left-1/2 top-[10%]" : CARD_LAYOUT[i]?.card ?? ""
+                isCompact ? "left-1/2 top-[10%]" : CARD_LAYOUT[i]?.card ?? ""
               }`}
             >
               <div className="rounded-2xl border border-[var(--sc-line)] bg-white/95 p-5 shadow-[0_24px_60px_rgba(20,20,20,0.16)]">
@@ -310,9 +318,10 @@ export default function HeroDissect({
           ))}
         </div>
 
-        {/* Hero copy — hides as the pin begins.
-            Mobile: extra bottom padding keeps copy clear of the workstation. */}
-        <div className="hd-copy relative z-10 flex min-h-[100svh] flex-col justify-center px-6 pb-[32vh] pt-24 will-change-transform sm:px-10 sm:pb-20 sm:pt-28 lg:px-16">
+        {/* Hero copy — hides as the pin begins. Below lg (compact layout):
+            extra bottom padding keeps copy in the upper half, clear of the
+            workstation sitting lower-center */}
+        <div className="hd-copy relative z-10 flex min-h-[100svh] flex-col justify-center px-6 pb-[32vh] pt-24 will-change-transform sm:px-10 sm:pt-28 lg:px-16 lg:pb-20">
           <div className="mx-auto w-full max-w-6xl">
             <HeroCopy reducedMotion={reducedMotion} />
           </div>
