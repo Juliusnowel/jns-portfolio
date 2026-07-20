@@ -48,19 +48,21 @@ export default function RangeReveal({
       gsap.set(".range-tile-focus", { autoAlpha: 1, scale: 1.12, y: 0 });
       gsap.set(".range-stage-inner", { scale: startScale, rotate: isMobile ? -2 : -4 });
 
+      // Compressed distance + 1:1 scrub so the grid finishes building while
+      // the stage is still comfortably on screen — no trailing stragglers
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: stageRef.current,
           start: "top 85%",
-          end: isMobile ? "+=700" : "+=1100",
-          scrub: 0.85,
+          end: isMobile ? "+=420" : "+=620",
+          scrub: true,
         },
       });
 
       tl.to(".range-stage-inner", {
         scale: 1,
         rotate: 0,
-        duration: 1.5,
+        duration: 1,
         ease: "power2.out",
       }).to(
         ".range-tile",
@@ -68,11 +70,11 @@ export default function RangeReveal({
           autoAlpha: 1,
           scale: 1,
           y: 0,
-          duration: 1,
-          stagger: { each: 0.1, from: "center" },
+          duration: 0.55,
+          stagger: { each: 0.05, from: "center" },
           ease: "power3.out",
         },
-        0.25,
+        0.15,
       );
     },
     { scope: rootRef, dependencies: [reducedMotion, isMobile] },
