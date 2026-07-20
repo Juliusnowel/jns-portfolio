@@ -118,43 +118,43 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
           </div>
 
           <p className="mt-5 text-sm text-white/40">Build · debug · decide.</p>
-
-          {/* Sub-nav — no border / container; just open type */}
-          <div className="mt-14 flex w-full flex-col gap-4 sm:mt-16 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/55 sm:justify-start">
-              <span className="sc-display text-base text-[#f7f6f3]">{BRAND.name}</span>
-              <Link href="/projects" className="transition-colors duration-200 hover:text-[#f7f6f3]">
-                Projects
-              </Link>
-              <Link href="/about" className="transition-colors duration-200 hover:text-[#f7f6f3]">
-                About
-              </Link>
-            </div>
-            <p className="text-sm text-white/40 sm:text-right">
-              © {year} Copyright
-            </p>
-          </div>
         </div>
 
-        {/* IDE peek sits at the bottom of the band */}
-        <div className="relative z-10 mx-auto mt-10 w-[min(92%,36rem)] overflow-hidden rounded-t-2xl border border-white/10 border-b-0 bg-[#1a1b1f] shadow-[0_-12px_40px_rgba(0,0,0,0.25)] sm:mt-14">
-          <div className="flex items-center gap-2 border-b border-white/10 px-4 py-2.5">
-            <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
-            <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
-            <span className="h-2 w-2 rounded-full bg-[#28c840]" />
-            <span className="ml-2 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-white/40">
-              dissect.ts — ready
-            </span>
+        {/* One horizontal bar: brand/links · IDE · copyright */}
+        <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-5 px-6 pb-8 pt-10 sm:gap-4 sm:px-10 sm:pb-10 lg:grid-cols-[1fr_auto_1fr] lg:px-16">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/55 lg:justify-start">
+            <span className="sc-display text-base text-[#f7f6f3]">{BRAND.name}</span>
+            <Link href="/projects" className="transition-colors duration-200 hover:text-[#f7f6f3]">
+              Projects
+            </Link>
+            <Link href="/about" className="transition-colors duration-200 hover:text-[#f7f6f3]">
+              About
+            </Link>
           </div>
-          <div className="px-4 py-3 font-mono text-[0.65rem] leading-relaxed text-white/45">
-            <p className="truncate whitespace-nowrap">
-              <span className="text-[#ff7b72]">function</span>{" "}
-              <span className="text-[#d2a8ff]">ship</span>
-              <span className="text-white/70">() {"{"} </span>
-              <span className="text-[#7ee787]">return &quot;let&apos;s build&quot;;</span>
-              <span className="text-white/70"> {"}"}</span>
-            </p>
+
+          <div className="mx-auto w-full max-w-[22rem] overflow-hidden rounded-xl border border-white/10 bg-[#1a1b1f] lg:mx-0">
+            <div className="flex items-center gap-1.5 border-b border-white/10 px-3 py-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#ff5f57]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#febc2e]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#28c840]" />
+              <span className="ml-1.5 font-mono text-[0.55rem] uppercase tracking-[0.14em] text-white/40">
+                dissect.ts
+              </span>
+            </div>
+            <div className="px-3 py-2 font-mono text-[0.6rem] text-white/45">
+              <p className="truncate whitespace-nowrap">
+                <span className="text-[#ff7b72]">function</span>{" "}
+                <span className="text-[#d2a8ff]">ship</span>
+                <span className="text-white/70">() {"{"} </span>
+                <span className="text-[#7ee787]">return &quot;let&apos;s build&quot;;</span>
+                <span className="text-white/70"> {"}"}</span>
+              </p>
+            </div>
           </div>
+
+          <p className="text-center text-sm text-white/40 lg:text-right">
+            © {year} Copyright
+          </p>
         </div>
       </div>
     </section>
