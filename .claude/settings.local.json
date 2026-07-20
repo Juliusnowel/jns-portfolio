@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -la /home/viteseo-dev/jns-portfolio/.env*)",
+      "Bash(find /home/viteseo-dev/jns-portfolio -not -path */node_modules/* -not -path */.next/* -not -path */.git/* -type d)",
+      "Bash(ls -la /home/viteseo-dev/jns-portfolio/tailwind*)",
+      "Bash(npx next:*)",
+      "Bash(grep -n 'isDark$\\\\|isDark\\\\b' /home/viteseo-dev/jns-portfolio/app/page.tsx)"
+    ]
+  }
+}
