@@ -146,14 +146,14 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
               dissect.ts — ready
             </span>
           </div>
-          <div className="space-y-1 px-4 py-3 font-mono text-[0.65rem] leading-relaxed text-white/45">
-            <p>
+          <div className="px-4 py-3 font-mono text-[0.65rem] leading-relaxed text-white/45">
+            <p className="truncate whitespace-nowrap">
               <span className="text-[#ff7b72]">function</span>{" "}
               <span className="text-[#d2a8ff]">ship</span>
-              <span className="text-white/70">() {"{"}</span>
+              <span className="text-white/70">() {"{"} </span>
+              <span className="text-[#7ee787]">return &quot;let&apos;s build&quot;;</span>
+              <span className="text-white/70"> {"}"}</span>
             </p>
-            <p className="pl-4 text-[#7ee787]">return &quot;let&apos;s build&quot;;</p>
-            <p className="text-white/70">{"}"}</p>
           </div>
         </div>
       </div>
