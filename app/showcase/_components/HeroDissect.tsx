@@ -347,10 +347,12 @@ export default function HeroDissect({
         </div>
 
         {/* 3D stage — dedicated height on compact so WebGL always paints */}
+        {/* pointer-events-none on compact so finger scrolls the page, not the
+            WebGL canvas (which was making scroll feel locked on phones) */}
         <div
           className={`hd-stage will-change-transform ${
             isCompact
-              ? "relative z-[5] mx-auto h-[min(52svh,420px)] w-full max-w-lg shrink-0 px-2"
+              ? "pointer-events-none relative z-[5] mx-auto h-[min(52svh,420px)] w-full max-w-lg shrink-0 px-2"
               : "absolute inset-0 z-[5]"
           }`}
         >

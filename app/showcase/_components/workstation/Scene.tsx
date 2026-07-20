@@ -345,7 +345,9 @@ export default function Scene({ staticScene, isMobile, tilt }: SceneProps) {
         height: "100%",
         minHeight: isMobile ? 240 : undefined,
         background: "transparent",
-        touchAction: "none",
+        // Let the page own vertical scroll — never capture touch here
+        // (touch-action:none was locking scroll when the finger was on the 3D)
+        touchAction: "pan-y",
       }}
     >
       <ambientLight intensity={1.05} />
