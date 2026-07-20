@@ -141,11 +141,15 @@ const EXPLODE = {
 
 function Workstation({ staticScene, isMobile, tilt = false }: SceneProps) {
   const rootRef = useRef<THREE.Group>(null);
-  // Aspect-aware fit: down-scale the model as the viewport narrows so the
-  // rotated/exploded workstation always fits the frustum with margin —
-  // laptop, tablet portrait, and phone all self-fit (live on resize).
-  const aspect = useThree((s) => s.size.width / s.size.height);
-  const fit = Math.min(1, Math.max(0.5, aspect * 0.82));
+  // Aspect-aware fit. Guard against 0×0 canvas (common on first mobile
+  // paint) — NaN scale makes the whole group invisible.
+  const { width, height } = useThree((s) => s.size);
+  const aspect = height > 1 ? width / height : 0.56;
+  // Phones are tall/narrow: keep the model LARGER (not shrunk to 0.5) so
+  // monitor + keyboard stay readable in the dedicated stage slot.
+  const fit = isMobile
+    ? Math.min(1.05, Math.max(0.82, aspect * 1.35))
+    : Math.min(1, Math.max(0.55, aspect * 0.82));
   const screenRef = useRef<THREE.Group>(null);
   const bezelRef = useRef<THREE.Group>(null);
   const neckRef = useRef<THREE.Group>(null);
@@ -320,17 +324,33 @@ export default function Scene({ staticScene, isMobile, tilt }: SceneProps) {
   return (
     <Canvas
       // Transparent over the light section bg — the 3D area is never black.
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      // `default` powerPreference is more reliable on iOS Safari than
+      // `high-performance` (which can fail and leave a blank canvas).
+      gl={{
+        antialias: !isMobile,
+        alpha: true,
+        powerPreference: isMobile ? "default" : "high-performance",
+        failIfMajorPerformanceCaveat: false,
+      }}
       dpr={isMobile ? [1, 1] : [1, 1.5]}
       frameloop={staticScene ? "demand" : "always"}
-      // Pulled back with a wider FOV so the workstation stays fully visible
-      // with margin even at the stage's largest DOM scale
-      camera={{ position: [0, 0.25, isMobile ? 8.6 : 7.6], fov: isMobile ? 38 : 36 }}
-      style={{ width: "100%", height: "100%", background: "transparent" }}
+      // Mobile: slightly wider FOV + pulled back so the full workstation
+      // reads in a short portrait stage without clipping
+      camera={{
+        position: [0, isMobile ? 0.15 : 0.25, isMobile ? 7.2 : 7.6],
+        fov: isMobile ? 42 : 36,
+      }}
+      style={{
+        width: "100%",
+        height: "100%",
+        minHeight: isMobile ? 240 : undefined,
+        background: "transparent",
+        touchAction: "none",
+      }}
     >
-      <ambientLight intensity={0.95} />
-      <directionalLight position={[3.5, 4, 5]} intensity={0.85} />
-      <directionalLight position={[-3, 2, -2]} intensity={0.25} />
+      <ambientLight intensity={1.05} />
+      <directionalLight position={[3.5, 4, 5]} intensity={0.9} />
+      <directionalLight position={[-3, 2, -2]} intensity={0.3} />
       <Workstation staticScene={staticScene} isMobile={isMobile} tilt={tilt} />
     </Canvas>
   );
