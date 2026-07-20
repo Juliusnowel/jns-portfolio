@@ -55,6 +55,10 @@ const CARD_LAYOUT = [
     vOrigin: "50% 100%", // draws upward from the monitor
     h: "left-[26%] top-[21%] w-[24%]",
     hOrigin: "100% 50%", // draws leftward from the center axis
+    // Dot where the line leaves the monitor; arrowhead where it meets the card
+    dot: "left-1/2 top-[47%]",
+    arrow: "left-[calc(26%+1px)] top-[21%]",
+    arrowDir: "left" as const,
     fromX: 190,
     fromY: 170,
   },
@@ -65,6 +69,9 @@ const CARD_LAYOUT = [
     vOrigin: "50% 100%",
     h: "right-[26%] top-[21%] w-[24%]",
     hOrigin: "0% 50%", // draws rightward from the center axis
+    dot: "left-1/2 top-[47%]",
+    arrow: "right-[calc(26%+1px)] top-[21%]",
+    arrowDir: "right" as const,
     fromX: -190,
     fromY: 170,
   },
@@ -75,6 +82,9 @@ const CARD_LAYOUT = [
     vOrigin: "50% 0%", // draws downward from the monitor
     h: "left-[26%] top-[76%] w-[24%]",
     hOrigin: "100% 50%",
+    dot: "left-1/2 top-[53%]",
+    arrow: "left-[calc(26%+1px)] top-[76%]",
+    arrowDir: "left" as const,
     fromX: 190,
     fromY: -170,
   },
@@ -88,7 +98,17 @@ const CHIP_POS = [
   "right-[23%] bottom-[28%]",
 ];
 
-const LINE_CLASS = "absolute bg-[#1f1f1f]/35 will-change-transform";
+/** Connector styling — strong red + 3px weight so the tether clearly reads.
+ *  (Literal class strings only: Tailwind can't compile interpolated names.) */
+const LINE_CLASS =
+  "absolute bg-[#d92d20] shadow-[0_0_0_1px_rgba(217,45,32,0.15)] will-change-transform";
+/** CSS border-triangle arrowheads, vertically centered on the 3px line */
+const ARROW_BASE =
+  "absolute h-0 w-0 -mt-[5px] border-y-[6px] border-y-transparent will-change-transform";
+const ARROW_DIR = {
+  left: "border-r-[10px] border-r-[#d92d20]", // apex points left, at the card
+  right: "border-l-[10px] border-l-[#d92d20]",
+};
 
 export default function HeroDissect({
   reducedMotion,
@@ -113,6 +133,8 @@ export default function HeroDissect({
       const cards = gsap.utils.toArray<HTMLElement>(".hd-card");
       const vLines = gsap.utils.toArray<HTMLElement>(".hd-linkv");
       const hLines = gsap.utils.toArray<HTMLElement>(".hd-linkh");
+      const linkDots = gsap.utils.toArray<HTMLElement>(".hd-linkdot");
+      const linkArrows = gsap.utils.toArray<HTMLElement>(".hd-linkarrow");
       const chips = gsap.utils.toArray<HTMLElement>(".hd-chip");
 
       const pinEnd = isMobile ? 3000 : isCompact ? 3400 : 4400;
@@ -178,18 +200,35 @@ export default function HeroDissect({
         // hidden below lg via CSS, so skip the tweens too)
         if (!isCompact && vLines[i] && hLines[i]) {
           tl.fromTo(
-            vLines[i],
-            { scaleY: 0, autoAlpha: 0, transformOrigin: layout.vOrigin },
-            { scaleY: 1, autoAlpha: 1, duration: 0.3, ease: "power1.inOut" },
+            linkDots[i],
+            { autoAlpha: 0 },
+            { autoAlpha: 1, duration: 0.15 },
             w.in,
           )
+            .fromTo(
+              vLines[i],
+              { scaleY: 0, autoAlpha: 0, transformOrigin: layout.vOrigin },
+              { scaleY: 1, autoAlpha: 1, duration: 0.3, ease: "power1.inOut" },
+              w.in,
+            )
             .fromTo(
               hLines[i],
               { scaleX: 0, autoAlpha: 0, transformOrigin: layout.hOrigin },
               { scaleX: 1, autoAlpha: 1, duration: 0.3, ease: "power1.inOut" },
               w.in + 0.22,
             )
-            .to([vLines[i], hLines[i]], { autoAlpha: 0, duration: 0.3 }, w.out);
+            // Arrowhead pops as the line reaches the card
+            .fromTo(
+              linkArrows[i],
+              { autoAlpha: 0 },
+              { autoAlpha: 1, duration: 0.15 },
+              w.in + 0.48,
+            )
+            .to(
+              [vLines[i], hLines[i], linkDots[i], linkArrows[i]],
+              { autoAlpha: 0, duration: 0.3 },
+              w.out,
+            );
         }
 
         tl.fromTo(
@@ -284,8 +323,16 @@ export default function HeroDissect({
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 hidden lg:block">
           {CARD_LAYOUT.map((layout, i) => (
             <div key={i}>
-              <span className={`hd-linkv ${LINE_CLASS} w-[2px] ${layout.v}`} />
-              <span className={`hd-linkh ${LINE_CLASS} h-[2px] ${layout.h}`} />
+              {/* Origin dot on the monitor end of the tether */}
+              <span
+                className={`hd-linkdot absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d92d20] shadow-[0_0_0_3px_rgba(217,45,32,0.2)] ${layout.dot}`}
+              />
+              <span className={`hd-linkv ${LINE_CLASS} w-[3px] -ml-px ${layout.v}`} />
+              <span className={`hd-linkh ${LINE_CLASS} h-[3px] ${layout.h}`} />
+              {/* Arrowhead pointing into the card */}
+              <span
+                className={`hd-linkarrow ${ARROW_BASE} ${ARROW_DIR[layout.arrowDir]} ${layout.arrow}`}
+              />
             </div>
           ))}
         </div>
