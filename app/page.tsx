@@ -11,6 +11,8 @@ const navigationLinks = [
   { label: "About", href: "/about" },
   { label: "Projects", href: "/projects" },
   { label: "Contact", href: "/contact" },
+  // Immersive parallax alternate home (route: /showcase)
+  { label: "Experience", href: "/showcase" },
 ];
 
 const quickLinks = navigationLinks;
