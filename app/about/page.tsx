@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 const coreHighlights = [
-  "Currently in my first full-time role as a Full Stack WordPress Developer.",
-  "Builds websites with a child-theme approach, not drag-and-drop templates.",
-  "Develops custom plugins and practical tools based on real client needs.",
+  "Works as a technical lead and full-stack developer in a lean startup.",
+  "Guides a small team while staying hands-on in day-to-day delivery.",
+  "Builds websites, internal business systems, and deployment workflows.",
   "Graduated summa cum laude and applies that same consistency to delivery.",
 ];
 
 const journey = [
   {
     label: "Current Role",
-    title: "Full Stack WordPress Developer",
+    title: "Technical Lead & Full-Stack Developer",
     details:
-      "Builds custom WordPress solutions, including plugin features and maintainable implementations for business workflows.",
+      "Guides a small team and builds across websites, internal business systems, and deployment, while owning the day-to-day technical calls.",
   },
   {
     label: "OJT / Internship",
@@ -45,7 +45,7 @@ const practicalWork = [
 export const metadata: Metadata = {
   title: "About | Julius Nowel B. Santiago",
   description:
-    "About Julius Nowel B. Santiago, a Full Stack Developer focused on custom WordPress development, practical tools, and full stack solutions.",
+    "About Julius Nowel B. Santiago, a technical lead and full-stack developer working across web apps, internal business systems, and deployment.",
 };
 
 export default function AboutPage() {
@@ -63,7 +63,7 @@ export default function AboutPage() {
           </div>
           <Link
             href="/"
-            className="theme-outline-btn rounded-xl border px-4 py-2 text-sm font-semibold transition-colors hover:border-violet-400 hover:text-violet-300"
+            className="theme-outline-btn rounded-xl border px-4 py-2 text-sm font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
           >
             Back to Home
           </Link>
@@ -73,14 +73,15 @@ export default function AboutPage() {
           <article className="space-y-4">
             <h2 className="text-2xl font-semibold">Who I Am</h2>
             <p className="theme-text-secondary text-lg leading-8">
-              I am a Full Stack Developer specializing in WordPress, custom web
-              solutions, and practical business tools. I focus on writing
-              maintainable implementations that solve real operational needs.
+              I am a technical lead and full-stack developer. I guide a small
+              team while staying hands-on across custom web solutions, internal
+              business systems, and deployment — focused on maintainable work
+              that solves real operational needs.
             </p>
             <ul className="space-y-3">
               {coreHighlights.map((item) => (
                 <li key={item} className="theme-text-secondary flex gap-3">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-violet-400" />
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -90,9 +91,9 @@ export default function AboutPage() {
           <article className="theme-border theme-surface rounded-2xl border p-6">
             <h3 className="text-xl font-semibold">What I Focus On</h3>
             <p className="theme-text-secondary mt-3 leading-7">
-              My day-to-day work centers on custom WordPress builds, plugin
-              development, and practical technical decisions that keep projects
-              stable and easy to maintain.
+              My day-to-day centers on full-stack development, custom WordPress,
+              and the practical technical decisions that keep projects stable,
+              shippable, and easy to maintain.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               {[
@@ -158,12 +159,12 @@ export default function AboutPage() {
             <h2 className="text-2xl font-semibold">Let&apos;s Connect</h2>
             <p className="theme-text-secondary mx-auto mt-3 max-w-2xl">
               Open to opportunities where I can contribute to product delivery,
-              custom WordPress work, and practical full stack development.
+              full-stack development, and technical leadership.
             </p>
             <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               <a
                 href="mailto:juliusnowels@gmail.com"
-                className="rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 px-5 py-2.5 text-sm font-semibold text-white"
+                className="rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] px-5 py-2.5 text-sm font-semibold text-white"
               >
                 Email Me
               </a>
@@ -171,7 +172,7 @@ export default function AboutPage() {
                 href="https://github.com/Juliusnowel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="theme-outline-btn rounded-xl border px-5 py-2.5 text-sm font-semibold hover:border-violet-400 hover:text-violet-300"
+                className="theme-outline-btn rounded-xl border px-5 py-2.5 text-sm font-semibold hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
               >
                 GitHub
               </a>
@@ -179,13 +180,13 @@ export default function AboutPage() {
                 href="https://www.linkedin.com/in/julius-nowel-santiago-74923b292/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="theme-outline-btn rounded-xl border px-5 py-2.5 text-sm font-semibold hover:border-violet-400 hover:text-violet-300"
+                className="theme-outline-btn rounded-xl border px-5 py-2.5 text-sm font-semibold hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
               >
                 LinkedIn
               </a>
               {/* <a
                 href="/contact"
-                className="rounded-xl border border-zinc-600 px-5 py-2.5 text-sm font-semibold text-zinc-100 hover:border-violet-400 hover:text-violet-300"
+                className="rounded-xl border border-zinc-600 px-5 py-2.5 text-sm font-semibold text-zinc-100 hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
               >
                 Contact Me
               </a> */}

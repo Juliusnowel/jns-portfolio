@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useThemeMode } from "../hooks/useThemeMode";
 
 type Project = {
   title: string;
@@ -134,7 +133,6 @@ const projects: Project[] = [
 ];
 
 export default function ProjectsPage() {
-  const { isDark } = useThemeMode();
   const [selectedLanguage, setSelectedLanguage] = useState<string>("All");
 
   const languageFilters = useMemo(() => {
@@ -175,11 +173,7 @@ export default function ProjectsPage() {
             </div>
             <Link
               href="/"
-              className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-colors ${
-                isDark
-                  ? "border-zinc-600 text-zinc-100 hover:border-violet-400 hover:text-violet-300"
-                  : "border-slate-300 text-slate-700 hover:border-violet-500 hover:text-violet-600"
-              }`}
+              className="rounded-xl border px-4 py-2 text-sm font-semibold transition-colors border-[var(--outline-btn-border)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
             >
               Back to Home
             </Link>
@@ -202,12 +196,8 @@ export default function ProjectsPage() {
                   onClick={() => setSelectedLanguage(language)}
                   className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
-                      ? isDark
-                        ? "border-violet-400 bg-violet-500/15 text-violet-200"
-                        : "border-violet-500 bg-violet-600 text-white"
-                      : isDark
-                        ? "theme-chip hover:border-violet-400/70"
-                        : "border-slate-200 bg-white text-slate-600 hover:border-violet-400 hover:text-violet-600"
+                      ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--on-accent)]"
+                      : "theme-chip hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
                   }`}
                 >
                   {language}
@@ -221,11 +211,7 @@ export default function ProjectsPage() {
           {filteredProjects.map((project) => (
             <article
               key={project.title}
-              className={`rounded-2xl border p-5 ${
-                isDark
-                  ? "theme-border theme-surface"
-                  : "bg-slate-100 border-slate-200 shadow-[0_6px_20px_rgba(15,23,42,0.08)]"
-              }`}
+              className="theme-border theme-surface rounded-2xl border p-5 shadow-[var(--shadow-sm)]"
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className="theme-text-primary text-xl font-semibold">{project.title}</h3>
@@ -234,11 +220,7 @@ export default function ProjectsPage() {
                     href={project.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`inline-flex shrink-0 items-center rounded-lg border px-3 py-2 text-sm font-semibold transition-colors ${
-                      isDark
-                        ? "border-violet-400/70 text-violet-200 hover:bg-violet-500/10"
-                        : "border-violet-300 bg-violet-50 text-violet-700 hover:bg-violet-100 hover:border-violet-400"
-                    }`}
+                    className="inline-flex shrink-0 items-center rounded-lg border px-3 py-2 text-sm font-semibold transition-colors border-[var(--accent)] text-[var(--accent-ink)] hover:bg-[var(--accent-soft)] hover:border-[var(--accent)]"
                   >
                     View Demo
                   </a>

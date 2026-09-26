@@ -49,7 +49,7 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
           className="pointer-events-none absolute inset-0 opacity-90"
           style={{
             background:
-              "linear-gradient(135deg, rgba(247,246,243,0.07) 0%, transparent 42%), radial-gradient(ellipse 70% 55% at 85% 110%, rgba(44,74,110,0.45), transparent 60%)",
+              "linear-gradient(135deg, rgba(247,246,243,0.07) 0%, transparent 42%), radial-gradient(ellipse 70% 55% at 85% 110%, rgba(226,97,60,0.4), transparent 60%)",
           }}
         />
 
@@ -102,7 +102,7 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
             >
               <Link
                 href={CONTACT.contactHref}
-                className="group inline-flex w-full items-center justify-center rounded-full border border-white/25 bg-[var(--sc-accent)] px-6 py-3.5 text-sm font-medium text-[#f7f6f3] transition-[transform,opacity,background-color,border-color] duration-300 ease-out hover:scale-[1.03] hover:border-white/45 hover:bg-[#3a5f8c] active:scale-[0.98]"
+                className="group inline-flex w-full items-center justify-center rounded-full border border-white/25 bg-[var(--sc-accent)] px-6 py-3.5 text-sm font-medium text-[#f7f6f3] transition-[transform,opacity,background-color,border-color] duration-300 ease-out hover:scale-[1.03] hover:border-white/45 hover:bg-[#d1512d] active:scale-[0.98]"
               >
                 <span className="inline-flex items-center gap-2">
                   Contact

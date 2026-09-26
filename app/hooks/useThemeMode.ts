@@ -27,7 +27,7 @@ function themeReducer(state: ThemeState, action: ThemeAction): ThemeState {
 
 export function useThemeMode() {
   const [state, dispatch] = useReducer(themeReducer, {
-    isDark: cachedIsDark ?? true,
+    isDark: cachedIsDark ?? false,
     isReady: cachedIsDark !== null,
   });
   const { isDark, isReady } = state;
@@ -35,7 +35,8 @@ export function useThemeMode() {
   useEffect(() => {
     if (cachedIsDark !== null) return;
     const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    const nextIsDark = stored !== "light";
+    // Default to light; only honor a previously chosen dark preference.
+    const nextIsDark = stored === "dark";
     cachedIsDark = nextIsDark;
     dispatch({ type: "init", payload: nextIsDark });
   }, []);

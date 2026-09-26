@@ -23,16 +23,16 @@ const contactMethods = [
 ];
 
 const collaborationNotes = [
-  "Full stack WordPress development and plugin customization",
-  "Custom business tools and internal workflow automation",
+  "Full-stack development, custom WordPress, and plugin work",
+  "Internal business systems, tools, and workflow automation",
   "Frontend and backend implementation for practical product needs",
-  "Project-based work, team collaboration, and long-term growth roles",
+  "Technical leadership, team collaboration, and long-term growth roles",
 ];
 
 export const metadata: Metadata = {
   title: "Contact | Julius Nowel B. Santiago",
   description:
-    "Get in touch with Julius Nowel B. Santiago for full stack and WordPress-focused opportunities.",
+    "Get in touch with Julius Nowel B. Santiago for full-stack, systems, and technical-lead opportunities.",
 };
 
 export default function ContactPage() {
@@ -50,7 +50,7 @@ export default function ContactPage() {
           </div>
           <Link
             href="/"
-            className="theme-outline-btn rounded-xl border px-4 py-2 text-sm font-semibold transition-colors hover:border-violet-400 hover:text-violet-300"
+            className="theme-outline-btn rounded-xl border px-4 py-2 text-sm font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
           >
             Back to Home
           </Link>
@@ -60,9 +60,10 @@ export default function ContactPage() {
           <article className="theme-border theme-surface rounded-2xl border p-6">
             <h2 className="text-2xl font-semibold">Reach Out</h2>
             <p className="theme-text-secondary mt-3 leading-7">
-              I&apos;m open to full stack and WordPress-focused opportunities
-              where I can contribute to practical product and business goals.
-              Feel free to contact me through any of the channels below.
+              I&apos;m open to full-stack, systems, and technical-lead
+              opportunities where I can contribute to practical product and
+              business goals. Feel free to contact me through any of the
+              channels below.
             </p>
 
             <div className="mt-6 space-y-4">
@@ -76,7 +77,7 @@ export default function ContactPage() {
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className="theme-border theme-surface-solid block rounded-xl border p-4 transition-colors hover:border-violet-400/60"
+                  className="theme-border theme-surface-solid block rounded-xl border p-4 transition-colors hover:border-[var(--accent)]"
                 >
                   <p className="theme-text-muted text-xs font-semibold uppercase tracking-[0.14em]">
                     {method.label}
@@ -99,7 +100,7 @@ export default function ContactPage() {
             <ul className="mt-5 space-y-3">
               {collaborationNotes.map((item) => (
                 <li key={item} className="theme-text-secondary flex gap-3">
-                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-violet-400" />
+                  <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[var(--accent)]" />
                   <span>{item}</span>
                 </li>
               ))}

@@ -177,19 +177,19 @@ const services = [
     icon: "🌐",
   },
   {
-    title: "Plugin Development",
-    description: "Custom MU-plugins and standard plugins for store locators, CSV importers, SEO tools, and internal workflow automation.",
+    title: "Plugins & Internal Tools",
+    description: "Custom MU-plugins, store locators, CSV importers, SEO tools, and internal business tools that cut manual work.",
     icon: "🔌",
   },
   {
-    title: "Performance Optimization",
-    description: "Core Web Vitals audits, image optimization pipelines, caching strategies, and measurable speed improvements.",
-    icon: "⚡",
+    title: "Full-Stack Apps & Systems",
+    description: "End-to-end builds with Laravel, Vue, React Native, and Python — from database design to internal business systems.",
+    icon: "🛠",
   },
   {
-    title: "Full Stack Applications",
-    description: "End-to-end solutions with Laravel, Vue, React Native, and Python — from database design to deployment.",
-    icon: "🛠",
+    title: "Deployment & Performance",
+    description: "Server and hosting setup, migrations, CI/CD workflows, Core Web Vitals audits, and measurable speed improvements.",
+    icon: "⚡",
   },
 ];
 
@@ -281,57 +281,45 @@ export default function Home() {
     });
   };
 
-  const themeClass = isDark
-    ? {
-        background: "bg-zinc-950",
-        surface: "bg-zinc-900/55",
-        border: "border-zinc-800",
-        textPrimary: "text-zinc-100",
-        textSecondary: "text-zinc-300",
-        textMuted: "text-zinc-400",
-        headerGlass: "bg-zinc-900/45",
-        navRing: "ring-white/10",
-        cardTone: "bg-zinc-900/55",
-        imagePanel: "bg-zinc-900/60",
-      }
-    : {
-        background: "bg-slate-50",
-        surface: "bg-white",
-        border: "border-slate-200",
-        textPrimary: "text-slate-900",
-        textSecondary: "text-slate-600",
-        textMuted: "text-slate-500",
-        headerGlass: "bg-white/80",
-        navRing: "ring-black/8",
-        cardTone: "bg-white",
-        imagePanel: "bg-white",
-      };
+  // Token-driven: the CSS variables handle light/dark, so these are the same in
+  // both modes. Only the ring subtly differs so the header reads on either bg.
+  const themeClass = {
+    background: "bg-[var(--page-bg)]",
+    surface: "bg-[var(--surface-bg)]",
+    border: "border-[var(--border-color)]",
+    textPrimary: "text-[var(--text-primary)]",
+    textSecondary: "text-[var(--text-secondary)]",
+    textMuted: "text-[var(--text-muted)]",
+    headerGlass: "bg-[var(--header-glass)]",
+    navRing: isDark ? "ring-white/10" : "ring-black/5",
+    cardTone: "bg-[var(--surface-solid)]",
+    imagePanel: "bg-[var(--surface-solid)]",
+  };
 
   const deviceFx = isDark
     ? {
         outerGlow:
-          "bg-gradient-to-br from-blue-500/45 via-violet-500/30 to-transparent blur-2xl",
+          "bg-gradient-to-br from-[#f56b42]/35 via-[#f5946f]/20 to-transparent blur-2xl",
         baseGlow:
-          "bg-gradient-to-r from-blue-500/30 via-violet-500/35 to-blue-500/30 blur-xl",
+          "bg-gradient-to-r from-[#f56b42]/25 via-[#f5946f]/28 to-[#f56b42]/25 blur-xl",
         baseShadow: "bg-black/55 blur-md",
-        frameShadow: "shadow-[0_26px_52px_rgba(10,14,28,0.45)]",
+        frameShadow: "shadow-[0_26px_52px_rgba(10,8,4,0.5)]",
         keyboardShadow: "shadow-[0_16px_36px_rgba(0,0,0,0.45)]",
         mouseShadow: "shadow-[0_12px_24px_rgba(0,0,0,0.42)]",
       }
     : {
         outerGlow:
-          "bg-gradient-to-br from-blue-500/22 via-violet-500/16 to-transparent blur-2xl",
+          "bg-gradient-to-br from-[#e2613c]/18 via-[#eabf9a]/14 to-transparent blur-2xl",
         baseGlow:
-          "bg-gradient-to-r from-blue-400/14 via-violet-400/16 to-blue-400/14 blur-lg",
-        baseShadow: "bg-slate-500/20 blur-sm",
-        frameShadow: "shadow-[0_10px_26px_rgba(15,23,42,0.18)]",
-        keyboardShadow: "shadow-[0_8px_20px_rgba(15,23,42,0.16)]",
-        mouseShadow: "shadow-[0_6px_16px_rgba(15,23,42,0.14)]",
+          "bg-gradient-to-r from-[#e2613c]/12 via-[#eabf9a]/14 to-[#e2613c]/12 blur-lg",
+        baseShadow: "bg-[#8b8175]/25 blur-sm",
+        frameShadow: "shadow-[0_10px_26px_rgba(36,31,26,0.16)]",
+        keyboardShadow: "shadow-[0_8px_20px_rgba(36,31,26,0.14)]",
+        mouseShadow: "shadow-[0_6px_16px_rgba(36,31,26,0.12)]",
       };
 
-  const outlinedCtaClass = isDark
-    ? "border-white/60 text-zinc-100 hover:border-white/90 hover:text-white"
-    : "border-slate-300 text-slate-800 hover:border-slate-500 hover:text-slate-900";
+  const outlinedCtaClass =
+    "border-[var(--outline-btn-border)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent-ink)]";
 
   const ProjectCard = ({
     title,
@@ -361,7 +349,7 @@ export default function Home() {
     >
       <div
         className={`pointer-events-none absolute inset-0 rounded-2xl blur-[0.5px] ${
-          isDark ? "bg-violet-500/12" : "bg-slate-900/5"
+          isDark ? "bg-[#f56b42]/14" : "bg-[#241f1a]/6"
         } ${
           size === "featured"
             ? "translate-x-[8px] translate-y-[8px]"
@@ -370,7 +358,7 @@ export default function Home() {
       />
       <div
         className={`pointer-events-none absolute inset-0 rounded-2xl blur-[1px] ${
-          isDark ? "bg-blue-500/10" : "bg-transparent"
+          isDark ? "bg-[#f56b42]/10" : "bg-transparent"
         } ${
           size === "featured"
             ? "translate-x-[14px] translate-y-[14px]"
@@ -380,8 +368,8 @@ export default function Home() {
 
       <div className={`relative h-full overflow-hidden rounded-2xl border ${
         isDark
-          ? "border-white/10 shadow-[0_16px_40px_rgba(10,14,28,0.32)]"
-          : "border-slate-300 bg-slate-200/60 shadow-[0_4px_24px_rgba(15,23,42,0.10)]"
+          ? "border-white/10 shadow-[0_16px_40px_rgba(10,8,4,0.34)]"
+          : "border-[var(--border-color)] bg-[var(--surface-sunken)] shadow-[0_4px_24px_rgba(36,31,26,0.10)]"
       }`}>
         <Image
           src={image}
@@ -444,9 +432,9 @@ export default function Home() {
       className={`relative min-h-screen overflow-x-hidden transition-colors duration-500 ${themeClass.background} ${themeClass.textPrimary}`}
     >
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-20 -left-20 h-80 w-80 rounded-full bg-gradient-to-br from-blue-500/35 via-violet-500/25 to-transparent blur-3xl" />
-        <div className="absolute top-1/3 -right-24 h-96 w-96 rounded-full bg-gradient-to-br from-violet-500/25 via-indigo-500/20 to-transparent blur-3xl" />
-        <div className="absolute bottom-8 left-1/3 h-72 w-72 rounded-full bg-gradient-to-tr from-blue-500/20 via-indigo-500/20 to-transparent blur-3xl" />
+        <div className="absolute -top-20 -left-20 h-80 w-80 rounded-full bg-gradient-to-br from-[#e2613c]/14 via-[#eabf9a]/10 to-transparent blur-3xl" />
+        <div className="absolute top-1/3 -right-24 h-96 w-96 rounded-full bg-gradient-to-br from-[#eabf9a]/12 via-[#e2613c]/8 to-transparent blur-3xl" />
+        <div className="absolute bottom-8 left-1/3 h-72 w-72 rounded-full bg-gradient-to-tr from-[#e2613c]/10 via-[#eabf9a]/10 to-transparent blur-3xl" />
       </div>
 
       <header className="sticky top-0 z-50 pt-3">
@@ -456,7 +444,7 @@ export default function Home() {
           >
             <a
               href="#home"
-              className="bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 bg-clip-text text-lg font-extrabold tracking-tight text-transparent drop-shadow-[0_0_18px_rgba(99,102,241,0.35)] transition-transform duration-300 hover:scale-[1.02]"
+              className="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text text-lg font-extrabold tracking-tight text-transparent drop-shadow-[0_0_18px_rgba(226,97,60,0.35)] transition-transform duration-300 hover:scale-[1.02]"
             >
               Julius Nowel
             </a>
@@ -467,10 +455,10 @@ export default function Home() {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`relative font-medium transition-all duration-300 hover:text-violet-500 ${
+                    className={`relative font-medium transition-all duration-300 hover:text-[var(--accent-ink)] ${
                       link.label === activeLinkLabel
-                        ? "px-2.5 py-1 text-violet-700 after:absolute after:-bottom-1.5 after:left-2.5 after:h-0.5 after:w-[calc(100%-1.25rem)] after:rounded-full after:bg-gradient-to-r after:from-blue-500 after:to-violet-500"
-                        : `${themeClass.textSecondary} px-2.5 py-1 after:absolute after:-bottom-1.5 after:left-2.5 after:h-px after:w-0 after:bg-gradient-to-r after:from-blue-500 after:to-violet-500 after:transition-all after:duration-300 hover:after:w-[calc(100%-1.25rem)]`
+                        ? "px-2.5 py-1 text-[var(--accent-ink)] after:absolute after:-bottom-1.5 after:left-2.5 after:h-0.5 after:w-[calc(100%-1.25rem)] after:rounded-full after:bg-gradient-to-r after:from-[var(--accent)] after:to-[var(--accent-hover)]"
+                        : `${themeClass.textSecondary} px-2.5 py-1 after:absolute after:-bottom-1.5 after:left-2.5 after:h-px after:w-0 after:bg-gradient-to-r after:from-[var(--accent)] after:to-[var(--accent-hover)] after:transition-all after:duration-300 hover:after:w-[calc(100%-1.25rem)]`
                     }`}
                     aria-current={link.label === activeLinkLabel ? "page" : undefined}
                   >
@@ -503,7 +491,7 @@ export default function Home() {
         <div className="fixed inset-0 z-40 md:hidden">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
           <nav
-            className={`absolute right-4 top-20 w-56 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl ${themeClass.border} ${isDark ? "bg-zinc-900/95" : "bg-white shadow-[0_8px_32px_rgba(15,23,42,0.1)]"}`}
+            className={`absolute right-4 top-20 w-56 rounded-2xl border p-4 shadow-2xl backdrop-blur-2xl ${themeClass.border} ${isDark ? "bg-[var(--surface-solid)]" : "bg-[var(--surface-solid)] shadow-[var(--shadow-md)]"}`}
           >
             <ul className="space-y-1">
               {navigationLinks.map((link) => (
@@ -513,8 +501,8 @@ export default function Home() {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`block rounded-xl px-4 py-2.5 font-medium transition-colors duration-200 ${
                       link.label === activeLinkLabel
-                        ? "bg-gradient-to-r from-blue-500/10 to-violet-500/10 text-violet-500"
-                        : `${themeClass.textSecondary} hover:text-violet-500`
+                        ? "bg-[var(--accent-soft)] text-[var(--accent-ink)]"
+                        : `${themeClass.textSecondary} hover:text-[var(--accent-ink)]`
                     } ${typeScale.link}`}
                   >
                     {link.label}
@@ -530,8 +518,8 @@ export default function Home() {
         <section
           className={`relative rounded-[2rem] py-10 sm:py-12 lg:py-14 ${sectionContentInset}`}
         >
-          <div className="pointer-events-none absolute -top-24 right-2 h-56 w-56 rounded-full bg-gradient-to-br from-violet-500/25 to-transparent blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-20 -left-10 h-60 w-60 rounded-full bg-gradient-to-br from-blue-500/20 to-transparent blur-3xl" />
+          <div className="pointer-events-none absolute -top-24 right-2 h-56 w-56 rounded-full bg-gradient-to-br from-[#e2613c]/12 to-transparent blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -left-10 h-60 w-60 rounded-full bg-gradient-to-br from-[#eabf9a]/12 to-transparent blur-3xl" />
 
           <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-8">
             <div className="animate-fade-up">
@@ -544,25 +532,26 @@ export default function Home() {
                 Julius Nowel B. Santiago
               </h1>
               <h2
-                className={`mt-5 lg:max-w-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 bg-clip-text font-semibold leading-snug text-transparent ${typeScale.h2}`}
+                className={`mt-5 lg:max-w-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text font-semibold leading-snug text-transparent ${typeScale.h2}`}
               >
-                Building custom WordPress solutions, business tools, and full
-                stack web applications
+                Leading delivery and building websites, internal business
+                systems, and full stack web applications
               </h2>
               <p
                 className={`mt-5 lg:max-w-2xl leading-[1.65] ${themeClass.textSecondary} ${typeScale.body}`}
               >
-                I currently work as a Full Stack WordPress Developer, building
-                websites with a child-theme approach and developing custom
-                plugins for practical business needs. I also bring hands-on
-                experience with Laravel, Vue, React Native, and Python for
-                end-to-end solution delivery.
+                I work as a technical lead and hands-on developer — guiding a
+                small team while building websites, internal business systems,
+                and deployment workflows. My day-to-day spans full-stack
+                development with Laravel, Vue, React Native, and Python, plus
+                custom WordPress and the technical decisions that keep projects
+                shippable.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 {/* <a
                   href="/julius-santiago-cv.pdf"
                   download
-                  className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 px-6 py-3 font-semibold text-white shadow-lg shadow-violet-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(99,102,241,0.42)]"
+                  className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] px-6 py-3 font-semibold text-white shadow-lg shadow-[0_10px_26px_rgba(226,97,60,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(226,97,60,0.42)]"
                 >
                   Download CV
                 </a> */}
@@ -570,7 +559,7 @@ export default function Home() {
                   <button
                     type="button"
                     onClick={handleClick}
-                    className="group inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 px-6 py-3 font-semibold text-white shadow-lg shadow-violet-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(99,102,241,0.42)] cursor-not-allowed opacity-80 sm:w-auto"
+                    className="group inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] px-6 py-3 font-semibold text-white shadow-lg shadow-[0_10px_26px_rgba(226,97,60,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(226,97,60,0.42)] cursor-not-allowed opacity-80 sm:w-auto"
                   >
                     Download CV
                   </button>
@@ -589,7 +578,7 @@ export default function Home() {
                 </div>
                 <Link
                   href="/contact"
-                  className={`inline-flex items-center justify-center rounded-xl border px-6 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(99,102,241,0.16)] ${outlinedCtaClass} ${typeScale.link}`}
+                  className={`inline-flex items-center justify-center rounded-xl border px-6 py-3 font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(226,97,60,0.16)] ${outlinedCtaClass} ${typeScale.link}`}
                 >
                  Let’s Talk
                 </Link>
@@ -768,7 +757,7 @@ export default function Home() {
                 type="button"
                 onClick={onClick}
                 className={`w-full rounded-xl px-5 py-5 text-left transition-all duration-500 hover:scale-[1.02] sm:px-6 sm:py-6 ${
-                  isDark ? "bg-zinc-900/30 hover:bg-zinc-900/50" : "bg-white/80 hover:bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)]"
+                  isDark ? "bg-[var(--surface-bg)] hover:bg-[var(--surface-solid)]" : "bg-[var(--surface-bg)] hover:bg-[var(--surface-solid)] shadow-[var(--shadow-sm)]"
                 }`}
               >
                 <div className="flex items-center gap-4">
@@ -798,8 +787,8 @@ export default function Home() {
                   <div
                     className={`rounded-2xl px-10 py-8 transition-all duration-500 ${
                       isDark
-                        ? "bg-zinc-900/40 border border-zinc-800/60 shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
-                        : "bg-white border border-slate-200 shadow-[0_4px_24px_rgba(15,23,42,0.06)]"
+                        ? "bg-[var(--surface-bg)] border border-[var(--border-color)] shadow-[var(--shadow-md)]"
+                        : "bg-[var(--surface-solid)] border border-[var(--border-color)] shadow-[var(--shadow-md)]"
                     }`}
                   >
                     <div className="flex items-center gap-7">
@@ -840,8 +829,8 @@ export default function Home() {
                   <div
                     className={`rounded-2xl px-5 py-5 transition-all duration-500 sm:px-8 sm:py-7 ${
                       isDark
-                        ? "bg-zinc-900/40 border border-zinc-800/60 shadow-[0_10px_32px_rgba(0,0,0,0.25)]"
-                        : "bg-white border border-slate-200 shadow-[0_4px_20px_rgba(15,23,42,0.06)]"
+                        ? "bg-[var(--surface-bg)] border border-[var(--border-color)] shadow-[var(--shadow-md)]"
+                        : "bg-[var(--surface-solid)] border border-[var(--border-color)] shadow-[var(--shadow-md)]"
                     }`}
                   >
                     <div className="flex items-center gap-5 sm:gap-6">
@@ -895,8 +884,8 @@ export default function Home() {
                   aria-label={`Go to certificate ${index + 1}`}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     index === certIndex
-                      ? "w-6 bg-gradient-to-r from-blue-500 to-violet-500"
-                      : `w-1.5 ${isDark ? "bg-zinc-600" : "bg-slate-300"}`
+                      ? "w-6 bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)]"
+                      : `w-1.5 ${isDark ? "bg-[var(--line-strong)]" : "bg-[var(--line-strong)]"}`
                   }`}
                 />
               ))}
@@ -928,11 +917,11 @@ export default function Home() {
                 key={item.label}
                 className={`relative overflow-hidden rounded-2xl border p-5 sm:p-6 ${
                   isDark
-                    ? "border-zinc-800/70 bg-zinc-900/40"
-                    : "border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)]"
+                    ? "border-[var(--border-color)] bg-[var(--surface-bg)]"
+                    : "border-[var(--border-color)] bg-[var(--surface-solid)] shadow-[var(--shadow-sm)]"
                 }`}
               >
-                <p className="bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
+                <p className="bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
                   {item.value}
                 </p>
                 <p className={`mt-3 font-semibold ${typeScale.link}`}>{item.label}</p>
@@ -957,8 +946,8 @@ export default function Home() {
                 key={service.title}
                 className={`group relative overflow-hidden rounded-2xl border p-6 transition-colors duration-300 sm:p-7 ${
                   isDark
-                    ? "border-zinc-800/70 bg-zinc-900/40 hover:bg-zinc-900/55"
-                    : "border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.07)]"
+                    ? "border-[var(--border-color)] bg-[var(--surface-bg)] hover:bg-[var(--surface-solid)]"
+                    : "border-[var(--border-color)] bg-[var(--surface-solid)] shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)]"
                 }`}
               >
                 <div className="flex items-baseline gap-3">
@@ -1005,8 +994,8 @@ export default function Home() {
                       key={card.label}
                       className={`relative overflow-hidden rounded-xl ${cardSizeClass} ${offsetClass} ${
                         isDark
-                          ? "bg-zinc-900/45 border border-zinc-800/60"
-                          : "bg-white border border-slate-200 shadow-[0_2px_12px_rgba(15,23,42,0.04)]"
+                          ? "bg-[var(--surface-bg)] border border-[var(--border-color)]"
+                          : "bg-[var(--surface-solid)] border border-[var(--border-color)] shadow-[var(--shadow-sm)]"
                       }`}
                     >
                       <div className="relative flex h-full flex-col items-center justify-center gap-2.5 p-4">
@@ -1031,11 +1020,11 @@ export default function Home() {
             <div>
               <h3 className={`font-semibold ${typeScale.h2}`}>About Me</h3>
               <p className={`mt-4 leading-[1.7] ${themeClass.textSecondary} ${typeScale.body}`}>
-                I currently work as a Full Stack WordPress Developer building
-                custom child-theme implementations, plugin-based solutions, and
-                practical tools for business workflows. My background also
-                includes Laravel, Vue, React Native, and Python across web and
-                mobile projects.
+                I work as a technical lead and full-stack developer — guiding a
+                small team while staying hands-on across websites, internal
+                business systems, and deployment. My work spans custom
+                WordPress, Laravel, Vue, React Native, and Python, along with
+                the day-to-day technical decisions that keep delivery on track.
               </p>
               <Link
                 href="/about"
@@ -1062,11 +1051,11 @@ export default function Home() {
                 key={t.name}
                 className={`relative overflow-hidden rounded-2xl border p-6 sm:p-7 ${
                   isDark
-                    ? "border-zinc-800/70 bg-zinc-900/40"
-                    : "border-slate-200 bg-white shadow-[0_2px_12px_rgba(15,23,42,0.04)]"
+                    ? "border-[var(--border-color)] bg-[var(--surface-bg)]"
+                    : "border-[var(--border-color)] bg-[var(--surface-solid)] shadow-[var(--shadow-sm)]"
                 }`}
               >
-                <div className={`absolute left-0 top-6 bottom-6 w-0.5 rounded-full bg-gradient-to-b from-blue-500 to-violet-500 ${
+                <div className={`absolute left-0 top-6 bottom-6 w-0.5 rounded-full bg-gradient-to-b from-[var(--accent)] to-[var(--accent-hover)] ${
                   isDark ? "opacity-40" : "opacity-30"
                 }`} />
                 <p className={`leading-[1.7] ${themeClass.textSecondary} text-sm sm:text-base`}>
@@ -1086,9 +1075,9 @@ export default function Home() {
           <div
             className={`relative overflow-hidden rounded-xl border ${themeClass.border} py-10 text-center sm:py-12`}
           >
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-500/10 via-violet-500/12 to-blue-500/10" />
-            <div className="pointer-events-none absolute -left-20 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-blue-500/15 blur-3xl" />
-            <div className="pointer-events-none absolute -right-20 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-violet-500/15 blur-3xl" />
+            <div className="pointer-events-none absolute inset-0 bg-[var(--accent-soft)]" />
+            <div className="pointer-events-none absolute -left-20 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-[#e2613c]/12 blur-3xl" />
+            <div className="pointer-events-none absolute -right-20 top-1/2 h-44 w-44 -translate-y-1/2 rounded-full bg-[#eabf9a]/14 blur-3xl" />
 
             <div className="relative">
               <p className={`font-semibold uppercase tracking-[0.2em] ${themeClass.textMuted}`}>
@@ -1098,12 +1087,12 @@ export default function Home() {
                 Let&apos;s Build Your Next Project Together
               </h3>
               <p className={`mx-auto mt-3 max-w-2xl ${themeClass.textSecondary} ${typeScale.link}`}>
-                I&apos;m available for WordPress development, custom plugins, full stack builds, and team collaboration. Let&apos;s talk about what you need.
+                I&apos;m available for full stack builds, custom WordPress, internal tools, and technical lead or team collaboration roles. Let&apos;s talk about what you need.
               </p>
               <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
                 <Link
                   href="/contact"
-                  className={`inline-flex items-center rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 px-6 py-2.5 font-semibold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(99,102,241,0.35)] ${typeScale.link}`}
+                  className={`inline-flex items-center rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] px-6 py-2.5 font-semibold text-white shadow-lg shadow-[0_10px_26px_rgba(226,97,60,0.20)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(226,97,60,0.35)] ${typeScale.link}`}
                 >
                   Start a Conversation
                 </Link>
@@ -1128,15 +1117,15 @@ export default function Home() {
           >
             <div className="text-center sm:text-left">
               <p
-                className={`bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 bg-clip-text font-bold text-transparent ${typeScale.h3}`}
+                className={`bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] bg-clip-text font-bold text-transparent ${typeScale.h3}`}
               >
                 Julius Nowel
               </p>
               <p
                 className={`mt-3 leading-[1.6] ${themeClass.textSecondary} ${typeScale.body}`}
               >
-                Full Stack Developer focused on custom WordPress engineering,
-                practical business tools, and maintainable web applications.
+                Technical lead and full-stack developer focused on web apps,
+                internal business systems, and maintainable, well-deployed code.
               </p>
             </div>
 
@@ -1148,7 +1137,7 @@ export default function Home() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className={`transition-colors duration-300 hover:text-violet-500 ${themeClass.textSecondary} ${typeScale.link}`}
+                        className={`transition-colors duration-300 hover:text-[var(--accent-ink)] ${themeClass.textSecondary} ${typeScale.link}`}
                       >
                         {link.label}
                       </Link>
@@ -1170,7 +1159,7 @@ export default function Home() {
                             ? "noopener noreferrer"
                             : undefined
                         }
-                        className={`transition-colors duration-300 hover:text-violet-500 ${themeClass.textSecondary} ${typeScale.link}`}
+                        className={`transition-colors duration-300 hover:text-[var(--accent-ink)] ${themeClass.textSecondary} ${typeScale.link}`}
                       >
                         {link.label}
                       </a>

@@ -73,7 +73,7 @@ export default function Capabilities({ reducedMotion }: { reducedMotion: boolean
           className="cap-orb-b absolute -right-36 bottom-[6%] h-[32rem] w-[32rem] rounded-full opacity-70 blur-3xl will-change-transform"
           style={{
             background:
-              "radial-gradient(circle at 60% 40%, rgba(112,140,255,0.14), rgba(112,140,255,0) 70%)",
+              "radial-gradient(circle at 60% 40%, rgba(210,175,140,0.16), rgba(210,175,140,0) 70%)",
           }}
         />
       </div>

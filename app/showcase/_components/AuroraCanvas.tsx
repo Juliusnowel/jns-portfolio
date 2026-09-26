@@ -38,9 +38,9 @@ export default function AuroraCanvas({
     let dpr = 1;
 
     const colors = [
-      "rgba(44, 74, 110, 0.38)",
+      "rgba(226, 97, 60, 0.32)",
       "rgba(180, 150, 120, 0.32)",
-      "rgba(90, 120, 160, 0.28)",
+      "rgba(224, 150, 110, 0.24)",
       "rgba(210, 180, 150, 0.22)",
     ];
 
