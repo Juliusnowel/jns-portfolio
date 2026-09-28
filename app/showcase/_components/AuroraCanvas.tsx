@@ -38,7 +38,7 @@ export default function AuroraCanvas({
     let dpr = 1;
 
     const colors = [
-      "rgba(226, 97, 60, 0.32)",
+      "rgba(245, 80, 30, 0.32)",
       "rgba(180, 150, 120, 0.32)",
       "rgba(224, 150, 110, 0.24)",
       "rgba(210, 180, 150, 0.22)",
@@ -65,7 +65,7 @@ export default function AuroraCanvas({
 
     const drawStatic = () => {
       ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "#f7f6f3";
+      ctx.fillStyle = "#e6f1f6";
       ctx.fillRect(0, 0, w, h);
       for (const b of blobs) {
         const gx = b.x * w;
@@ -102,7 +102,7 @@ export default function AuroraCanvas({
       t += delta;
       const ptr = getPointerField();
       ctx.clearRect(0, 0, w, h);
-      ctx.fillStyle = "#f7f6f3";
+      ctx.fillStyle = "#e6f1f6";
       ctx.fillRect(0, 0, w, h);
 
       for (let i = 0; i < blobs.length; i++) {

@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import LineReveal from "./LineReveal";
+import { Reveal } from "../../components/motion";
 import { capabilities } from "../_lib/work";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -43,14 +44,6 @@ export default function Capabilities({ reducedMotion }: { reducedMotion: boolean
           },
         );
 
-      // Slow layer: heading
-      drift(".cap-head", 48, -36);
-
-      // Mid layers: row numbers, each slightly faster than the last
-      gsap.utils.toArray<HTMLElement>(".cap-num").forEach((el, i) => {
-        drift(el, 26 + i * 12, -(18 + i * 10));
-      });
-
       // Deep layer: gradient orbs, opposing directions
       drift(".cap-orb-a", 110, -90, 0.8);
       drift(".cap-orb-b", -90, 110, 0.8);
@@ -78,13 +71,13 @@ export default function Capabilities({ reducedMotion }: { reducedMotion: boolean
         />
       </div>
 
-      <div className="mx-auto w-full max-w-6xl">
+      <Reveal className="mx-auto w-full max-w-6xl">
         <div className="cap-head will-change-transform">
           <LineReveal
             as="p"
-            lines={["What I do"]}
+            lines={["[ What I do ]"]}
             reducedMotion={reducedMotion}
-            className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--sc-muted)]"
+            className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--sc-accent-ink)]"
           />
           <LineReveal
             as="h2"
@@ -106,7 +99,7 @@ export default function Capabilities({ reducedMotion }: { reducedMotion: boolean
                   as="span"
                   lines={[`0${i + 1}`]}
                   reducedMotion={reducedMotion}
-                  className="font-mono text-sm text-[var(--sc-muted)]"
+                  className="font-mono text-sm font-semibold text-[var(--sc-accent-ink)]"
                   delay={i * 0.04}
                 />
               </span>
@@ -129,7 +122,7 @@ export default function Capabilities({ reducedMotion }: { reducedMotion: boolean
             </li>
           ))}
         </ul>
-      </div>
+      </Reveal>
     </section>
   );
 }

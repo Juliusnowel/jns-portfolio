@@ -44,16 +44,16 @@ export default function KineticMarquee({
     <section
       ref={rootRef}
       aria-label="Skills and technologies"
-      className="relative border-y border-[var(--sc-line)] bg-[rgba(255,255,255,0.45)] py-5"
+      className="relative bg-[var(--sc-ink)] py-6"
     >
       <div className="overflow-hidden">
         <div className="mq-track flex w-max will-change-transform">
           {sequence.map((item, i) => (
             <span
               key={`${item}-${i}`}
-              className="mx-5 inline-flex items-center gap-5 text-sm uppercase tracking-[0.22em] text-[var(--sc-ink-soft)] sm:mx-8 sm:text-base"
+              className="mx-5 inline-flex items-center gap-5 text-sm uppercase tracking-[0.22em] text-[#e6f1f6]/70 sm:mx-8 sm:text-base"
             >
-              <span className="sc-display normal-case tracking-normal text-[clamp(1.35rem,2.5vw,1.85rem)] text-[var(--sc-ink)]">
+              <span className="sc-display normal-case tracking-normal text-[clamp(1.35rem,2.5vw,1.85rem)] text-[#e6f1f6]">
                 {item}
               </span>
               <span aria-hidden="true" className="text-[var(--sc-accent)]">

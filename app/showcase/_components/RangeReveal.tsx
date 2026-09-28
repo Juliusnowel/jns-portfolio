@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import LineReveal from "./LineReveal";
+import { Reveal } from "../../components/motion";
 import { rangeTiles } from "../_lib/work";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -39,7 +40,6 @@ export default function RangeReveal({
             scrub: 0.6,
           },
         });
-      drift(".range-head", 44, -32);
       drift(".range-stage", 70, -20);
 
       const startScale = isMobile ? 1.45 : 1.85;
@@ -83,12 +83,12 @@ export default function RangeReveal({
   return (
     <section ref={rootRef} className="relative px-6 py-28 sm:px-10 sm:py-36 lg:px-16">
       <div className="mx-auto w-full max-w-6xl">
-        <div className="range-head will-change-transform">
+        <Reveal className="range-head">
           <LineReveal
             as="p"
-            lines={["Range"]}
+            lines={["[ Range ]"]}
             reducedMotion={reducedMotion}
-            className="text-sm font-medium uppercase tracking-[0.28em] text-[var(--sc-muted)]"
+            className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--sc-accent-ink)]"
           />
           <LineReveal
             as="h2"
@@ -96,11 +96,11 @@ export default function RangeReveal({
             reducedMotion={reducedMotion}
             className="sc-display mt-4 max-w-3xl text-[clamp(2rem,5vw,3.25rem)] leading-[1.1] text-[var(--sc-ink)]"
           />
-        </div>
+        </Reveal>
 
         <div
           ref={stageRef}
-          className="range-stage mt-14 overflow-hidden rounded-3xl border border-[var(--sc-line)] bg-[#f3f1ec] px-4 py-10 will-change-transform sm:px-8 sm:py-14"
+          className="range-stage mt-14 overflow-hidden rounded-[3px] border border-[var(--sc-line)] bg-[#d8e6ec] px-4 py-10 will-change-transform sm:px-8 sm:py-14"
         >
           <div className="range-stage-inner origin-center will-change-transform">
             <ul className="mx-auto grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
@@ -113,7 +113,7 @@ export default function RangeReveal({
                 >
                   <div
                     data-magnetic={reducedMotion || isMobile ? undefined : "10"}
-                    className="flex min-h-[88px] items-center justify-center rounded-2xl border border-[var(--sc-line)] bg-[var(--sc-bg-elevated)] px-4 text-center will-change-transform sm:min-h-[110px]"
+                    className="flex min-h-[88px] items-center justify-center rounded-[3px] border border-[var(--sc-line)] bg-[var(--sc-bg-elevated)] px-4 text-center will-change-transform sm:min-h-[110px]"
                   >
                     <span className="sc-display text-lg text-[var(--sc-ink)] sm:text-xl">
                       {tile.label}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useLenis } from "./_lib/useLenis";
 import { useMotionPrefs } from "./_lib/useMotionPrefs";
 import { usePointerField } from "./_lib/usePointerField";
@@ -23,11 +24,31 @@ export default function ShowcasePage() {
   // Magnetic hover is pointer-only — skip on touch/compact devices
   usePointerField(ready && !prefersReducedMotion && !isCompact);
 
+  // Recompute ScrollTrigger positions after fonts load and the 3D canvas
+  // settles — otherwise late layout shifts leave scroll reveals (e.g. the
+  // Capabilities lines) stuck hidden until a manual refresh.
+  useEffect(() => {
+    let timer = 0;
+    let cancelled = false;
+    import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
+      if (cancelled) return;
+      const refresh = () => ScrollTrigger.refresh();
+      (document.fonts?.ready ?? Promise.resolve()).then(() => {
+        if (!cancelled) requestAnimationFrame(refresh);
+      });
+      timer = window.setTimeout(refresh, 800);
+    });
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [ready]);
+
   return (
     // The solid page bg lives on <main> — BELOW the fixed logo layer.
     // Sections stay transparent so the constellation shows through in the
     // gutters (an opaque bg on any section would cover the z-0 logos).
-    <main className="relative min-h-screen w-full overflow-x-hidden bg-[#f7f6f3] antialiased">
+    <main className="relative min-h-screen w-full overflow-x-clip bg-[#e6f1f6] antialiased">
       <TechFloaters reducedMotion={prefersReducedMotion} isMobile={isMobile} />
 
       <div className="relative z-10">
@@ -40,7 +61,7 @@ export default function ShowcasePage() {
             isCompact={isCompact}
           />
         ) : (
-          <div className="min-h-[100svh] bg-[#f7f6f3]" aria-hidden="true" />
+          <div className="min-h-[100svh] bg-[#e6f1f6]" aria-hidden="true" />
         )}
         <div className="relative">
           <KineticMarquee reducedMotion={prefersReducedMotion} />

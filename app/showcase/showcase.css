@@ -1,24 +1,27 @@
-/* Showcase-scoped tokens — does not touch app/globals.css */
+/* Showcase-scoped tokens — aligned to the site's Kiplo system (cool paper,
+   near-black ink, one vivid orange), but kept scoped so the cinematic keeps
+   its own type sizing. Does not touch app/globals.css. */
 .showcase-root {
-  --sc-bg: #f7f6f3;
+  --sc-bg: #e6f1f6;
   --sc-bg-elevated: #ffffff;
-  --sc-ink: #141414;
-  --sc-ink-soft: #3d3d3a;
-  --sc-muted: #6f6e69;
-  --sc-line: rgba(20, 20, 20, 0.1);
-  --sc-accent: #e2613c;
-  --sc-accent-soft: rgba(226, 97, 60, 0.09);
+  --sc-ink: #111213;
+  --sc-ink-soft: #4a4e51;
+  --sc-muted: #5f6467;
+  --sc-line: #d2d7d9;
+  --sc-accent: #f5501e;
+  --sc-accent-ink: #b6320b; /* orange as TEXT on paper (legible); on dark bands use --sc-accent */
+  --sc-accent-soft: rgba(245, 80, 30, 0.09);
   --sc-wash: radial-gradient(
       ellipse 80% 55% at 15% 0%,
-      rgba(226, 97, 60, 0.06),
+      rgba(245, 80, 30, 0.05),
       transparent 55%
     ),
     radial-gradient(
       ellipse 70% 50% at 90% 20%,
-      rgba(180, 160, 130, 0.12),
+      rgba(133, 137, 140, 0.1),
       transparent 50%
     ),
-    linear-gradient(180deg, #f7f6f3 0%, #f3f1ec 45%, #f7f6f3 100%);
+    linear-gradient(180deg, #e6f1f6 0%, #d8e6ec 45%, #e6f1f6 100%);
 
   background: var(--sc-wash);
   color: var(--sc-ink);
@@ -29,8 +32,8 @@
 .showcase-root h2,
 .showcase-root h3,
 .showcase-root .sc-display {
-  font-family: var(--font-showcase-display), ui-serif, Georgia, serif;
-  font-weight: 400;
+  font-family: var(--font-showcase-display), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
   letter-spacing: -0.02em;
 }
 

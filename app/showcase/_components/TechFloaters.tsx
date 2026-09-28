@@ -112,7 +112,7 @@ function FloaterCard({
 }
 
 const CARD =
-  "flex h-10 w-10 items-center justify-center rounded-2xl border border-[var(--sc-line)] bg-white/70 shadow-[0_8px_20px_rgba(20,20,20,0.06)] sm:h-11 sm:w-11";
+  "flex h-10 w-10 items-center justify-center rounded-[3px] border border-[var(--sc-line)] bg-white/70 shadow-[0_8px_20px_rgba(20,20,20,0.06)] sm:h-11 sm:w-11";
 
 /** Post-scatter resting opacity — soft but clearly visible in the gutters */
 const SETTLE = { desktop: 0.52, mobile: 0.38, blur: "blur(1.5px)" };
@@ -121,7 +121,7 @@ const SETTLE = { desktop: 0.52, mobile: 0.38, blur: "blur(1.5px)" };
  * Preloader + backdrop constellation.
  *
  * On first load the logos act as the PRELOADER: they pop in clustered at the
- * viewport center on a solid #f7f6f3 veil (the root is temporarily raised to
+ * viewport center on a solid #e6f1f6 veil (the root is temporarily raised to
  * z-60), then SCATTER outward to their gutter resting spots while the veil
  * fades — load + scatter ≈ 2.5s total. After scattering, the root drops back
  * to z-0 and the logos settle to low opacity with a slight blur, staying
@@ -305,7 +305,7 @@ export default function TechFloaters({
       style={{ opacity: 1, zIndex: 60 }}
     >
       {/* Solid light veil — never a black flash */}
-      <div className="tf-veil absolute inset-0 bg-[#f7f6f3]" />
+      <div className="tf-veil absolute inset-0 bg-[#e6f1f6]" />
 
       <div className="h-full w-full">
         {logos.map((tech) => {
@@ -326,7 +326,7 @@ export default function TechFloaters({
           if (!path) return null;
           return (
             <FloaterCard key={snip.id} path={path} kind="snip" className="hidden sm:block">
-              <div className="w-[8.5rem] rounded-xl border border-[var(--sc-line)] bg-white/65 p-2 shadow-[0_8px_20px_rgba(20,20,20,0.05)]">
+              <div className="w-[8.5rem] rounded-[3px] border border-[var(--sc-line)] bg-white/65 p-2 shadow-[0_8px_20px_rgba(20,20,20,0.05)]">
                 <p className="font-mono text-[0.5rem] uppercase tracking-[0.16em] text-[var(--sc-muted)]">
                   {snip.title}
                 </p>

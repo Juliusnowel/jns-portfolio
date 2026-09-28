@@ -41,7 +41,7 @@ export default function ContactPage() {
       <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:px-10 sm:py-14 lg:px-12 lg:py-16">
         <header className="theme-border flex flex-wrap items-center justify-between gap-3 border-b pb-6">
           <div>
-            <p className="theme-text-muted text-sm font-medium uppercase tracking-[0.18em]">
+            <p className="text-[var(--accent-ink)] text-sm font-semibold uppercase tracking-[0.18em]">
               Contact
             </p>
             <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">
@@ -50,14 +50,14 @@ export default function ContactPage() {
           </div>
           <Link
             href="/"
-            className="theme-outline-btn rounded-xl border px-4 py-2 text-sm font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
+            className="theme-outline-btn rounded-[3px] border px-4 py-2 text-sm font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
           >
             Back to Home
           </Link>
         </header>
 
         <section className="grid gap-6 pt-8 lg:grid-cols-[1.1fr_1fr]">
-          <article className="theme-border theme-surface rounded-2xl border p-6">
+          <article className="theme-border theme-surface rounded-[3px] border p-6">
             <h2 className="text-2xl font-semibold">Reach Out</h2>
             <p className="theme-text-secondary mt-3 leading-7">
               I&apos;m open to full-stack, systems, and technical-lead
@@ -77,9 +77,9 @@ export default function ContactPage() {
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className="theme-border theme-surface-solid block rounded-xl border p-4 transition-colors hover:border-[var(--accent)]"
+                  className="theme-border theme-surface-solid block rounded-[3px] border p-4 transition-colors hover:border-[var(--accent)]"
                 >
-                  <p className="theme-text-muted text-xs font-semibold uppercase tracking-[0.14em]">
+                  <p className="text-[var(--accent-ink)] text-xs font-semibold uppercase tracking-[0.14em]">
                     {method.label}
                   </p>
                   <p className="theme-text-primary mt-2 break-all text-base font-medium">
@@ -91,7 +91,7 @@ export default function ContactPage() {
             </div>
           </article>
 
-          <article className="theme-border theme-surface rounded-2xl border p-6">
+          <article className="theme-border theme-surface rounded-[3px] border p-6">
             <h2 className="text-2xl font-semibold">How I Can Help</h2>
             <p className="theme-text-secondary mt-3">
               If your needs align with the areas below, I&apos;d be glad to
@@ -106,8 +106,8 @@ export default function ContactPage() {
               ))}
             </ul>
 
-            <div className="theme-border theme-surface-solid mt-6 rounded-xl border p-4">
-              <p className="theme-text-muted text-sm uppercase tracking-[0.14em]">
+            <div className="theme-border theme-surface-solid mt-6 rounded-[3px] border p-4">
+              <p className="text-[var(--accent-ink)] text-sm font-semibold uppercase tracking-[0.14em]">
                 Preferred First Step
               </p>
               <p className="theme-text-secondary mt-2">

@@ -164,7 +164,7 @@ export default function ProjectsPage() {
         <header className="theme-border border-b pb-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="theme-text-muted text-sm font-medium uppercase tracking-[0.18em]">
+              <p className="text-[var(--accent-ink)] text-sm font-semibold uppercase tracking-[0.18em]">
                 Projects
               </p>
               <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">
@@ -173,7 +173,7 @@ export default function ProjectsPage() {
             </div>
             <Link
               href="/"
-              className="rounded-xl border px-4 py-2 text-sm font-semibold transition-colors border-[var(--outline-btn-border)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
+              className="rounded-[3px] border px-4 py-2 text-sm font-semibold transition-colors border-[var(--outline-btn-border)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
             >
               Back to Home
             </Link>
@@ -194,7 +194,7 @@ export default function ProjectsPage() {
                   key={language}
                   type="button"
                   onClick={() => setSelectedLanguage(language)}
-                  className={`rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+                  className={`rounded-[3px] border px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
                       ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--on-accent)]"
                       : "theme-chip hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
@@ -211,7 +211,7 @@ export default function ProjectsPage() {
           {filteredProjects.map((project) => (
             <article
               key={project.title}
-              className="theme-border theme-surface rounded-2xl border p-5 shadow-[var(--shadow-sm)]"
+              className="theme-border theme-surface rounded-[3px] border p-5 shadow-[var(--shadow-sm)]"
             >
               <div className="flex items-center justify-between gap-3">
                 <h3 className="theme-text-primary text-xl font-semibold">{project.title}</h3>
@@ -220,7 +220,7 @@ export default function ProjectsPage() {
                     href={project.demoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex shrink-0 items-center rounded-lg border px-3 py-2 text-sm font-semibold transition-colors border-[var(--accent)] text-[var(--accent-ink)] hover:bg-[var(--accent-soft)] hover:border-[var(--accent)]"
+                    className="inline-flex shrink-0 items-center rounded-[3px] border px-3 py-2 text-sm font-semibold transition-colors border-[var(--accent)] text-[var(--accent-ink)] hover:bg-[var(--accent-soft)] hover:border-[var(--accent)]"
                   >
                     View Demo
                   </a>

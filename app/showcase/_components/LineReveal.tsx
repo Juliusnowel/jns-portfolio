@@ -52,29 +52,39 @@ export default function LineReveal({
         return;
       }
 
-      gsap.set(inners, { yPercent: 110, opacity: 1 });
-
-      const tween = {
-        yPercent: 0,
-        duration: 1.05,
-        ease: "power3.out",
-        stagger,
-        delay,
-      };
-
       if (playOnMount) {
-        gsap.to(inners, tween);
+        // Hero: play once on mount (part of the pinned cinematic).
+        gsap.set(inners, { yPercent: 110, opacity: 1 });
+        gsap.to(inners, {
+          yPercent: 0,
+          duration: 1.05,
+          ease: "power3.out",
+          stagger,
+          delay,
+        });
         return;
       }
 
-      gsap.to(inners, {
-        ...tween,
-        scrollTrigger: {
-          trigger: root,
-          start: "top 85%",
-          toggleActions: "play none none none",
+      // Scroll sections: SCROLL-LINKED (scrubbed) so the lines reveal on the
+      // way down and retreat on the way up — the same show/hide-on-scroll feel
+      // as the rest of the site. Also more robust than a one-shot trigger
+      // (the scrub sets the correct state even if layout settles late).
+      gsap.fromTo(
+        inners,
+        { yPercent: 110, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          ease: "none",
+          stagger,
+          scrollTrigger: {
+            trigger: root,
+            start: "top 90%",
+            end: "top 55%",
+            scrub: true,
+          },
         },
-      });
+      );
     },
     {
       dependencies: [reducedMotion, playOnMount, stagger, delay, lines.join("|")],

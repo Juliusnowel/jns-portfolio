@@ -1,106 +1,101 @@
 @import "tailwindcss";
 
 /*
- * Warm, soft token system.
- * Light is the DEFAULT and is a warm paper (never pure white, easy on the eyes).
- * The accent is a softened warm orange; corners are gently rounded (not sharp);
- * shadows and lines are quiet. Dark mode is a warm near-black, reachable via the
- * toggle. Everything is token-driven so the palette can be nudged in one place.
+ * Bold, editorial, structural design system.
+ * Cool light paper, near-black ink, one vivid orange accent, near-black bands.
+ * The identity lives in colour + squareness + hairlines + letterspacing, NOT in
+ * glows or gradients. Light is the default; dark overrides only token values.
+ * Solid orange fills carry NEAR-BLACK text (keeps the hue at full saturation);
+ * orange as TEXT uses the darker --accent-ink so it stays legible on paper.
  */
 
 :root {
-  /* ---- LIGHT (default) ---- */
-  --background: #f4f1ea;      /* base page wash behind everything */
-  --foreground: #241f1a;      /* warm near-black ink */
+  color-scheme: light;
 
-  --page-bg: #f4f1ea;         /* warm soft paper */
-  --header-glass: rgba(244, 241, 234, 0.8); /* translucent header over paper */
-  --surface-bg: #fbf9f4;      /* calm card surface */
-  --surface-solid: #fcfaf6;   /* slightly lifted surface (never pure white) */
-  --surface-sunken: #efeade;
-  --border-color: #e4ddce;    /* hairline */
-  --line-strong: #cfc6b4;     /* structural rule */
-  --text-primary: #241f1a;
-  --text-secondary: #574f45;
-  --text-muted: #8b8175;
-  --chip-bg: #fbf8f1;
-  --chip-border: #e0d8c7;
-  --outline-btn-border: #cabfab;
+  --background: #e6f1f6;
+  --foreground: #111213;
 
-  /* Accent — softened warm orange (Kiplo family, calmer). Two rules:
-     a solid orange FILL carries near-black text; orange as TEXT uses the
-     darker --accent-ink so it stays legible on paper. */
-  --accent: #e2613c;
-  --accent-hover: #d1512d;
-  --accent-ink: #b6491f;
-  --accent-soft: rgba(226, 97, 60, 0.1);
-  --on-accent: #241f1a;
+  --page-bg: #e6f1f6;         /* cool light paper (never white, easy on eyes) */
+  --header-glass: rgba(230, 241, 246, 0.82);
+  --surface-bg: #ffffff;      /* card surface */
+  --surface-solid: #ffffff;
+  --surface-sunken: #d8e6ec;  /* paper-2 */
+  --border-color: #d2d7d9;    /* hairline */
+  --line-strong: #bcc1c3;     /* structural rule */
+  --text-primary: #111213;
+  --text-secondary: #4a4e51;
+  --text-muted: #5f6467;
+  --chip-bg: #fde3d9;
+  --chip-border: #f5501e;
+  --outline-btn-border: #bcc1c3;
 
-  /* Soft rounding + quiet shadows */
-  --radius-lg: 20px;
-  --radius: 14px;
-  --radius-ctl: 11px;
-  --radius-sm: 9px;
-  --shadow-sm: 0 1px 2px rgba(36, 31, 26, 0.05), 0 6px 18px rgba(36, 31, 26, 0.05);
-  --shadow-md: 0 2px 6px rgba(36, 31, 26, 0.06), 0 16px 40px rgba(36, 31, 26, 0.08);
+  --accent: #f5501e;          /* vivid orange — fills carry near-black text */
+  --accent-hover: #e2450f;
+  --accent-ink: #b6320b;      /* orange AS text (legible on paper) */
+  --accent-soft: #fde3d9;     /* peach tint */
+  --accent-soft-ink: #a92d0a;
+  --on-accent: #111213;       /* near-black text on an orange fill */
+
+  --band: #111213;            /* near-black full-bleed band */
+  --band-ink: #ffffff;
+  --band-ink-soft: #a8acaf;
+  --band-line: #5e6265;
+
+  /* Square. A hair of rounding keeps edges from feeling knife-sharp, no more. */
+  --radius-lg: 4px;
+  --radius: 3px;
+  --radius-ctl: 3px;
+  --radius-sm: 2px;
+  /* Quiet, flat shadows — never glowy. Mostly we lean on hairline borders. */
+  --shadow-sm: 0 1px 2px rgba(17, 18, 19, 0.05);
+  --shadow-md: 0 2px 10px rgba(17, 18, 19, 0.08);
+}
+
+:root.dark,
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background: #111315;
+  --foreground: #eef1f2;
+
+  --page-bg: #111315;
+  --header-glass: rgba(17, 19, 21, 0.78);
+  --surface-bg: #1c1f22;
+  --surface-solid: #1c1f22;
+  --surface-sunken: #191b1e;
+  --border-color: #2a2e31;
+  --line-strong: #383d41;
+  --text-primary: #eef1f2;
+  --text-secondary: #a7acaf;
+  --text-muted: #888d91;
+  --chip-bg: #2a160e;
+  --chip-border: #ff5a28;
+  --outline-btn-border: #383d41;
+
+  --accent: #ff5a28;
+  --accent-hover: #ff6b3d;
+  --accent-ink: #ff6b3d;
+  --accent-soft: #2a160e;
+  --accent-soft-ink: #ff9a78;
+  --on-accent: #111213;
+
+  --band: #262a2e;
+  --band-ink: #eef1f2;
+  --band-ink-soft: #a8acaf;
+  --band-line: #767a7d;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.36);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-band: var(--band);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-}
-
-html[data-theme="light"] {
-  --background: #f4f1ea;
-  --foreground: #241f1a;
-  --page-bg: #f4f1ea;
-  --header-glass: rgba(244, 241, 234, 0.8);
-  --surface-bg: #fbf9f4;
-  --surface-solid: #fcfaf6;
-  --surface-sunken: #efeade;
-  --border-color: #e4ddce;
-  --line-strong: #cfc6b4;
-  --text-primary: #241f1a;
-  --text-secondary: #574f45;
-  --text-muted: #8b8175;
-  --chip-bg: #fbf8f1;
-  --chip-border: #e0d8c7;
-  --outline-btn-border: #cabfab;
-  --accent: #e2613c;
-  --accent-hover: #d1512d;
-  --accent-ink: #b6491f;
-  --accent-soft: rgba(226, 97, 60, 0.1);
-  --on-accent: #241f1a;
-  --shadow-sm: 0 1px 2px rgba(36, 31, 26, 0.05), 0 6px 18px rgba(36, 31, 26, 0.05);
-  --shadow-md: 0 2px 6px rgba(36, 31, 26, 0.06), 0 16px 40px rgba(36, 31, 26, 0.08);
-}
-
-html[data-theme="dark"] {
-  --background: #17140f;
-  --foreground: #f2ede4;
-  --page-bg: #17140f;          /* warm near-black, not pure black */
-  --header-glass: rgba(23, 20, 15, 0.72);
-  --surface-bg: #201c15;
-  --surface-solid: #221d16;
-  --surface-sunken: #14110c;
-  --border-color: #332c22;
-  --line-strong: #453d30;
-  --text-primary: #f2ede4;
-  --text-secondary: #c2b8a8;
-  --text-muted: #948b7c;
-  --chip-bg: #221d16;
-  --chip-border: #3a3327;
-  --outline-btn-border: #4a4133;
-  --accent: #f56b42;
-  --accent-hover: #ff7a54;
-  --accent-ink: #f5946f;
-  --accent-soft: rgba(245, 107, 66, 0.14);
-  --on-accent: #1a1610;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 22px rgba(0, 0, 0, 0.28);
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.34), 0 20px 48px rgba(0, 0, 0, 0.4);
 }
 
 body {
@@ -109,14 +104,14 @@ body {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Headings carry the display face (Archivo) for a calm, editorial feel;
-   body copy stays in Inter. */
+/* Display face on headings, heavier and tighter for the bold editorial feel. */
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  letter-spacing: -0.01em;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .font-display {
@@ -152,10 +147,11 @@ h4 {
   color: var(--text-muted);
 }
 
+/* Chips read as small orange-tinted tags — the peach ground with orange text. */
 .theme-chip {
-  background: var(--chip-bg);
-  border-color: var(--chip-border) !important;
-  color: var(--text-secondary);
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent) !important;
+  color: var(--accent-soft-ink);
 }
 
 .theme-outline-btn {

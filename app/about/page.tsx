@@ -54,7 +54,7 @@ export default function AboutPage() {
       <div className="mx-auto w-full max-w-6xl px-6 py-12 sm:px-10 sm:py-14 lg:px-12 lg:py-16">
         <header className="theme-border flex flex-wrap items-center justify-between gap-3 border-b pb-6">
           <div>
-            <p className="theme-text-muted text-sm font-medium uppercase tracking-[0.18em]">
+            <p className="text-[var(--accent-ink)] text-sm font-semibold uppercase tracking-[0.18em]">
               About
             </p>
             <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">
@@ -63,7 +63,7 @@ export default function AboutPage() {
           </div>
           <Link
             href="/"
-            className="theme-outline-btn rounded-xl border px-4 py-2 text-sm font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
+            className="theme-outline-btn rounded-[3px] border px-4 py-2 text-sm font-semibold transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
           >
             Back to Home
           </Link>
@@ -88,7 +88,7 @@ export default function AboutPage() {
             </ul>
           </article>
 
-          <article className="theme-border theme-surface rounded-2xl border p-6">
+          <article className="theme-border theme-surface rounded-[3px] border p-6">
             <h3 className="text-xl font-semibold">What I Focus On</h3>
             <p className="theme-text-secondary mt-3 leading-7">
               My day-to-day centers on full-stack development, custom WordPress,
@@ -121,9 +121,9 @@ export default function AboutPage() {
             {journey.map((step) => (
               <article
                 key={step.title}
-                className="theme-border theme-surface rounded-xl border p-5"
+                className="theme-border theme-surface rounded-[3px] border p-5"
               >
-                <p className="theme-text-muted text-xs font-semibold uppercase tracking-[0.14em]">
+                <p className="text-[var(--accent-ink)] text-xs font-semibold uppercase tracking-[0.14em]">
                   {step.label}
                 </p>
                 <h3 className="theme-text-primary mt-2 text-lg font-semibold">
@@ -143,7 +143,7 @@ export default function AboutPage() {
             {practicalWork.map((item) => (
               <article
                 key={item.title}
-                className="theme-border theme-surface rounded-xl border p-5"
+                className="theme-border theme-surface rounded-[3px] border p-5"
               >
                 <h3 className="theme-text-primary text-lg font-semibold">{item.title}</h3>
                 <p className="theme-text-secondary mt-3 text-sm leading-6">
@@ -155,7 +155,7 @@ export default function AboutPage() {
         </section>
 
         <section className="pt-10">
-          <div className="theme-border theme-surface rounded-2xl border p-6 text-center">
+          <div className="theme-border theme-surface rounded-[3px] border p-6 text-center">
             <h2 className="text-2xl font-semibold">Let&apos;s Connect</h2>
             <p className="theme-text-secondary mx-auto mt-3 max-w-2xl">
               Open to opportunities where I can contribute to product delivery,
@@ -164,7 +164,7 @@ export default function AboutPage() {
             <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               <a
                 href="mailto:juliusnowels@gmail.com"
-                className="rounded-xl bg-gradient-to-r from-[var(--accent)] to-[var(--accent-hover)] px-5 py-2.5 text-sm font-semibold text-white"
+                className="rounded-[3px] bg-[var(--accent)] px-5 py-2.5 text-sm font-semibold text-[var(--on-accent)] transition-all hover:bg-[var(--accent-hover)]"
               >
                 Email Me
               </a>
@@ -172,7 +172,7 @@ export default function AboutPage() {
                 href="https://github.com/Juliusnowel"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="theme-outline-btn rounded-xl border px-5 py-2.5 text-sm font-semibold hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
+                className="theme-outline-btn rounded-[3px] border px-5 py-2.5 text-sm font-semibold hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
               >
                 GitHub
               </a>
@@ -180,13 +180,13 @@ export default function AboutPage() {
                 href="https://www.linkedin.com/in/julius-nowel-santiago-74923b292/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="theme-outline-btn rounded-xl border px-5 py-2.5 text-sm font-semibold hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
+                className="theme-outline-btn rounded-[3px] border px-5 py-2.5 text-sm font-semibold hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
               >
                 LinkedIn
               </a>
               {/* <a
                 href="/contact"
-                className="rounded-xl border border-zinc-600 px-5 py-2.5 text-sm font-semibold text-zinc-100 hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
+                className="rounded-[3px] border border-zinc-600 px-5 py-2.5 text-sm font-semibold text-zinc-100 hover:border-[var(--accent)] hover:text-[var(--accent-ink)]"
               >
                 Contact Me
               </a> */}

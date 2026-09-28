@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import LineReveal from "./LineReveal";
+import { Reveal } from "../../components/motion";
 import { BRAND, CONTACT } from "../_lib/work";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -43,28 +44,28 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
 
   return (
     <section ref={rootRef} className="relative mt-10">
-      <div className="sc-footer-band relative w-full overflow-hidden bg-[var(--sc-ink)] text-[#f7f6f3] will-change-transform">
+      <div className="sc-footer-band relative w-full overflow-hidden bg-[var(--sc-ink)] text-[#e6f1f6] will-change-transform">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-90"
           style={{
             background:
-              "linear-gradient(135deg, rgba(247,246,243,0.07) 0%, transparent 42%), radial-gradient(ellipse 70% 55% at 85% 110%, rgba(226,97,60,0.4), transparent 60%)",
+              "linear-gradient(135deg, rgba(247,246,243,0.07) 0%, transparent 42%), radial-gradient(ellipse 70% 55% at 85% 110%, rgba(245, 80, 30,0.4), transparent 60%)",
           }}
         />
 
-        <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center px-6 pb-16 pt-20 text-center sm:px-10 sm:pb-20 sm:pt-28 lg:px-16">
+        <Reveal className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center px-6 pb-16 pt-20 text-center sm:px-10 sm:pb-20 sm:pt-28 lg:px-16">
           <LineReveal
             as="p"
-            lines={["Next step"]}
+            lines={["[ Next step ]"]}
             reducedMotion={reducedMotion}
-            className="text-sm font-medium uppercase tracking-[0.28em] text-white/45"
+            className="text-sm font-semibold uppercase tracking-[0.28em] text-[var(--sc-accent)]"
           />
           <LineReveal
             as="h2"
             lines={["Ready when you are."]}
             reducedMotion={reducedMotion}
-            className="sc-display mt-4 max-w-3xl text-[clamp(2.4rem,6vw,4.25rem)] leading-[1.05] text-[#f7f6f3]"
+            className="sc-display mt-4 max-w-3xl text-[clamp(2.4rem,6vw,4.25rem)] leading-[1.05] text-[#e6f1f6]"
             delay={0.05}
           />
           <LineReveal
@@ -83,7 +84,7 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
             >
               <Link
                 href={CONTACT.portfolioHref}
-                className="group inline-flex w-full items-center justify-center rounded-full bg-[#f7f6f3] px-6 py-3.5 text-sm font-medium text-[var(--sc-ink)] transition-[transform,opacity,background-color] duration-300 ease-out hover:scale-[1.03] hover:bg-white hover:opacity-100 active:scale-[0.98]"
+                className="group inline-flex w-full items-center justify-center rounded-[3px] bg-[#e6f1f6] px-6 py-3.5 text-sm font-semibold text-[var(--sc-ink)] transition-colors duration-200 ease-out hover:bg-white"
               >
                 <span className="inline-flex items-center gap-2">
                   View full portfolio
@@ -102,7 +103,7 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
             >
               <Link
                 href={CONTACT.contactHref}
-                className="group inline-flex w-full items-center justify-center rounded-full border border-white/25 bg-[var(--sc-accent)] px-6 py-3.5 text-sm font-medium text-[#f7f6f3] transition-[transform,opacity,background-color,border-color] duration-300 ease-out hover:scale-[1.03] hover:border-white/45 hover:bg-[#d1512d] active:scale-[0.98]"
+                className="group inline-flex w-full items-center justify-center rounded-[3px] border border-white/25 bg-[var(--sc-accent)] px-6 py-3.5 text-sm font-semibold text-[#111213] transition-colors duration-200 ease-out hover:border-white/45 hover:bg-[#e2450f]"
               >
                 <span className="inline-flex items-center gap-2">
                   Contact
@@ -118,21 +119,21 @@ export default function ClosingCta({ reducedMotion }: { reducedMotion: boolean }
           </div>
 
           <p className="mt-5 text-sm text-white/40">Build · debug · decide.</p>
-        </div>
+        </Reveal>
 
         {/* One horizontal bar: brand/links · IDE · copyright */}
         <div className="relative z-10 mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-5 px-6 pb-8 pt-10 sm:gap-4 sm:px-10 sm:pb-10 lg:grid-cols-[1fr_auto_1fr] lg:px-16">
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-white/55 lg:justify-start">
-            <span className="sc-display text-base text-[#f7f6f3]">{BRAND.name}</span>
-            <Link href="/projects" className="transition-colors duration-200 hover:text-[#f7f6f3]">
+            <span className="sc-display text-base text-[#e6f1f6]">{BRAND.name}</span>
+            <Link href="/projects" className="transition-colors duration-200 hover:text-[#e6f1f6]">
               Projects
             </Link>
-            <Link href="/about" className="transition-colors duration-200 hover:text-[#f7f6f3]">
+            <Link href="/about" className="transition-colors duration-200 hover:text-[#e6f1f6]">
               About
             </Link>
           </div>
 
-          <div className="mx-auto w-full max-w-[22rem] overflow-hidden rounded-xl border border-white/10 bg-[#1a1b1f] lg:mx-0">
+          <div className="mx-auto w-full max-w-[22rem] overflow-hidden rounded-[3px] border border-white/10 bg-[#1a1b1f] lg:mx-0">
             <div className="flex items-center gap-1.5 border-b border-white/10 px-3 py-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-[#ff5f57]" />
               <span className="h-1.5 w-1.5 rounded-full bg-[#febc2e]" />

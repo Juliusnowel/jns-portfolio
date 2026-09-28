@@ -58,7 +58,7 @@ const CARD_LAYOUT = [
     hOrigin: "100% 50%", // draws leftward from the center axis
     // Dot where the line leaves the monitor; arrowhead where it meets the card
     dot: "left-1/2 top-[47%]",
-    arrow: "left-[calc(26%+1px)] top-[21%]",
+    arrow: "left-[26%] top-[21%]",
     arrowDir: "left" as const,
     fromX: 190,
     fromY: 170,
@@ -72,7 +72,7 @@ const CARD_LAYOUT = [
     h: "right-[26%] top-[21%] w-[24%]",
     hOrigin: "0% 50%", // draws rightward from the center axis
     dot: "left-1/2 top-[47%]",
-    arrow: "right-[calc(26%+1px)] top-[21%]",
+    arrow: "right-[26%] top-[21%]",
     arrowDir: "right" as const,
     fromX: -190,
     fromY: 170,
@@ -88,7 +88,7 @@ const CARD_LAYOUT = [
     h: "left-[16%] top-[40%] w-[34%]",
     hOrigin: "100% 50%", // draws leftward out of the monitor
     dot: "left-1/2 top-[40%]",
-    arrow: "left-[16%] top-[calc(56%+1px)]",
+    arrow: "left-[16%] top-[56%]",
     arrowDir: "down" as const,
     fromX: 190,
     fromY: -170,
@@ -106,13 +106,15 @@ const CHIP_POS = [
 /** Connector styling — strong red + 3px weight so the tether clearly reads.
  *  (Literal class strings only: Tailwind can't compile interpolated names.) */
 const LINE_CLASS =
-  "absolute bg-[#d92d20] shadow-[0_0_0_1px_rgba(217,45,32,0.15)] will-change-transform";
+  "absolute bg-[#f5501e] shadow-[0_0_0_1px_rgba(245, 80, 30,0.15)] will-change-transform";
 /** CSS border-triangle arrowheads, centered on the 3px line */
 const ARROW_BASE = "absolute h-0 w-0 will-change-transform";
 const ARROW_DIR = {
-  left: "-mt-[5px] border-y-[6px] border-y-transparent border-r-[10px] border-r-[#d92d20]",
-  right: "-mt-[5px] border-y-[6px] border-y-transparent border-l-[10px] border-l-[#d92d20]",
-  down: "-ml-[7px] border-x-[6px] border-x-transparent border-t-[10px] border-t-[#d92d20]",
+  // Offsets centre the 12px-tall / 12px-wide triangle box on the 3px line so
+  // the tip lands exactly on the line's end (see the arrow positions below).
+  left: "-mt-[4.5px] border-y-[6px] border-y-transparent border-r-[10px] border-r-[#f5501e]",
+  right: "-mt-[4.5px] border-y-[6px] border-y-transparent border-l-[10px] border-l-[#f5501e]",
+  down: "-ml-[5.5px] border-x-[6px] border-x-transparent border-t-[10px] border-t-[#f5501e]",
 };
 
 export default function HeroDissect({
@@ -279,7 +281,7 @@ export default function HeroDissect({
             {selectedWork.map((item, i) => (
               <li
                 key={item.id}
-                className="rounded-2xl border border-[var(--sc-line)] bg-white/80 p-5"
+                className="rounded-[3px] border border-[var(--sc-line)] bg-white/80 p-5"
               >
                 <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-[var(--sc-accent)]">
                   0{i + 1} · {item.domain}
@@ -322,7 +324,7 @@ export default function HeroDissect({
           {CARD_LAYOUT.map((layout, i) => (
             <div key={i}>
               <span
-                className={`hd-linkdot absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d92d20] shadow-[0_0_0_3px_rgba(217,45,32,0.2)] ${layout.dot}`}
+                className={`hd-linkdot absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f5501e] shadow-[0_0_0_3px_rgba(245, 80, 30,0.2)] ${layout.dot}`}
               />
               <span className={`hd-linkv ${LINE_CLASS} w-[3px] -ml-px ${layout.v}`} />
               <span className={`hd-linkh ${LINE_CLASS} h-[3px] ${layout.h}`} />
@@ -368,7 +370,7 @@ export default function HeroDissect({
           {capabilities.map((cap, i) => (
             <span
               key={cap.id}
-              className={`hd-chip absolute rounded-full border border-[var(--sc-line)] bg-white/85 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[var(--sc-ink-soft)] will-change-transform ${CHIP_POS[i]}`}
+              className={`hd-chip absolute rounded-[3px] border border-[var(--sc-line)] bg-white/85 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-[var(--sc-ink-soft)] will-change-transform ${CHIP_POS[i]}`}
             >
               {cap.title}
             </span>
@@ -384,7 +386,7 @@ export default function HeroDissect({
                 isCompact ? "left-1/2 top-[8%]" : CARD_LAYOUT[i]?.card ?? ""
               }`}
             >
-              <div className="rounded-2xl border border-[var(--sc-line)] bg-white/95 p-5 shadow-[0_24px_60px_rgba(20,20,20,0.16)]">
+              <div className="rounded-[3px] border border-[var(--sc-line)] bg-white/95 p-5 shadow-[0_24px_60px_rgba(20,20,20,0.16)]">
                 <p className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-[var(--sc-accent)]">
                   0{i + 1} / 03 · {item.domain}
                 </p>
@@ -434,6 +436,17 @@ function HeroCopy({ reducedMotion }: { reducedMotion: boolean }) {
           className="sc-display max-w-xl text-[clamp(2.5rem,7vw,5rem)] leading-[1.02] text-[var(--sc-ink)]"
           delay={base + 0.18}
           stagger={0.12}
+        />
+      </div>
+
+      <div className="mt-5 will-change-transform">
+        <LineReveal
+          as="p"
+          lines={[BRAND.role]}
+          reducedMotion={reducedMotion}
+          playOnMount
+          className="text-base font-semibold text-[var(--sc-ink-soft)] sm:text-lg"
+          delay={base + 0.34}
         />
       </div>
 

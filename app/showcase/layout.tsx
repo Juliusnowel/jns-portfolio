@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Outfit } from "next/font/google";
+import { Archivo, Inter } from "next/font/google";
 import "./showcase.css";
 
 /**
- * Showcase-only fonts. Loaded here so the main site layout stays untouched.
- * `display: "swap"` + size-adjust via CSS variables keeps CLS low.
+ * Showcase fonts — the site's Kiplo type: Archivo (bold display) + Inter (body).
+ * `display: "swap"` keeps CLS low.
  */
-const display = Instrument_Serif({
-  weight: "400",
+const display = Archivo({
+  weight: ["500", "700", "800", "900"],
   subsets: ["latin"],
   variable: "--font-showcase-display",
   display: "swap",
 });
 
-const sans = Outfit({
+const sans = Inter({
   subsets: ["latin"],
   variable: "--font-showcase-sans",
   display: "swap",
@@ -22,7 +22,7 @@ const sans = Outfit({
 export const metadata: Metadata = {
   title: "Showcase | Julius Nowel",
   description:
-    "A scroll experience — building, debugging, deciding. Selected work and capabilities.",
+    "Julius Nowel B. Santiago — technical lead and full-stack developer. A scroll experience through selected work and capabilities: building, debugging, deciding.",
 };
 
 export default function ShowcaseLayout({

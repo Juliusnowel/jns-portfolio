@@ -91,6 +91,7 @@ export const CONTACT = {
 /** Easy-to-change hero brand */
 export const BRAND = {
   name: "Julius Nowel",
+  role: "Technical Lead & Full-Stack Developer",
 } as const;
 
 /** Kinetic marquee band */

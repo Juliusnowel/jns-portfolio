@@ -13,7 +13,7 @@ const Scene = dynamic(() => import("./Scene"), {
   loading: () => (
     <div
       aria-hidden="true"
-      className="h-full w-full rounded-2xl bg-gradient-to-b from-[#efede8] to-[#e9e6e0]"
+      className="h-full w-full rounded-[3px] bg-gradient-to-b from-[#e6f1f6] to-[#d8e6ec]"
     />
   ),
 });
