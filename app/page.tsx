@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
-import { useState, useEffect, type MouseEvent } from "react";
+import { useState, useEffect, useRef, type MouseEvent } from "react";
 import { useThemeMode } from "./hooks/useThemeMode";
 import { Reveal, CountUp, ScrambleText } from "./components/motion";
 
@@ -226,6 +226,20 @@ export default function Home() {
   const handleProjMove = (event: MouseEvent<HTMLUListElement>) =>
     setProjPos({ x: event.clientX, y: event.clientY });
 
+  // Hero portrait: still cutout by default, plays the video on hover.
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const playHeroVideo = () => {
+    const v = heroVideoRef.current;
+    if (v) void v.play().catch(() => {});
+  };
+  const stopHeroVideo = () => {
+    const v = heroVideoRef.current;
+    if (v) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  };
+
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -234,36 +248,6 @@ export default function Home() {
     }
     return () => { document.body.style.overflow = ""; };
   }, [mobileMenuOpen]);
-
-  const [heroTilt, setHeroTilt] = useState({
-    rotateX: 0,
-    rotateY: 0,
-    scale: 1,
-    transition: "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)",
-  });
-  const handleHeroMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - rect.left) / rect.width;
-    const y = (event.clientY - rect.top) / rect.height;
-    const rotateY = (x - 0.5) * 16;
-    const rotateX = (0.5 - y) * 14;
-
-    setHeroTilt({
-      rotateX,
-      rotateY,
-      scale: 1.015,
-      transition: "transform 90ms linear",
-    });
-  };
-
-  const resetHeroTilt = () => {
-    setHeroTilt({
-      rotateX: 0,
-      rotateY: 0,
-      scale: 1,
-      transition: "transform 420ms cubic-bezier(0.22, 1, 0.36, 1)",
-    });
-  };
 
   // Token-driven: the CSS variables handle light/dark, so these are the same in
   // both modes. Only the ring subtly differs so the header reads on either bg.
@@ -279,25 +263,6 @@ export default function Home() {
     cardTone: "bg-[var(--surface-solid)]",
     imagePanel: "bg-[var(--surface-solid)]",
   };
-
-  // Flat, not glowy — the brand feel comes from structure, not halos.
-  const deviceFx = isDark
-    ? {
-        outerGlow: "",
-        baseGlow: "",
-        baseShadow: "bg-black/40 blur-md",
-        frameShadow: "shadow-[0_18px_40px_rgba(0,0,0,0.4)]",
-        keyboardShadow: "shadow-[0_12px_28px_rgba(0,0,0,0.4)]",
-        mouseShadow: "shadow-[0_8px_18px_rgba(0,0,0,0.38)]",
-      }
-    : {
-        outerGlow: "",
-        baseGlow: "",
-        baseShadow: "bg-[#111213]/14 blur-md",
-        frameShadow: "shadow-[0_12px_30px_rgba(17,18,19,0.16)]",
-        keyboardShadow: "shadow-[0_8px_20px_rgba(17,18,19,0.14)]",
-        mouseShadow: "shadow-[0_6px_16px_rgba(17,18,19,0.12)]",
-      };
 
   const outlinedCtaClass =
     "border-[var(--outline-btn-border)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent-ink)]";
@@ -433,69 +398,49 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="animate-fade-up-delay justify-self-center lg:justify-self-end">
-              <div
-                className="relative w-full max-w-[38rem] xl:max-w-[40rem]"
-                style={{ perspective: "2200px" }}
-                onMouseMove={handleHeroMouseMove}
-                onMouseLeave={resetHeroTilt}
-              >
-                <div className={`absolute -inset-10 rounded-[3rem] ${deviceFx.outerGlow}`} />
-                <div className={`absolute inset-x-8 -bottom-20 h-14 rounded-full ${deviceFx.baseGlow}`} />
-                <div className={`absolute inset-x-14 -bottom-12 h-6 rounded-full ${deviceFx.baseShadow}`} />
-
+            <div className="animate-fade-up-delay w-full justify-self-center sm:w-auto lg:justify-self-end">
+              {/* Layered Kiplo composition — orange brand block, near-black frame,
+                  and a black tag with white text. */}
+              <div className="relative mx-auto w-[17rem] sm:w-[21rem] lg:w-[25rem] xl:w-[27rem]">
+                {/* Orange brand block, offset behind. */}
                 <div
-                  className="relative"
-                  style={{
-                    transform: `rotateX(${heroTilt.rotateX + 2}deg) rotateY(${heroTilt.rotateY - 10}deg) scale(${heroTilt.scale})`,
-                    transition: heroTilt.transition,
-                    transformStyle: "preserve-3d",
-                  }}
+                  aria-hidden="true"
+                  className="absolute -bottom-3 -right-3 h-full w-full bg-[var(--accent)] sm:-bottom-4 sm:-right-4"
+                />
+                {/* Portrait frame — transparent cutout over the orange block,
+                    near-black border. On hover the video plays over the same
+                    orange, so the still comes to life. */}
+                <div
+                  onMouseEnter={playHeroVideo}
+                  onMouseLeave={stopHeroVideo}
+                  className="group relative aspect-[688/1024] overflow-hidden border-[3px] border-[#111213] bg-[#ff5a28]"
                 >
-                  <div
-                    className={`relative rounded-[1.65rem] border border-white/15 bg-gradient-to-b from-zinc-700/80 via-zinc-800/65 to-zinc-900/70 p-3 ${deviceFx.frameShadow} ${themeClass.cardTone}`}
-                    style={{ transform: "translateZ(34px) rotateX(-2deg)" }}
+                  <Image
+                    src="/jns-cutout.png"
+                    alt="Julius Nowel B. Santiago"
+                    fill
+                    priority
+                    sizes="(min-width: 1280px) 27rem, (min-width: 1024px) 25rem, (min-width: 640px) 21rem, 17rem"
+                    className="select-none object-cover object-top"
+                  />
+                  <video
+                    ref={heroVideoRef}
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-top opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
                   >
-                    <div className="relative overflow-hidden rounded-[1.05rem] border border-white/15 bg-black">
-                      <Image
-                        src="/Julius.webp"
-                        alt="Julius Nowel B. Santiago portrait"
-                        width={1280}
-                        height={800}
-                        priority
-                        className="aspect-[16/10] w-full object-cover object-[50%_18%] transition-transform duration-700 hover:scale-[1.03]"
-                      />
-                      <div className="pointer-events-none absolute inset-0 ring-1 ring-white/15" />
-                    </div>
-
-                    <div className="pointer-events-none absolute left-1/2 top-full h-3 w-[16%] -translate-x-1/2 rounded-b-md bg-zinc-300/70" />
-                  </div>
-
-                  <div
-                    className="pointer-events-none absolute left-[105%] top-full w-[102%] -translate-x-1/2"
-                    style={{
-                      transform: "translateX(-50%) translateY(6px) rotateX(74deg) translateZ(-20px)",
-                      transformOrigin: "top",
-                    }}
-                  >
-                    <div className="flex items-end gap-3">
-                      <div className={`flex-[0_0_84%] rounded-b-[1.25rem] rounded-t-[0.6rem] border border-white/25 bg-gradient-to-b from-zinc-300/80 via-zinc-200/45 to-zinc-700/30 px-7 pt-3.5 pb-4.5 ${deviceFx.keyboardShadow}`}>
-                        <div
-                          className="h-14 rounded-md opacity-70"
-                          style={{
-                            backgroundImage:
-                              "repeating-linear-gradient(to right, rgba(20,24,38,0.55) 0, rgba(20,24,38,0.55) 18px, rgba(255,255,255,0.08) 18px, rgba(255,255,255,0.08) 20px), repeating-linear-gradient(to bottom, rgba(18,22,35,0.65) 0, rgba(18,22,35,0.65) 12px, rgba(255,255,255,0.08) 12px, rgba(255,255,255,0.08) 14px)",
-                          }}
-                        />
-                        <div className="mx-auto mt-2.5 h-2.5 w-[22%] rounded-full bg-zinc-900/45" />
-                      </div>
-                      <div className={`relative h-24 w-12 rounded-[999px] border border-white/30 bg-gradient-to-b from-zinc-300/90 via-zinc-200/50 to-zinc-700/40 ${deviceFx.mouseShadow}`}>
-                        <div className="absolute inset-x-3 top-1.5 h-2.5 rounded-full bg-white/25 blur-[1px]" />
-                        <div className="absolute left-1/2 top-[51%] h-4 w-[1.5px] -translate-x-1/2 rounded-full bg-zinc-800/60" />
-                        <div className="absolute left-1/2 top-[24%] h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-zinc-900/50" />
-                      </div>
-                    </div>
-                  </div>
+                    <source src="/jns-hero-transp.mp4" type="video/mp4" />
+                  </video>
+                </div>
+                {/* Black tag, white text, orange mark — overlapping the frame. */}
+                <div className="absolute -left-3 bottom-6 flex items-center gap-2 bg-[#111213] px-3 py-2 shadow-[var(--shadow-md)] sm:-left-4">
+                  <span aria-hidden="true" className="h-2 w-2 bg-[var(--accent)]" />
+                  <span className="font-mono text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white">
+                    Pasig, PH
+                  </span>
                 </div>
               </div>
             </div>
