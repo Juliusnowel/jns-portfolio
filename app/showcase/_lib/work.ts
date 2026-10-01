@@ -19,7 +19,7 @@ export type WorkItem = {
 export const selectedWork: WorkItem[] = [
   {
     id: "zerem-ai",
-    title: "Zerem — AI Customer-Engagement",
+    title: "AI Customer-Engagement (CRM)",
     domain: "Applied AI",
     summary:
       "An AI layer for a CRM: Meta Messenger/Instagram conversations drafted and auto-replied by an LLM (OpenRouter), with safety guardrails and human handoff. Built and feature-flagged, pending Meta app review.",
@@ -30,7 +30,7 @@ export const selectedWork: WorkItem[] = [
   },
   {
     id: "slotflo-booking",
-    title: "Slotflo — Booking SaaS",
+    title: "Appointment-Booking SaaS",
     domain: "Product",
     summary:
       "A multi-tenant appointment-booking platform: timezone-aware availability, row-locking against double-booking, prepaid package credits, and public self-booking. ~97 feature tests; pre-launch.",
@@ -41,7 +41,7 @@ export const selectedWork: WorkItem[] = [
   },
   {
     id: "stockflo-inventory",
-    title: "Stockflo — Inventory SaaS",
+    title: "Inventory Management SaaS",
     domain: "Product",
     summary:
       "A multi-tenant inventory system: transactional stock-movement ledger with concurrency guards, FEFO batch/expiry tracking, moving-average valuation, and purchase & sales orders. ~37 feature tests; pre-launch.",
@@ -59,7 +59,7 @@ export const rangeTiles = [
   { id: "ai", label: "AI Engagement" },
   { id: "platform", label: "Multi-tenant Platform" },
   { id: "accounting", label: "Accounting" },
-  { id: "nfc", label: "NFC" },
+  { id: "nfc", label: "NFC Cards" },
 ] as const;
 
 export const capabilities = [

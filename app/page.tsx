@@ -48,33 +48,33 @@ const aboutVisualCards = [
 
 const featuredProjects = [
   {
-    title: "Zerem — AI Customer-Engagement",
+    title: "AI Customer-Engagement (CRM)",
     tags: ["Laravel", "Next.js", "OpenRouter / LLM", "Meta API"],
     description:
       "AI layer for a CRM: Meta Messenger/Instagram conversations drafted and auto-replied by an LLM, with safety guardrails and human handoff. Built, pending Meta app review.",
-    image: "/project_image_bg/zerem.png",
+    image: "/project_image_bg/crm-ai.png",
     href: "/projects",
     size: "featured",
     imagePosition: "object-top",
     imageInset: "px-2",
   },
   {
-    title: "Slotflo — Booking SaaS",
+    title: "Appointment-Booking SaaS",
     tags: ["Laravel", "Next.js", "Multi-tenant"],
     description:
       "Multi-tenant appointment-booking platform: timezone-aware availability, row-locking against double-booking, prepaid package credits, and public self-booking. ~97 tests, pre-launch.",
-    image: "/project_image_bg/slotflo.png",
+    image: "/project_image_bg/booking.png",
     href: "/projects",
     size: "secondary",
     imagePosition: "object-top",
     imageInset: "px-2",
   },
   {
-    title: "Stockflo — Inventory SaaS",
+    title: "Inventory Management SaaS",
     tags: ["Laravel", "Next.js", "Multi-tenant"],
     description:
       "Multi-tenant inventory system: transactional stock-movement ledger, FEFO batch/expiry tracking, moving-average valuation, and purchase & sales orders. ~37 tests, pre-launch.",
-    image: "/project_image_bg/stockflo.png",
+    image: "/project_image_bg/inventory.png",
     href: "/projects",
     size: "featured",
     imagePosition: "object-top",
@@ -90,6 +90,30 @@ const featuredProjects = [
     size: "secondary",
     imagePosition: "object-top",
     imageInset: "px-2",
+  },
+] as const;
+
+const kiploProducts = [
+  {
+    title: "NFC Digital Business-Card Platform",
+    status: "Live",
+    description:
+      "Account-based NFC digital business cards — multi-section profiles, themes, per-link analytics, and admin-controlled tiers.",
+    href: "https://tap.kiplosolutions.com/",
+  },
+  {
+    title: "Photo Booth Software",
+    status: "Pre-launch",
+    description:
+      "Event photo-booth software with a custom flipbook engine — the full capture-to-print/share flow.",
+    href: null,
+  },
+  {
+    title: "Kiplo Website",
+    status: "Live",
+    description:
+      "The brand/studio site for Kiplo — where the products live.",
+    href: "https://kiplosolutions.com/",
   },
 ] as const;
 
@@ -584,6 +608,75 @@ export default function Home() {
           >
             All projects →
           </Link>
+        </section>
+
+        {/* Independent Products — Kiplo (personal product brand) */}
+        <section className={`relative py-10 sm:py-12 lg:py-14 ${sectionContentInset}`}>
+          <div className="flex items-end justify-between gap-4 border-b border-[var(--line-strong)] pb-5">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--accent-ink)]">
+                [ Independent Products ]
+              </p>
+              <h3 className={`mt-2 ${typeScale.h3}`}>Kiplo — products I design &amp; build</h3>
+              <p className={`mt-2 max-w-2xl text-sm ${themeClass.textSecondary}`}>
+                My own product brand — not a client, not a job. Things I ship end-to-end.
+              </p>
+            </div>
+            <Link
+              href="/projects"
+              className={`hidden shrink-0 whitespace-nowrap border-b-2 border-[var(--accent)] pb-0.5 font-semibold text-[var(--accent-ink)] transition-colors hover:text-[var(--accent)] sm:inline-block ${typeScale.link}`}
+            >
+              See all →
+            </Link>
+          </div>
+
+          <div className="mt-8 grid gap-px border border-[var(--border-color)] bg-[var(--border-color)] sm:grid-cols-3">
+            {kiploProducts.map((product, i) => {
+              const cardClass =
+                "group relative flex h-full flex-col bg-[var(--page-bg)] p-6 transition-colors duration-200 hover:bg-[var(--accent-soft)] sm:p-7";
+              const inner = (
+                <>
+                  <div className="flex items-center justify-between gap-3">
+                    <span
+                      className={`font-mono text-xs font-semibold uppercase tracking-[0.14em] ${
+                        product.status === "Live"
+                          ? "text-[var(--accent-ink)]"
+                          : "text-[var(--text-muted)]"
+                      }`}
+                    >
+                      {product.status}
+                    </span>
+                    {product.href ? (
+                      <span
+                        aria-hidden="true"
+                        className="font-semibold text-[var(--accent-ink)] transition-transform duration-200 group-hover:translate-x-0.5"
+                      >
+                        ↗
+                      </span>
+                    ) : null}
+                  </div>
+                  <h4 className="mt-5 text-[1.15rem] font-bold leading-snug sm:text-[1.25rem]">
+                    {product.title}
+                  </h4>
+                  <p className={`mt-1.5 text-sm ${themeClass.textSecondary}`}>
+                    {product.description}
+                  </p>
+                  <span className="absolute bottom-0 left-0 h-[3px] w-0 bg-[var(--accent)] transition-all duration-300 group-hover:w-full" />
+                </>
+              );
+              return (
+                <Reveal key={product.title} direction="left" delay={i * 90} className="h-full">
+                  {product.href ? (
+                    <a href={product.href} target="_blank" rel="noopener noreferrer" className={cardClass}>
+                      {inner}
+                    </a>
+                  ) : (
+                    <div className={cardClass}>{inner}</div>
+                  )}
+                </Reveal>
+              );
+            })}
+          </div>
         </section>
 
         {/* Certifications — hairline credential grid */}
