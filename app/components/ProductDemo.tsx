@@ -27,6 +27,9 @@ import {
   LuTag,
   LuChevronLeft,
   LuChevronRight,
+  LuTruck,
+  LuClipboardList,
+  LuTriangleAlert,
 } from "react-icons/lu";
 import type { IconType } from "react-icons";
 
@@ -423,6 +426,184 @@ function SlotfloCalendar() {
   );
 }
 
+/* ── Stockflo (Inventory) scenes ── */
+function StockChip({ out }: { out?: boolean }) {
+  return (
+    <span
+      className="shrink-0 px-1.5 py-0.5 text-[9px] font-semibold"
+      style={
+        out
+          ? { border: `1px solid ${K.brand}`, background: K.subtle, color: K.brandInk }
+          : { border: `1px solid ${K.rule}`, color: K.muted }
+      }
+    >
+      {out ? "Out of stock" : "Low"}
+    </span>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  note,
+  highlight,
+}: {
+  label: string;
+  value: string;
+  note: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div
+      className="relative p-3"
+      style={{
+        border: `1px solid ${highlight ? K.brand : K.border}`,
+        background: highlight ? K.subtle : K.card,
+      }}
+    >
+      <span className="absolute left-0 top-2 bottom-2 w-0.5" style={{ background: highlight ? K.brand : K.border }} />
+      <div className="pl-1.5">
+        <div className="text-[9px] uppercase" style={{ color: K.muted, letterSpacing: "0.06em" }}>
+          {label}
+        </div>
+        <div className="text-[18px] font-semibold tabular-nums leading-tight" style={{ color: highlight ? K.subtleInk : K.ink }}>
+          {value}
+        </div>
+        <div className="text-[9px]" style={{ color: K.muted }}>
+          {note}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const STOCK_LOW = [
+  { q: "0", name: "Collagen Mask", sub: "CM-050 · reorder at 15", out: true },
+  { q: "0", name: "Retinol Cream", sub: "RC-030 · reorder at 10", out: true },
+  { q: "12", name: "Hydrating Serum", sub: "HS-200 · reorder at 20", out: false },
+  { q: "8", name: "Vitamin C Drops", sub: "VC-110 · reorder at 15", out: false },
+];
+
+function StockfloOverview() {
+  return (
+    <div className="flex h-full flex-col">
+      <PageHeader eyebrow="Inventory" title="Inventory Overview" subtitle="Stock health at a glance" />
+      <div className="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-[1.6fr_1fr]">
+        <div>
+          <div className="flex items-baseline justify-between">
+            <span className="text-[9px] font-semibold uppercase" style={{ color: K.muted, letterSpacing: "0.12em" }}>
+              Stock
+            </span>
+            <span className="text-[9px]" style={{ color: K.muted }}>
+              4 items below reorder point
+            </span>
+          </div>
+          <div className="mt-1" style={{ borderTop: `1px solid ${K.rule}` }}>
+            {STOCK_LOW.map((r) => (
+              <div key={r.name} className="flex items-center gap-3 py-2" style={{ borderBottom: `1px solid ${K.rule}` }}>
+                <span className="w-7 shrink-0 font-semibold tabular-nums" style={{ color: K.ink }}>
+                  {r.q}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="truncate font-medium" style={{ color: K.brandInk }}>
+                    {r.name}
+                  </div>
+                  <div className="truncate text-[9px]" style={{ color: K.muted }}>
+                    {r.sub}
+                  </div>
+                </div>
+                <StockChip out={r.out} />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <span className="text-[9px] font-semibold uppercase" style={{ color: K.muted, letterSpacing: "0.12em" }}>
+            Alerts
+          </span>
+          <div className="mt-1" style={{ borderTop: `1px solid ${K.rule}` }}>
+            {[
+              { l: "Expiring soon", n: "batches ≤ 30 days", v: "14" },
+              { l: "Open POs", n: "ordered & partial", v: "3" },
+              { l: "To reorder", n: "below reorder point", v: "5" },
+            ].map((p) => (
+              <div key={p.l} className="flex items-center justify-between py-2" style={{ borderBottom: `1px solid ${K.rule}` }}>
+                <div className="min-w-0">
+                  <div className="truncate font-medium" style={{ color: K.ink }}>
+                    {p.l}
+                  </div>
+                  <div className="truncate text-[9px]" style={{ color: K.muted }}>
+                    {p.n}
+                  </div>
+                </div>
+                <span className="flex items-center gap-1 font-semibold tabular-nums" style={{ color: K.ink }}>
+                  {p.v}
+                  <span style={{ color: K.brandInk }}>↗</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="mt-4">
+        <span className="text-[9px] font-semibold uppercase" style={{ color: K.muted, letterSpacing: "0.12em" }}>
+          At a glance
+        </span>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <StatCard label="Total items" value="342" note="in catalog" />
+          <StatCard label="Low stock" value="5" note="below reorder" highlight />
+          <StatCard label="Out of stock" value="2" note="nothing on hand" highlight />
+          <StatCard label="Expiring (30d)" value="14" note="batches nearing" />
+          <StatCard label="Stock value" value="₱412,800" note="at cost, on hand" />
+          <StatCard label="Open POs" value="3" note="ordered & partial" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const ITEMS = [
+  { name: "Hydrating Serum", sub: "HS-200 · Skincare", cost: "₱180", price: "₱450", qty: "12", tag: "low" as const },
+  { name: "Collagen Mask", sub: "CM-050 · Treatment", cost: "₱90", price: "₱250", qty: "0", tag: "out" as const },
+  { name: "Facial Cleanser", sub: "FC-010 · Skincare", cost: "₱120", price: "₱300", qty: "86", tag: null },
+  { name: "Sunscreen SPF50", sub: "SS-050 · Skincare", cost: "₱160", price: "₱420", qty: "54", tag: null },
+  { name: "Vitamin C Drops", sub: "VC-110 · Serum", cost: "₱210", price: "₱560", qty: "8", tag: "low" as const },
+];
+
+function StockfloItems() {
+  return (
+    <div className="flex h-full flex-col">
+      <PageHeader eyebrow="Catalog" title="Items" subtitle="Everything you track in inventory" />
+      <div className="mt-3 overflow-hidden" style={{ border: `1px solid ${K.border}`, background: K.card }}>
+        <div className="grid grid-cols-[2fr_0.8fr_0.8fr_0.9fr] px-3 py-2 text-[9px] font-medium uppercase" style={{ background: K.fill, color: K.muted, letterSpacing: "0.06em" }}>
+          <span>Item</span>
+          <span className="text-right">Cost</span>
+          <span className="text-right">Price</span>
+          <span className="text-right">On hand</span>
+        </div>
+        {ITEMS.map((it) => (
+          <div key={it.name} className="grid grid-cols-[2fr_0.8fr_0.8fr_0.9fr] items-center px-3 py-2" style={{ borderTop: `1px solid ${K.border}` }}>
+            <div className="min-w-0">
+              <div className="truncate font-medium" style={{ color: K.ink }}>
+                {it.name}
+              </div>
+              <div className="truncate text-[9px]" style={{ color: K.muted }}>
+                {it.sub}
+              </div>
+            </div>
+            <span className="text-right tabular-nums" style={{ color: K.ink }}>{it.cost}</span>
+            <span className="text-right tabular-nums" style={{ color: K.ink }}>{it.price}</span>
+            <span className="flex items-center justify-end gap-1.5 tabular-nums" style={{ color: K.ink }}>
+              <span className="font-semibold">{it.qty}</span>
+              {it.tag && <StockChip out={it.tag === "out"} />}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── Demo registry ── */
 const DEMOS: Record<string, Demo> = {
   booking: {
@@ -448,6 +629,32 @@ const DEMOS: Record<string, Demo> = {
         caption:
           "Timezone-aware calendar (month / week / day) with row-locking that prevents double-booking.",
         render: () => <SlotfloCalendar />,
+      },
+    ],
+  },
+  inventory: {
+    wordmark: "Stockflo",
+    eyebrow: "Inventory",
+    activeKey: "inventory",
+    nav: [
+      { label: "Overview", Icon: LuLayoutGrid, active: true },
+      { label: "Items", Icon: LuBoxes },
+      { label: "Low Stock", Icon: LuTriangleAlert },
+      { label: "Reorder", Icon: LuPackage },
+      { label: "Expiring", Icon: LuCalendarDays },
+      { label: "Suppliers", Icon: LuTruck },
+      { label: "Purchase Orders", Icon: LuClipboardList },
+    ],
+    scenes: [
+      {
+        caption:
+          "Inventory health — items below reorder point, expiry & PO alerts, and stock value at a glance.",
+        render: () => <StockfloOverview />,
+      },
+      {
+        caption:
+          "Catalog with per-item cost, price, and live on-hand quantity — backed by a transactional stock ledger.",
+        render: () => <StockfloItems />,
       },
     ],
   },
