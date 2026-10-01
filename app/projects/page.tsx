@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-type Group = "ViteSEO Business" | "Independent Products — Kiplo" | "Client & Other Work";
+type Group = "ViteSEO Business" | "Independent Products" | "Client & Other Work";
 
 type Project = {
   title: string;
@@ -15,7 +15,7 @@ type Project = {
 
 const GROUP_ORDER: Group[] = [
   "ViteSEO Business",
-  "Independent Products — Kiplo",
+  "Independent Products",
   "Client & Other Work",
 ];
 
@@ -52,13 +52,13 @@ const projects: Project[] = [
     group: "ViteSEO Business",
   },
 
-  // ── Independent Products — Kiplo ──
+  // ── Independent Products (built solo) ──
   {
     title: "Appointment-Booking SaaS",
     summary:
       "Multi-tenant appointment-booking platform: timezone-aware availability engine, transactional row-locking to prevent double-booking, prepaid package-credit lifecycle, public self-booking with bot/rate-limit hardening, and email + push reminders. ~97 feature tests; pre-launch.",
     languages: ["Laravel", "Next.js", "Multi-tenant", "PHP"],
-    group: "Independent Products — Kiplo",
+    group: "Independent Products",
     featured: true,
   },
   {
@@ -66,7 +66,7 @@ const projects: Project[] = [
     summary:
       "Multi-tenant inventory/stock system: single-source-of-truth stock-movement ledger with negative-stock and concurrency guards, FEFO batch/expiry and serial tracking, moving-average costing/valuation, and purchase/sales orders with reservations. ~37 feature tests; pre-launch.",
     languages: ["Laravel", "Next.js", "Multi-tenant", "PHP"],
-    group: "Independent Products — Kiplo",
+    group: "Independent Products",
     featured: true,
   },
   {
@@ -74,23 +74,14 @@ const projects: Project[] = [
     summary:
       "Account-based NFC digital business cards — multi-section profiles, themes, per-link analytics, and admin-controlled Basic/Premium tiers. Live.",
     languages: ["Next.js", "Laravel", "PHP"],
-    group: "Independent Products — Kiplo",
-    demoUrl: "https://tap.kiplosolutions.com/",
+    group: "Independent Products",
   },
   {
     title: "Photo Booth Software",
     summary:
       "Event photo-booth software with a custom flipbook engine — the full capture-to-print/share flow. Pre-launch.",
     languages: ["Node.js", "React"],
-    group: "Independent Products — Kiplo",
-  },
-  {
-    title: "Kiplo Website",
-    summary:
-      "Brand/studio site for Kiplo — a data-driven marketing site where the products live.",
-    languages: ["Next.js", "React"],
-    group: "Independent Products — Kiplo",
-    demoUrl: "https://kiplosolutions.com/",
+    group: "Independent Products",
   },
 
   // ── Client & Other Work ──

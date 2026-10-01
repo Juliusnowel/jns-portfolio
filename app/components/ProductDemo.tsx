@@ -40,6 +40,13 @@ import {
   LuArrowRight,
   LuBell,
   LuSearch,
+  LuShare2,
+  LuMail,
+  LuPhone,
+  LuGlobe,
+  LuLinkedin,
+  LuPlus,
+  LuPrinter,
 } from "react-icons/lu";
 import type { IconType } from "react-icons";
 
@@ -878,6 +885,225 @@ function ViteLauncher() {
   );
 }
 
+/* ── NFC digital-card tokens (from kp-nfc) ── */
+const N = {
+  bg: "#e6f1f6",
+  card: "#ffffff",
+  ink: "#111213",
+  soft: "#3d464d",
+  muted: "#616a72",
+  line: "#d2d7d9",
+  accent: "#f5501e",
+  onAccent: "#111213",
+  accentSoft: "#fde3d9",
+  ok: "#157f43",
+  brand: "#19414b", // sample owner brand ground
+};
+
+function NfcPanelHead({ title }: { title: string }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="h-3 w-0.5" style={{ background: N.accent }} />
+      <span className="text-[10px] font-extrabold" style={{ fontFamily: "Archivo, Inter, sans-serif" }}>
+        {title}
+      </span>
+    </div>
+  );
+}
+
+function NfcBuilder() {
+  const sections: [string, boolean][] = [
+    ["Links", true],
+    ["Contact", true],
+    ["Booking", false],
+    ["About", true],
+  ];
+  return (
+    <div className="flex h-full w-full flex-col overflow-hidden text-[11px]" style={{ background: N.bg, color: N.ink }}>
+      <div className="flex items-center justify-between px-4 py-2" style={{ borderBottom: `1px solid ${N.line}`, background: N.card }}>
+        <div>
+          <div className="text-[8px] font-bold uppercase" style={{ color: N.muted, letterSpacing: "0.16em" }}>Edit card</div>
+          <div className="text-[14px] font-black uppercase" style={{ fontFamily: "Archivo, Inter, sans-serif" }}>Card Builder</div>
+        </div>
+        <span className="px-2.5 py-1 text-[9px] font-bold uppercase" style={{ background: N.accent, color: N.onAccent, letterSpacing: "0.06em" }}>Preview</span>
+      </div>
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-hidden p-3 lg:grid-cols-[1fr_0.75fr]">
+        <div className="flex flex-col gap-2.5 overflow-hidden">
+          <div>
+            <NfcPanelHead title="Identity" />
+            <div className="mt-1 grid grid-cols-2 gap-1.5">
+              <div className="px-2 py-1.5 text-[9px]" style={{ border: `1px solid ${N.line}`, background: N.card, color: N.soft }}>Julius Nowel</div>
+              <div className="px-2 py-1.5 text-[9px]" style={{ border: `1px solid ${N.line}`, background: N.card, color: N.soft }}>Technical Lead</div>
+            </div>
+          </div>
+          <div>
+            <NfcPanelHead title="Sections" />
+            <div className="mt-1 flex flex-col gap-1">
+              {sections.map(([name, on]) => (
+                <div key={name} className="flex items-center justify-between px-2 py-1" style={{ border: `1px solid ${N.line}`, background: on ? N.card : "transparent", borderStyle: on ? "solid" : "dashed" }}>
+                  <span className="font-medium">{name}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[8px] font-bold uppercase" style={{ color: on ? N.ok : N.muted }}>{on ? "On" : "Off"}</span>
+                    <span className="flex h-4 w-4 items-center justify-center text-[8px]" style={{ border: `1px solid ${N.line}`, color: N.muted }}>↑</span>
+                    <span className="flex h-4 w-4 items-center justify-center text-[8px]" style={{ border: `1px solid ${N.line}`, color: N.muted }}>↓</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <span className="mt-1 inline-flex items-center gap-1 px-2 py-1 text-[9px]" style={{ border: `1px solid ${N.line}`, color: N.ink }}>
+              <LuPlus className="h-2.5 w-2.5" /> Add section
+            </span>
+          </div>
+          <div>
+            <NfcPanelHead title="Appearance" />
+            <div className="mt-1 flex flex-wrap gap-1.5">
+              {["Profile", "Cover", "Minimal", "Bold"].map((t, i) => (
+                <span key={t} className="px-2 py-1 text-[9px]" style={i === 0 ? { border: `1px solid ${N.accent}`, background: N.accentSoft, color: N.ink } : { border: `1px solid ${N.line}`, color: N.soft }}>{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* phone preview */}
+        <div className="hidden items-start justify-center lg:flex">
+          <div className="w-[7rem] overflow-hidden" style={{ border: `2px solid ${N.ink}`, background: N.brand }}>
+            <div className="relative h-8" style={{ background: N.brand }}>
+              <div className="absolute -bottom-4 left-1/2 flex h-8 w-8 -translate-x-1/2 items-center justify-center rounded-full text-[9px] font-black" style={{ background: N.accent, color: N.onAccent, border: "2px solid #fff", fontFamily: "Archivo" }}>JN</div>
+            </div>
+            <div className="mt-5 px-2 pb-2 text-center">
+              <div className="text-[10px] font-extrabold text-white" style={{ fontFamily: "Archivo" }}>Julius Nowel</div>
+              <div className="text-[7px] text-white/70">Technical Lead</div>
+              <div className="mt-1.5 py-1 text-[7px] font-bold uppercase" style={{ background: N.accent, color: N.onAccent }}>Share</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function NfcProfile() {
+  return (
+    <div className="flex h-full w-full items-start justify-center overflow-hidden p-3 text-[11px]" style={{ background: N.brand }}>
+      <div className="w-full max-w-[15rem]">
+        <div className="relative h-12 w-full" style={{ background: N.brand, borderBottom: "1px solid rgba(255,255,255,0.14)" }}>
+          <span className="absolute left-2 top-2 text-[8px] font-extrabold uppercase text-white/80" style={{ letterSpacing: "0.18em", fontFamily: "Archivo" }}>Julius N.</span>
+          <div className="absolute -bottom-5 left-1/2 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full text-[13px] font-black" style={{ background: N.accent, color: N.onAccent, border: "3px solid #fff", fontFamily: "Archivo" }}>JN</div>
+        </div>
+        <div className="mt-6 text-center">
+          <div className="text-[17px] font-extrabold leading-none text-white" style={{ fontFamily: "Archivo", letterSpacing: "-0.02em" }}>Julius Nowel</div>
+          <div className="mt-1 text-[9px] text-white/70">Technical Lead &amp; Full-Stack Developer</div>
+        </div>
+        <div className="mt-2 flex justify-center gap-2.5 text-white/90">
+          <LuLinkedin className="h-3.5 w-3.5" />
+          <LuGlobe className="h-3.5 w-3.5" />
+          <LuMail className="h-3.5 w-3.5" />
+        </div>
+        <div className="mt-2.5 flex items-center justify-center gap-1 py-2 text-[10px] font-bold uppercase" style={{ background: N.accent, color: N.onAccent, letterSpacing: "0.06em" }}>
+          <LuShare2 className="h-3 w-3" /> Share card
+        </div>
+        <div className="mt-2 space-y-1.5">
+          <div className="p-2" style={{ background: N.card, border: `1px solid ${N.line}` }}>
+            <div className="text-[9px] font-bold" style={{ color: N.ink }}>Contact</div>
+            <div className="mt-1 flex items-center gap-1.5 text-[9px]" style={{ color: N.soft }}>
+              <LuPhone className="h-3 w-3" style={{ color: N.muted }} /> +63 952 467 1112
+            </div>
+            <div className="mt-0.5 flex items-center gap-1.5 text-[9px]" style={{ color: N.soft }}>
+              <LuMail className="h-3 w-3" style={{ color: N.muted }} /> juliusnowels@gmail.com
+            </div>
+          </div>
+          <div className="p-2" style={{ background: N.card, border: `1px solid ${N.line}` }}>
+            <div className="text-[9px] font-bold" style={{ color: N.ink }}>Links</div>
+            {["Portfolio", "GitHub", "LinkedIn"].map((l) => (
+              <div key={l} className="mt-1 flex items-center justify-between text-[9px]" style={{ color: N.soft }}>
+                <span>{l}</span>
+                <span style={{ color: N.accent }}>↗</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Photo Booth tokens (from kp-photobooth · D Archives vintage) ── */
+const B = {
+  bg: "#ece0c6",
+  panel: "#f5ecd6",
+  ink: "#2a1d12",
+  muted: "#6a5236",
+  faint: "#9a835c",
+  line: "#cbb381",
+  lineStrong: "#b3945a",
+  accent: "#6f3327",
+  accentText: "#f6efda",
+  brass: "#a9843f",
+  brassSoft: "#c8ab6f",
+  wood: "#3a2417",
+};
+const SERIF = "Georgia, 'Times New Roman', serif";
+
+function BoothCapture() {
+  return (
+    <div className="h-full w-full p-1.5 text-[11px]" style={{ background: B.wood }}>
+      <div className="flex h-full w-full flex-col overflow-hidden p-3" style={{ background: B.bg, border: `1px solid ${B.brass}` }}>
+        <div className="flex items-center justify-between">
+          <span className="text-[8px] uppercase" style={{ color: B.brass, letterSpacing: "0.18em" }}>↺ Start over</span>
+          <div className="text-center">
+            <div className="text-[7px] uppercase" style={{ color: B.brass, letterSpacing: "0.3em" }}>Your session</div>
+            <div className="text-[13px]" style={{ color: B.ink, fontFamily: SERIF, letterSpacing: "0.04em" }}>Smile!</div>
+          </div>
+          <span style={{ width: 36 }} />
+        </div>
+        <div className="relative mt-2 flex flex-1 items-center justify-center overflow-hidden rounded-xl" style={{ background: "#14110d", border: `1px solid ${B.line}` }}>
+          <div className="absolute inset-5 rounded-lg" style={{ border: `2px solid ${B.lineStrong}` }} />
+          <div className="font-extrabold text-white" style={{ fontSize: "52px", textShadow: "0 4px 18px rgba(0,0,0,0.5)" }}>3</div>
+          <div className="absolute bottom-1.5 left-0 right-0 flex justify-center gap-1">
+            {["Classic", "Sepia", "B&W", "Film"].map((f, i) => (
+              <span key={f} className="rounded-full px-1.5 py-0.5 text-[8px] uppercase" style={i === 1 ? { background: B.accent, color: B.accentText } : { background: "rgba(0,0,0,0.45)", color: "#fff" }}>{f}</span>
+            ))}
+          </div>
+        </div>
+        <div className="mt-2 flex items-center justify-between">
+          <div className="flex gap-0.5">
+            {Array.from({ length: 18 }).map((_, i) => (
+              <span key={i} className="h-2 w-0.5" style={{ background: i < 7 ? B.brass : B.brassSoft, opacity: i < 7 ? 1 : 0.4 }} />
+            ))}
+          </div>
+          <span className="rounded-full px-2 py-0.5 text-[9px]" style={{ background: B.panel, border: `1px solid ${B.line}`, color: B.ink }}>7 / 18</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BoothOutput() {
+  const strip = ["linear-gradient(135deg,#d9c3a2,#b89a6f)", "linear-gradient(135deg,#c9b48f,#a98a5f)", "linear-gradient(135deg,#dcc7a6,#c0a377)"];
+  return (
+    <div className="h-full w-full p-1.5 text-[11px]" style={{ background: B.wood }}>
+      <div className="flex h-full w-full items-center justify-center gap-5 overflow-hidden p-3" style={{ background: B.bg }}>
+        <div className="flex flex-col gap-1 p-1.5" style={{ background: B.panel, border: `1px solid ${B.brass}` }}>
+          {strip.map((g, i) => (
+            <div key={i} className="h-9 w-16 rounded-sm" style={{ background: g }} />
+          ))}
+          <div className="mt-0.5 py-0.5 text-center text-[6px] uppercase" style={{ background: "#111213", color: "#eee", letterSpacing: "0.12em" }}>Evening Soirée · 2026</div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <div className="text-[12px]" style={{ fontFamily: SERIF, color: B.ink }}>Your photos are ready</div>
+          <div className="grid grid-cols-3 gap-1">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="h-7 w-7 rounded-lg" style={{ background: "#14110d", border: `1px solid ${B.line}` }} />
+            ))}
+          </div>
+          <span className="inline-flex items-center gap-1 self-start rounded-md px-2.5 py-1 text-[9px] font-bold uppercase" style={{ background: B.accent, color: B.accentText, letterSpacing: "0.14em" }}>
+            <LuPrinter className="h-3 w-3" /> Print
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Demo registry ── */
 const DEMOS: Record<string, Demo> = {
   booking: {
@@ -1006,6 +1232,42 @@ const DEMOS: Record<string, Demo> = {
             <ViteDashboard />
           </ViteShell>
         ),
+      },
+    ],
+  },
+  nfc: {
+    wordmark: "",
+    eyebrow: "",
+    activeKey: "nfc",
+    nav: [],
+    scenes: [
+      {
+        caption:
+          "Build your NFC card — add sections, links and a theme, with a live phone preview.",
+        render: () => <NfcBuilder />,
+      },
+      {
+        caption:
+          "Tap to open: a clean digital profile — avatar, links, one-tap contact and Share.",
+        render: () => <NfcProfile />,
+      },
+    ],
+  },
+  photobooth: {
+    wordmark: "",
+    eyebrow: "",
+    activeKey: "photobooth",
+    nav: [],
+    scenes: [
+      {
+        caption:
+          "The booth: live camera, countdown and filters — plus a flipbook engine that records many frames.",
+        render: () => <BoothCapture />,
+      },
+      {
+        caption:
+          "Instant output — a printable photo strip, a session gallery, and a QR to download.",
+        render: () => <BoothOutput />,
       },
     ],
   },

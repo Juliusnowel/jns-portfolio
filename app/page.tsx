@@ -111,27 +111,20 @@ const productIcons: Record<string, IconType> = {
   platform: LuLayoutGrid,
 };
 
-const kiploProducts = [
+const independentProducts = [
   {
+    key: "nfc",
     title: "NFC Digital Business-Card Platform",
     status: "Live",
     description:
       "Account-based NFC digital business cards — multi-section profiles, themes, per-link analytics, and admin-controlled tiers.",
-    href: "https://tap.kiplosolutions.com/",
   },
   {
+    key: "photobooth",
     title: "Photo Booth Software",
     status: "Pre-launch",
     description:
       "Event photo-booth software with a custom flipbook engine — the full capture-to-print/share flow.",
-    href: null,
-  },
-  {
-    title: "Kiplo Website",
-    status: "Live",
-    description:
-      "The brand/studio site for Kiplo — where the products live.",
-    href: "https://kiplosolutions.com/",
   },
 ] as const;
 
@@ -644,16 +637,16 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* Independent Products — Kiplo (personal product brand) */}
+        {/* Independent Products — systems built solo */}
         <section className={`relative py-10 sm:py-12 lg:py-14 ${sectionContentInset}`}>
           <div className="flex items-end justify-between gap-4 border-b border-[var(--line-strong)] pb-5">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--accent-ink)]">
                 [ Independent Products ]
               </p>
-              <h3 className={`mt-2 ${typeScale.h3}`}>Kiplo — products I design &amp; build</h3>
+              <h3 className={`mt-2 ${typeScale.h3}`}>Products I design &amp; build</h3>
               <p className={`mt-2 max-w-2xl text-sm ${themeClass.textSecondary}`}>
-                My own product brand — not a client, not a job. Things I ship end-to-end.
+                Systems I built on my own — not a client, not a job. Shipped end-to-end.
               </p>
             </div>
             <Link
@@ -664,12 +657,13 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="mt-8 grid gap-px border border-[var(--border-color)] bg-[var(--border-color)] sm:grid-cols-3">
-            {kiploProducts.map((product, i) => {
-              const cardClass =
-                "group relative flex h-full flex-col bg-[var(--page-bg)] p-6 transition-colors duration-200 hover:bg-[var(--accent-soft)] sm:p-7";
-              const inner = (
-                <>
+          <div className="mt-8 grid gap-px border border-[var(--border-color)] bg-[var(--border-color)] sm:grid-cols-2">
+            {independentProducts.map((product, i) => (
+              <Reveal key={product.title} direction="left" delay={i * 90} className="h-full">
+                <button
+                  onClick={() => setDemoProduct({ key: product.key, title: product.title })}
+                  className="group relative flex h-full w-full flex-col bg-[var(--page-bg)] p-6 text-left transition-colors duration-200 hover:bg-[var(--accent-soft)] sm:p-7"
+                >
                   <div className="flex items-center justify-between gap-3">
                     <span
                       className={`font-mono text-xs font-semibold uppercase tracking-[0.14em] ${
@@ -680,14 +674,12 @@ export default function Home() {
                     >
                       {product.status}
                     </span>
-                    {product.href ? (
-                      <span
-                        aria-hidden="true"
-                        className="font-semibold text-[var(--accent-ink)] transition-transform duration-200 group-hover:translate-x-0.5"
-                      >
-                        ↗
-                      </span>
-                    ) : null}
+                    <span
+                      aria-hidden="true"
+                      className="font-semibold text-[var(--accent-ink)] transition-transform duration-200 group-hover:translate-x-0.5"
+                    >
+                      Demo ▶
+                    </span>
                   </div>
                   <h4 className="mt-5 text-[1.15rem] font-bold leading-snug sm:text-[1.25rem]">
                     {product.title}
@@ -696,20 +688,9 @@ export default function Home() {
                     {product.description}
                   </p>
                   <span className="absolute bottom-0 left-0 h-[3px] w-0 bg-[var(--accent)] transition-all duration-300 group-hover:w-full" />
-                </>
-              );
-              return (
-                <Reveal key={product.title} direction="left" delay={i * 90} className="h-full">
-                  {product.href ? (
-                    <a href={product.href} target="_blank" rel="noopener noreferrer" className={cardClass}>
-                      {inner}
-                    </a>
-                  ) : (
-                    <div className={cardClass}>{inner}</div>
-                  )}
-                </Reveal>
-              );
-            })}
+                </button>
+              </Reveal>
+            ))}
           </div>
         </section>
 
