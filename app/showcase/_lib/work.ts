@@ -18,46 +18,48 @@ export type WorkItem = {
 
 export const selectedWork: WorkItem[] = [
   {
-    id: "vite-seo-systems",
-    title: "Vite SEO Systems",
-    domain: "Platform",
+    id: "zerem-ai",
+    title: "Zerem — AI Customer-Engagement",
+    domain: "Applied AI",
     summary:
-      "A unified HRIS + CRM + PMS platform — one system for people, clients, and projects. Built as an internal case study (Laravel + Next.js). No live link; no client or employee data shown.",
-    stack: ["Laravel", "Next.js", "MySQL"],
+      "An AI layer for a CRM: Meta Messenger/Instagram conversations drafted and auto-replied by an LLM (OpenRouter), with safety guardrails and human handoff. Built and feature-flagged, pending Meta app review.",
+    stack: ["Laravel", "Next.js", "OpenRouter / LLM", "Meta API"],
     image: null,
     href: null,
     caseStudy: true,
   },
   {
-    id: "business-lead-scraper",
-    title: "Business-lead Python scraper",
-    domain: "Automation / Data",
+    id: "slotflo-booking",
+    title: "Slotflo — Booking SaaS",
+    domain: "Product",
     summary:
-      "A practical crawler that collects and normalizes business listing data for research and lead workflows — structured output, reusable scripts.",
-    stack: ["Python", "JavaScript"],
+      "A multi-tenant appointment-booking platform: timezone-aware availability, row-locking against double-booking, prepaid package credits, and public self-booking. ~97 feature tests; pre-launch.",
+    stack: ["Laravel", "Next.js", "Multi-tenant"],
     image: null,
     href: null,
+    caseStudy: true,
   },
   {
-    id: "wp-store-locator",
-    title: "WordPress store-locator plugin",
-    domain: "Plugin",
+    id: "stockflo-inventory",
+    title: "Stockflo — Inventory SaaS",
+    domain: "Product",
     summary:
-      "A custom WordPress MU-plugin for store management — maintainable admin workflows and location-focused content support for SEO/content teams.",
-    stack: ["PHP", "WordPress"],
+      "A multi-tenant inventory system: transactional stock-movement ledger with concurrency guards, FEFO batch/expiry tracking, moving-average valuation, and purchase & sales orders. ~37 feature tests; pre-launch.",
+    stack: ["Laravel", "Next.js", "Multi-tenant"],
     image: null,
     href: null,
+    caseStudy: true,
   },
 ];
 
 /** Breadth tiles for the light zoom-out / range moment */
 export const rangeTiles = [
-  { id: "hris", label: "HRIS" },
-  { id: "crm", label: "CRM" },
-  { id: "pms", label: "PMS" },
-  { id: "scraper", label: "Scraper" },
-  { id: "image-optimizer", label: "Image optimizer" },
-  { id: "plugin", label: "WP plugin" },
+  { id: "booking", label: "Booking SaaS" },
+  { id: "inventory", label: "Inventory SaaS" },
+  { id: "ai", label: "AI Engagement" },
+  { id: "platform", label: "Multi-tenant Platform" },
+  { id: "accounting", label: "Accounting" },
+  { id: "nfc", label: "NFC" },
 ] as const;
 
 export const capabilities = [
@@ -96,14 +98,14 @@ export const BRAND = {
 
 /** Kinetic marquee band */
 export const marqueeItems = [
-  "Dissecting code",
-  "Debugging",
-  "Decision-making",
-  "Programming",
   "Laravel",
   "Next.js",
-  "WordPress",
+  "TypeScript",
+  "Multi-tenant SaaS",
+  "OpenRouter / LLM",
+  "AI automation",
+  "Concurrency",
+  "TDD",
   "Python",
-  "Automation",
-  "Plugins",
+  "Docker",
 ] as const;

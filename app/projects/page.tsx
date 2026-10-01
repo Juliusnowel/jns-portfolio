@@ -12,123 +12,60 @@ type Project = {
 
 const projects: Project[] = [
   {
-    title: "Python Bulk Image Optimizer",
+    title: "Zerem — AI Customer-Engagement",
     summary:
-      "Flask-based image conversion tool that processes bulk uploads, applies adaptive downscaling, and exports optimized WebP/PNG files inside a downloadable ZIP.",
-    languages: ["Python", "Flask"],
+      "AI customer-engagement layer for a CRM: Meta Messenger/Instagram inbound + outbound with an OpenRouter (gpt-4o-mini) reply-draft and auto-reply pipeline, safety guardrails (allowlist, rate caps, sanitization) and human handoff. v1 built, feature-flagged, pending Meta app review.",
+    languages: ["Laravel", "Next.js", "OpenRouter / LLM", "Meta API"],
   },
   {
-    title: "Scrapping-Site",
+    title: "Slotflo — Booking SaaS",
     summary:
-      "Python scraping project for collecting and structuring website data with template-based output pages and reusable crawler scripts.",
-    languages: ["Python", "JavaScript", "Shell"],
+      "Multi-tenant appointment-booking platform: timezone-aware availability engine, transactional row-locking to prevent double-booking, prepaid package-credit lifecycle, public self-booking with bot/rate-limit hardening, and email + push reminders. ~97 feature tests; pre-launch.",
+    languages: ["Laravel", "Next.js", "Multi-tenant", "PHP"],
   },
   {
-    title: "business-list-scrap",
+    title: "Stockflo — Inventory SaaS",
     summary:
-      "Business directory crawler focused on scraping and normalizing listing data from businesslist.ph for practical lead and research workflows.",
-    languages: ["Python", "JavaScript"],
+      "Multi-tenant inventory/stock system: single-source-of-truth stock-movement ledger with negative-stock and concurrency guards, FEFO batch/expiry and serial tracking, moving-average costing/valuation, and purchase/sales orders with reservations. ~37 feature tests; pre-launch.",
+    languages: ["Laravel", "Next.js", "Multi-tenant", "PHP"],
   },
   {
-    title: "Break Time Reminder + Telegram Integration",
+    title: "ViteSEO Systems — Unified Platform",
     summary:
-      "Desktop break reminder automation with full-screen alerts, countdown logic, and encrypted Telegram session integration to send BRB/BAT updates.",
-    languages: ["Python", "Automation"],
+      "Unified HRIS + CRM + PMS behind one login. As technical lead I merged three standalone systems into one multi-tenant platform (Sanctum auth, org-scoping across 57 tables), owned cross-team integration and release, and built the HR access-lifecycle (auto-provision on hire, close on separation) test-first.",
+    languages: ["Laravel", "Next.js", "Multi-tenant", "PHP"],
   },
   {
-    title: "translate (English to Korean)",
+    title: "Accounting Module",
     summary:
-      "Lightweight web translation utility that converts English to Korean with a simple interface for fast phrase checks and content drafting.",
-    languages: ["JavaScript"],
+      "Accounting module within the platform — recurring invoices, revenue recognition, and subscription billing, scoped per tenant. (Not yet CPA-validated.)",
+    languages: ["Laravel", "Next.js", "PHP"],
   },
   {
-    title: "Gemini SEO Glossary (Apps Script)",
+    title: "Kiosk Module",
     summary:
-      "Google Apps Script tool that generates SEO glossary drafts from Google Sheets using Gemini with caching and quota-aware cooldown handling.",
-    languages: ["JavaScript", "Apps Script"],
+      "Lead-gen kiosk module — access grants, product catalog, and geofenced access control enforced through middleware.",
+    languages: ["Laravel", "Next.js", "PHP"],
   },
   {
-    title: "SEO Entity Map (Apps Script)",
+    title: "Kiplo NFC",
     summary:
-      "Sheets-based entity bucketing workflow for client and competitor terms that helps generate structured SEO specs and draft directions.",
-    languages: ["JavaScript", "Apps Script"],
+      "Account-based NFC digital-card platform — multi-section profiles, themes, per-link analytics, and admin-controlled Basic/Premium tiers. Live.",
+    languages: ["Next.js", "Laravel", "PHP"],
+    demoUrl: "https://tap.kiplosolutions.com/",
   },
   {
-    title: "Vite Schema CSV Importer (MU Plugin)",
+    title: "Production WordPress Client Sites",
     summary:
-      "WordPress admin importer for SEO/meta updates via CSV with dry-run mode, validation, logs, and controlled overwrite behavior.",
-    languages: ["PHP", "WordPress"],
-  },
-  {
-    title: "SEO Diagnostic Tool (MU Plugin)",
-    summary:
-      "Modular SEO scanner in WordPress admin that audits headings, metadata, links, indexability, and content quality with export-ready reports.",
-    languages: ["PHP", "WordPress", "JavaScript"],
-  },
-  {
-    title: "Vite SEO Guard (Posts)",
-    summary:
-      "Publishing guardrails for WordPress posts that require SEO title, meta description, and schema fields before content goes live.",
-    languages: ["PHP", "WordPress", "JavaScript"],
-  },
-  {
-    title: "Noyona Store Locator (MU Plugin)",
-    summary:
-      "Lightweight store management plugin for SEO/content teams with maintainable admin workflows and location-focused content support.",
-    languages: ["PHP", "WordPress"],
-  },
-  {
-    title: "Noyona Brand Carousel Manager (MU Plugin)",
-    summary:
-      "Custom WordPress plugin to manage and map review carousel entries per page template for flexible homepage/landing presentation.",
-    languages: ["PHP", "WordPress"],
-  },
-  {
-    title: "Allegiantairtickets (WP Child Theme)",
-    summary:
-      "Custom Twenty Twenty-Five child theme with reusable Gutenberg blocks and responsive travel-focused landing page sections.",
-    languages: ["WordPress", "PHP", "JavaScript"],
-    demoUrl: "https://allegiantairtickets.com/",
-  },
-  {
-    title: "Noyonacosmetics (WP Child Theme)",
-    summary:
-      "WordPress child theme with custom design tokens, responsive typography, and reusable section patterns for brand-driven layouts.",
+      "Production client websites built and maintained with custom child themes (Allegiant Air Tickets, Noyona Cosmetics, ViteSEO, Creceri) — custom Gutenberg blocks, WooCommerce, and maintainable, business-focused structure.",
     languages: ["WordPress", "PHP", "JavaScript"],
     demoUrl: "https://noyonacosmetics.com/",
   },
   {
-    title: "Viteseo (WP Child Theme)",
+    title: "SEO Production Plugins (WordPress)",
     summary:
-      "Production-focused child theme setup with layout system controls, block spacing normalization, and reusable section components.",
-    languages: ["WordPress", "PHP", "JavaScript"],
-    demoUrl: "https://viteseo.ph/",
-  },
-  {
-    title: "Creceri Website Maintenance",
-    summary:
-      "WordPress maintenance work using a child-theme approach, focused on safe updates, layout consistency, and ongoing content/section improvements.",
-    languages: ["WordPress", "PHP", "JavaScript"],
-    demoUrl: "https://creceri.com/",
-  },
-  {
-    title: "YY Zhenshun Website Maintenance",
-    summary:
-      "WordPress maintenance support with child-theme workflow for stable customizations, compatibility updates, and day-to-day production fixes.",
-    languages: ["WordPress", "PHP", "JavaScript"],
-    demoUrl: "https://yyzhenshun.com/",
-  },
-  {
-    title: "Vue + Laravel OJT Project",
-    summary:
-      "Full stack OJT project with Vue frontend and Laravel backend, focused on practical workflows and API-driven screens.",
-    languages: ["Vue", "Laravel", "JavaScript", "PHP"],
-  },
-  {
-    title: "React Native + Laravel Thesis",
-    summary:
-      "Mobile-first thesis application using React Native (Expo) with Laravel backend services and API integration.",
-    languages: ["React Native", "Expo", "Laravel", "PHP", "JavaScript"],
+      "Custom WordPress plugins used in real SEO workflows — a CSV meta importer with dry-run + validation, a modular SEO diagnostic scanner, and publish-time SEO guardrails.",
+    languages: ["PHP", "WordPress", "JavaScript"],
   },
 ];
 

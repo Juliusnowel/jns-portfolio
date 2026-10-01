@@ -48,48 +48,48 @@ const aboutVisualCards = [
 
 const featuredProjects = [
   {
-    title: "Allegiant Air Tickets",
-    tags: ["WordPress", "PHP", "Custom Build"],
+    title: "Zerem — AI Customer-Engagement",
+    tags: ["Laravel", "Next.js", "OpenRouter / LLM", "Meta API"],
     description:
-      "One and only developer for this client website task, delivered with a custom child-theme implementation.",
-    image: "/project_image_bg/allegiants.webp",
-    href: "https://allegiantairtickets.com/",
-    size: "secondary",
-    imagePosition: "object-center",
-    imageInset: "px-6",
-  },
-  {
-    title: "Viteseo",
-    tags: ["WordPress", "PHP", "JavaScript"],
-    description:
-      "One and only developer for the company website, using a child-theme approach and custom business-focused implementations.",
-    image: "/project_image_bg/viteseo.png",
-    href: "https://viteseo.ph/",
+      "AI layer for a CRM: Meta Messenger/Instagram conversations drafted and auto-replied by an LLM, with safety guardrails and human handoff. Built, pending Meta app review.",
+    image: "/project_image_bg/zerem.png",
+    href: "/projects",
     size: "featured",
-    imagePosition: "object-center",
+    imagePosition: "object-top",
     imageInset: "px-2",
   },
   {
-    title: "Creceri",
-    tags: ["WordPress", "Maintenance", "Child Theme"],
+    title: "Slotflo — Booking SaaS",
+    tags: ["Laravel", "Next.js", "Multi-tenant"],
     description:
-      "Handled maintenance and iterative updates with a child-theme workflow to keep the website stable and easy to improve.",
-    image: "/project_image_bg/creceri.png",
-    href: "https://creceri.com/",
+      "Multi-tenant appointment-booking platform: timezone-aware availability, row-locking against double-booking, prepaid package credits, and public self-booking. ~97 tests, pre-launch.",
+    image: "/project_image_bg/slotflo.png",
+    href: "/projects",
     size: "secondary",
-    imagePosition: "object-center",
-    imageInset: "px-6",
+    imagePosition: "object-top",
+    imageInset: "px-2",
   },
   {
-    title: "Noyona Cosmetics",
-    tags: ["WordPress", "WooCommerce", "Child Theme"],
+    title: "Stockflo — Inventory SaaS",
+    tags: ["Laravel", "Next.js", "Multi-tenant"],
     description:
-      "One and only developer for the WooCommerce website, focused on practical ecommerce structure and maintainable customizations.",
-    image: "/project_image_bg/noyona.webp",
-    href: "https://noyonacosmetics.com/",
+      "Multi-tenant inventory system: transactional stock-movement ledger, FEFO batch/expiry tracking, moving-average valuation, and purchase & sales orders. ~37 tests, pre-launch.",
+    image: "/project_image_bg/stockflo.png",
+    href: "/projects",
     size: "featured",
-    imagePosition: "object-center",
-    imageInset: "px-6",
+    imagePosition: "object-top",
+    imageInset: "px-2",
+  },
+  {
+    title: "ViteSEO Systems — Unified Platform",
+    tags: ["Laravel", "Next.js", "Multi-tenant", "Tech Lead"],
+    description:
+      "As technical lead, unified three standalone systems (HRIS/CRM/PMS) into one multi-tenant platform; owned integration & release and built the access-lifecycle test-first.",
+    image: "/project_image_bg/viteseo-systems.png",
+    href: "/projects",
+    size: "secondary",
+    imagePosition: "object-top",
+    imageInset: "px-2",
   },
 ] as const;
 
@@ -368,18 +368,19 @@ export default function Home() {
               <h2
                 className={`mt-5 lg:max-w-xl font-semibold leading-snug text-[var(--accent-ink)] ${typeScale.h2}`}
               >
-                Leading delivery and building websites, internal business
-                systems, and full stack web applications
+                Technical Lead &amp; Full-Stack Developer
               </h2>
+              <p className="mt-3 font-mono text-sm font-semibold uppercase tracking-[0.14em] text-[var(--text-primary)] sm:text-[0.95rem]">
+                Building AI-powered products — LLM APIs, agents &amp; automation
+              </p>
               <p
                 className={`mt-5 lg:max-w-2xl leading-[1.65] ${themeClass.textSecondary} ${typeScale.body}`}
               >
-                I work as a technical lead and hands-on developer — guiding a
-                small team while building websites, internal business systems,
-                and deployment workflows. My day-to-day spans full-stack
-                development with Laravel, Vue, React Native, and Python, plus
-                custom WordPress and the technical decisions that keep projects
-                shippable.
+                I lead and build production-grade, multi-tenant SaaS end-to-end
+                (Laravel + Next.js) — appointment-booking and inventory
+                platforms — and I build AI into products: an LLM-powered
+                customer-engagement layer that drafts and automates replies with
+                the right guardrails and human handoff.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <a
@@ -497,7 +498,7 @@ export default function Home() {
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--accent-ink)]">
                 [ Featured Projects ]
               </p>
-              <h3 className={`mt-2 ${typeScale.h3}`}>Selected client &amp; product work</h3>
+              <h3 className={`mt-2 ${typeScale.h3}`}>Selected product &amp; platform work</h3>
             </div>
             <Link
               href="/projects"
@@ -516,15 +517,15 @@ export default function Home() {
               <Reveal key={project.title} as="li" delay={i * 80} className="border-b border-[var(--border-color)]">
                 <a
                   href={project.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Open ${project.title}`}
+                  aria-label={`View ${project.title}`}
                   onMouseEnter={() => setProjHover(i)}
                   className="group flex flex-col gap-3 py-5 transition-colors duration-200 hover:bg-[var(--accent-soft)] lg:flex-row lg:items-center lg:gap-6 lg:py-7"
                 >
-                  {/* Inline image on mobile/tablet (no hover preview there) */}
-                  <div className="relative h-44 w-full shrink-0 overflow-hidden border border-[var(--accent)] bg-[var(--accent)] sm:h-52 lg:hidden">
-                    <Image src={project.image} alt={project.title} fill className="object-contain p-2.5" />
+                  {/* Placeholder preview on mobile/tablet — screenshots land in Phase 2 */}
+                  <div className="relative flex h-44 w-full shrink-0 items-center justify-center overflow-hidden border border-[#111213] bg-[var(--accent)] p-4 sm:h-52 lg:hidden">
+                    <span className="text-center font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#111213]">
+                      {project.title}
+                    </span>
                   </div>
                   <span className="hidden shrink-0 font-mono text-sm tabular-nums text-[var(--text-muted)] lg:block">
                     {String(i + 1).padStart(2, "0")}
@@ -560,16 +561,10 @@ export default function Home() {
               }}
             >
               <div className="w-[22rem] overflow-hidden border border-[var(--accent)] bg-white shadow-[var(--shadow-md)]">
-                <div className="relative aspect-[16/10] bg-[var(--accent)]">
-                  {projHover !== null && (
-                    <Image
-                      src={featuredProjects[projHover].image}
-                      alt=""
-                      fill
-                      sizes="352px"
-                      className="object-contain p-3"
-                    />
-                  )}
+                <div className="relative flex aspect-[16/10] items-center justify-center bg-[var(--accent)] p-5">
+                  <span className="text-center font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#111213]">
+                    {projHover !== null ? featuredProjects[projHover].title : ""}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between gap-3 border-t border-[#d2d7d9] px-3 py-2">
                   <span className="truncate text-sm font-bold text-[#111213]">
