@@ -30,6 +30,16 @@ import {
   LuTruck,
   LuClipboardList,
   LuTriangleAlert,
+  LuLayoutDashboard,
+  LuInbox,
+  LuMapPin,
+  LuTarget,
+  LuSettings,
+  LuSparkles,
+  LuSend,
+  LuArrowRight,
+  LuBell,
+  LuSearch,
 } from "react-icons/lu";
 import type { IconType } from "react-icons";
 
@@ -64,7 +74,7 @@ const RAIL: { key: string; Icon: IconType }[] = [
   { key: "accounting", Icon: LuCalculator },
 ];
 
-type Scene = { caption: string; render: () => React.ReactNode };
+type Scene = { caption: string; render: (demo: Demo) => React.ReactNode };
 type Demo = {
   wordmark: string;
   eyebrow: string;
@@ -604,6 +614,270 @@ function StockfloItems() {
   );
 }
 
+/* ── ViteSEO (teal) design tokens (from vs-platform) ── */
+const V = {
+  page: "#fafafe",
+  card: "#ffffff",
+  ink: "#111827",
+  muted: "#6b7280",
+  border: "#e5e7ea",
+  subtle: "#f0f0f0",
+  teal: "#4fdbd7",
+  tealInk: "#19414b",
+  tealSubtle: "#e4faf9",
+  tealStrong: "#0f7a78",
+  sidebar: "#141414",
+  sidebarText: "#a0aec0",
+  sidebarAccent: "#262626",
+  danger: "#ef4444",
+  warning: "#f5a623",
+  info: "#3b82f6",
+};
+
+/* ViteSEO dark-sidebar + topbar shell */
+function ViteShell({
+  demo,
+  brandIcon,
+  activeLabel,
+  children,
+}: {
+  demo: Demo;
+  brandIcon: IconType;
+  activeLabel: string;
+  children: React.ReactNode;
+}) {
+  const Brand = brandIcon;
+  return (
+    <div className="flex h-full w-full overflow-hidden text-[11px]" style={{ background: V.page, color: V.ink }}>
+      <div className="hidden w-40 shrink-0 flex-col md:flex" style={{ background: V.sidebar }}>
+        <div className="flex h-12 items-center gap-2 px-3">
+          <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: V.teal }}>
+            <Brand className="h-4 w-4" style={{ color: V.tealInk }} />
+          </span>
+          <span className="text-[14px] font-extrabold text-white">{demo.wordmark}</span>
+        </div>
+        <div className="px-3 pb-1 pt-2 text-[8px] font-semibold uppercase" style={{ color: V.sidebarText, letterSpacing: "0.14em" }}>
+          Workspace
+        </div>
+        <div className="flex flex-col gap-0.5 px-2">
+          {demo.nav.map((n) => {
+            const active = n.label === activeLabel;
+            return (
+              <span
+                key={n.label}
+                className="relative flex items-center gap-2 rounded-lg px-2.5 py-1.5"
+                style={{ background: active ? V.sidebarAccent : "transparent", color: active ? "#fff" : V.sidebarText }}
+              >
+                {active && <span className="absolute left-0 top-1.5 bottom-1.5 w-0.5 rounded-r" style={{ background: V.teal }} />}
+                <n.Icon className="h-[15px] w-[15px]" />
+                <span style={{ fontWeight: active ? 600 : 500 }}>{n.label}</span>
+              </span>
+            );
+          })}
+        </div>
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex h-9 shrink-0 items-center justify-between px-3" style={{ background: V.card, borderBottom: `1px solid ${V.border}` }}>
+          <div className="flex items-center gap-1.5 rounded-lg px-2 py-0.5" style={{ border: `1px solid ${V.border}`, color: V.muted }}>
+            <LuSearch className="h-3 w-3" />
+            <span className="text-[9px]">Search…</span>
+          </div>
+          <div className="flex items-center gap-2" style={{ color: V.muted }}>
+            <LuBell className="h-3.5 w-3.5" />
+            <LuLayoutGrid className="h-3.5 w-3.5" />
+            <span className="h-5 w-5 rounded-full" style={{ background: V.tealSubtle, border: `1px solid ${V.teal}` }} />
+          </div>
+        </div>
+        <div className="min-w-0 flex-1 overflow-hidden p-3" style={{ background: V.page }}>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Zerem (CRM) scenes ── */
+function ChannelPill({ ch }: { ch: "Messenger" | "Instagram" }) {
+  const m = ch === "Messenger" ? { bg: "#eff6ff", fg: "#1d4ed8" } : { bg: "#fdf2f8", fg: "#be185d" };
+  return (
+    <span className="rounded-full px-1.5 py-0.5 text-[8px] font-medium" style={{ background: m.bg, color: m.fg }}>
+      {ch}
+    </span>
+  );
+}
+
+const CONVOS = [
+  { ch: "Messenger" as const, name: "Maria Santos", prev: "Available ba kayo for facial this Saturday?", t: "2m" },
+  { ch: "Instagram" as const, name: "@jennylao", prev: "How much po yung botox consult?", t: "18m" },
+  { ch: "Messenger" as const, name: "Paolo Uy", prev: "Thanks! See you at 1pm.", t: "1h" },
+];
+
+function ZeremInbox() {
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex items-center justify-between pb-2">
+        <div className="flex items-center gap-1.5">
+          {["All", "Messenger", "Instagram"].map((f, i) => (
+            <span
+              key={f}
+              className="rounded-full px-2 py-0.5 text-[9px]"
+              style={
+                i === 0
+                  ? { border: `1px solid ${V.teal}`, background: V.tealSubtle, color: V.tealStrong }
+                  : { border: `1px solid ${V.border}`, color: V.muted }
+              }
+            >
+              {f}
+            </span>
+          ))}
+        </div>
+        <span className="text-[9px]" style={{ color: V.muted }}>
+          3 conversations
+        </span>
+      </div>
+      <div className="grid min-h-0 flex-1 grid-cols-1 gap-2 lg:grid-cols-[12rem_1fr]">
+        <div className="hidden flex-col overflow-hidden rounded-xl lg:flex" style={{ border: `1px solid ${V.border}`, background: V.card }}>
+          {CONVOS.map((c, i) => (
+            <div key={c.name} className="px-2.5 py-2" style={{ borderBottom: `1px solid ${V.subtle}`, background: i === 0 ? V.tealSubtle : "transparent" }}>
+              <div className="flex items-center justify-between">
+                <ChannelPill ch={c.ch} />
+                <span className="text-[8px]" style={{ color: V.muted }}>{c.t}</span>
+              </div>
+              <div className="mt-1 truncate text-[10px] font-medium" style={{ color: V.ink }}>{c.name}</div>
+              <div className="truncate text-[9px]" style={{ color: V.muted }}>{c.prev}</div>
+            </div>
+          ))}
+        </div>
+        <div className="flex min-h-0 flex-col overflow-hidden rounded-xl" style={{ border: `1px solid ${V.border}`, background: V.card }}>
+          <div className="flex items-center justify-between px-3 py-1.5" style={{ borderBottom: `1px solid ${V.subtle}` }}>
+            <div className="flex items-center gap-2">
+              <ChannelPill ch="Messenger" />
+              <span className="text-[9px]" style={{ color: V.muted }}>4 messages</span>
+            </div>
+            <span className="rounded-lg px-2 py-0.5 text-[9px]" style={{ border: `1px solid ${V.border}`, color: V.ink }}>Link lead</span>
+          </div>
+          <div className="flex flex-1 flex-col gap-1.5 overflow-hidden p-2.5">
+            <div className="max-w-[80%] self-start rounded-xl px-2.5 py-1.5 text-[10px]" style={{ background: "#f3f4f6", color: V.ink }}>
+              Available ba kayo for facial this Saturday?
+            </div>
+            <div className="max-w-[80%] self-end rounded-xl px-2.5 py-1.5 text-[10px]" style={{ background: V.tealSubtle, border: `1px solid ${V.teal}`, color: V.tealInk }}>
+              Hi Maria! Yes — 2pm and 4pm are open. Which works for you?
+            </div>
+            <div className="self-end text-[8px]" style={{ color: V.muted }}>Us · Sent</div>
+          </div>
+          <div className="px-2.5 py-2" style={{ borderTop: `1px solid ${V.subtle}` }}>
+            <div className="rounded-lg px-2 py-1.5 text-[9px]" style={{ border: `1px solid ${V.border}`, color: V.muted }}>Write a reply…</div>
+            <div className="mt-1.5 flex items-center justify-between">
+              <span className="flex items-center gap-1 rounded-lg px-2 py-1 text-[9px]" style={{ border: `1px solid ${V.teal}`, color: V.tealStrong }}>
+                <LuSparkles className="h-3 w-3" /> Draft with AI
+              </span>
+              <span className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-[9px] font-semibold" style={{ background: V.teal, color: V.tealInk }}>
+                <LuSend className="h-3 w-3" /> Send
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ViteKpi({ label, value, note }: { label: string; value: string; note: string }) {
+  return (
+    <div className="relative overflow-hidden rounded-xl p-2.5" style={{ border: `1px solid ${V.border}`, background: V.card }}>
+      <span className="absolute left-0 right-0 top-0 h-0.5" style={{ background: V.teal }} />
+      <div className="text-[8px] uppercase" style={{ color: V.muted, letterSpacing: "0.08em" }}>{label}</div>
+      <div className="text-[18px] font-extrabold tabular-nums leading-tight" style={{ color: V.ink }}>{value}</div>
+      <div className="text-[8px]" style={{ color: V.muted }}>{note}</div>
+    </div>
+  );
+}
+
+const LEADS = [
+  { biz: "Glow Derma Clinic", who: "Maria Santos", pr: "High", prc: V.danger, st: "Interested" },
+  { biz: "Bloom Salon & Spa", who: "Rea Villamor", pr: "Medium", prc: V.warning, st: "Call-back" },
+  { biz: "Seda Hotel BGC", who: "Arnel Dizon", pr: "High", prc: V.danger, st: "Awaiting" },
+  { biz: "Summit Media", who: "Karen Lao", pr: "Low", prc: V.info, st: "Interested" },
+];
+
+function ViteDashboard() {
+  return (
+    <div className="flex h-full flex-col gap-3">
+      <h4 className="text-[15px] font-extrabold" style={{ color: V.ink }}>Dashboard</h4>
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <ViteKpi label="New leads" value="42" note="this week" />
+        <ViteKpi label="Follow-ups" value="18" note="due today" />
+        <ViteKpi label="Conversion" value="24%" note="last 30 days" />
+        <ViteKpi label="Pipeline" value="₱1.2M" note="open value" />
+      </div>
+      <div className="min-h-0 flex-1 overflow-hidden rounded-xl" style={{ border: `1px solid ${V.border}`, background: V.card }}>
+        <div className="grid grid-cols-[1.6fr_1fr_0.8fr_0.9fr] px-3 py-1.5 text-[8px] font-semibold uppercase" style={{ background: "#f9fafb", color: V.muted, letterSpacing: "0.08em" }}>
+          <span>Business</span>
+          <span>Contact</span>
+          <span>Priority</span>
+          <span>Status</span>
+        </div>
+        {LEADS.map((l) => (
+          <div key={l.biz} className="grid grid-cols-[1.6fr_1fr_0.8fr_0.9fr] items-center px-3 py-1.5" style={{ borderTop: `1px solid ${V.subtle}` }}>
+            <div className="flex min-w-0 items-center gap-1.5">
+              <span className="h-5 w-5 shrink-0 rounded-full" style={{ background: "#eef2f7" }} />
+              <span className="truncate text-[10px] font-medium" style={{ color: V.ink }}>{l.biz}</span>
+            </div>
+            <span className="truncate text-[9px]" style={{ color: V.muted }}>{l.who}</span>
+            <span className="flex items-center gap-1 text-[9px]" style={{ color: V.ink }}>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: l.prc }} />
+              {l.pr}
+            </span>
+            <span className="justify-self-start rounded-full px-1.5 py-0.5 text-[8px] font-medium" style={{ background: V.tealSubtle, color: V.tealStrong }}>
+              {l.st}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const SYSTEMS = [
+  { name: "TeamOra", sub: "HRIS", desc: "People, attendance, payroll & company records.", Icon: LuUsers },
+  { name: "Zerem", sub: "CRM", desc: "Leads, follow-ups, clients & sales performance.", Icon: LuHandshake },
+  { name: "Sprintly", sub: "Projects", desc: "Workspaces, boards, tasks & team planning.", Icon: LuFolderKanban },
+];
+
+function ViteLauncher() {
+  return (
+    <div className="flex h-full flex-col overflow-hidden p-4" style={{ background: V.page, color: V.ink }}>
+      <div className="flex items-center gap-2">
+        <span className="flex h-7 w-7 items-center justify-center rounded-lg" style={{ background: V.teal }}>
+          <LuZap className="h-4 w-4" style={{ color: V.tealInk }} />
+        </span>
+        <span className="text-[15px] font-bold">Vite SEO Systems</span>
+      </div>
+      <div className="mt-4">
+        <div className="text-[18px] font-bold" style={{ color: V.ink }}>Good afternoon, Julius.</div>
+        <div className="text-[10px]" style={{ color: V.muted }}>Choose a system to get started.</div>
+      </div>
+      <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+        {SYSTEMS.map((s) => (
+          <div key={s.name} className="rounded-2xl p-3" style={{ border: `1px solid ${V.border}`, background: V.card }}>
+            <div className="flex items-center justify-between">
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl" style={{ background: V.tealSubtle, color: V.tealInk }}>
+                <s.Icon className="h-4 w-4" />
+              </span>
+              <LuArrowRight className="h-3.5 w-3.5" style={{ color: V.muted }} />
+            </div>
+            <div className="mt-3 flex items-baseline gap-1.5">
+              <span className="text-[13px] font-bold" style={{ color: V.ink }}>{s.name}</span>
+              <span className="text-[8px] font-semibold uppercase" style={{ color: V.muted, letterSpacing: "0.1em" }}>{s.sub}</span>
+            </div>
+            <div className="mt-1 text-[9px]" style={{ color: V.muted }}>{s.desc}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── Demo registry ── */
 const DEMOS: Record<string, Demo> = {
   booking: {
@@ -623,12 +897,20 @@ const DEMOS: Record<string, Demo> = {
       {
         caption:
           "Appointment booking — today's agenda, pending approvals, and no-show rate at a glance.",
-        render: () => <SlotfloOverview />,
+        render: (demo) => (
+          <KiploShell demo={demo}>
+            <SlotfloOverview />
+          </KiploShell>
+        ),
       },
       {
         caption:
           "Timezone-aware calendar (month / week / day) with row-locking that prevents double-booking.",
-        render: () => <SlotfloCalendar />,
+        render: (demo) => (
+          <KiploShell demo={demo}>
+            <SlotfloCalendar />
+          </KiploShell>
+        ),
       },
     ],
   },
@@ -649,12 +931,81 @@ const DEMOS: Record<string, Demo> = {
       {
         caption:
           "Inventory health — items below reorder point, expiry & PO alerts, and stock value at a glance.",
-        render: () => <StockfloOverview />,
+        render: (demo) => (
+          <KiploShell demo={demo}>
+            <StockfloOverview />
+          </KiploShell>
+        ),
       },
       {
         caption:
           "Catalog with per-item cost, price, and live on-hand quantity — backed by a transactional stock ledger.",
-        render: () => <StockfloItems />,
+        render: (demo) => (
+          <KiploShell demo={demo}>
+            <StockfloItems />
+          </KiploShell>
+        ),
+      },
+    ],
+  },
+  crm: {
+    wordmark: "Zerem",
+    eyebrow: "CRM",
+    activeKey: "crm",
+    nav: [
+      { label: "Dashboard", Icon: LuLayoutDashboard },
+      { label: "Leads", Icon: LuUsers },
+      { label: "Inbox", Icon: LuInbox },
+      { label: "Nearby Clients", Icon: LuMapPin },
+      { label: "Reports", Icon: LuTarget },
+      { label: "Settings", Icon: LuSettings },
+    ],
+    scenes: [
+      {
+        caption:
+          "Meta Messenger/Instagram inbox — an LLM drafts the reply (Draft with AI), a human reviews before it sends.",
+        render: (demo) => (
+          <ViteShell demo={demo} brandIcon={LuHandshake} activeLabel="Inbox">
+            <ZeremInbox />
+          </ViteShell>
+        ),
+      },
+      {
+        caption:
+          "CRM dashboard — lead priority, conversion, and pipeline across the team.",
+        render: (demo) => (
+          <ViteShell demo={demo} brandIcon={LuHandshake} activeLabel="Dashboard">
+            <ViteDashboard />
+          </ViteShell>
+        ),
+      },
+    ],
+  },
+  platform: {
+    wordmark: "Vite SEO",
+    eyebrow: "Platform",
+    activeKey: "platform",
+    nav: [
+      { label: "Dashboard", Icon: LuLayoutDashboard },
+      { label: "People", Icon: LuUsers },
+      { label: "Clients", Icon: LuHandshake },
+      { label: "Projects", Icon: LuFolderKanban },
+      { label: "Settings", Icon: LuSettings },
+    ],
+    scenes: [
+      {
+        caption:
+          "One login → the launcher: TeamOra (HRIS), Zerem (CRM), Sprintly (Projects) in one multi-tenant platform.",
+        render: () => <ViteLauncher />,
+      },
+      {
+        caption:
+          "A single shared shell and sign-in across all three systems, org-scoped per tenant.",
+        render: (demo) => (
+          <ViteShell demo={demo} brandIcon={LuZap} activeLabel="Dashboard">
+            <ViteDashboard />
+          </ViteShell>
+        ),
       },
     ],
   },
@@ -743,7 +1094,7 @@ export function ProductDemoModal({
                   style={{ opacity: i === scene ? 1 : 0, pointerEvents: i === scene ? "auto" : "none" }}
                   aria-hidden={i !== scene}
                 >
-                  <KiploShell demo={demo}>{s.render()}</KiploShell>
+                  {s.render(demo)}
                 </div>
               ))}
               {/* stylized tag */}
