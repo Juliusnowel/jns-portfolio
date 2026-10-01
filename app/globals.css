@@ -158,3 +158,24 @@ h4 {
   border-color: var(--outline-btn-border) !important;
   color: var(--text-primary);
 }
+
+/* Gentle idle float for the product icons in the Featured hover previews. */
+@keyframes iconFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.icon-float {
+  animation: iconFloat 2.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-float {
+    animation: none;
+  }
+}

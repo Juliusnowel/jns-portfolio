@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import Marquee from "react-fast-marquee";
+import { LuHandshake, LuCalendarDays, LuBoxes, LuLayoutGrid } from "react-icons/lu";
+import type { IconType } from "react-icons";
 import { useState, useEffect, useRef, type MouseEvent } from "react";
 import { useThemeMode } from "./hooks/useThemeMode";
 import { Reveal, CountUp, ScrambleText } from "./components/motion";
@@ -49,6 +51,8 @@ const aboutVisualCards = [
 const featuredProjects = [
   {
     title: "AI Customer-Engagement (CRM)",
+    realName: "Zerem",
+    icon: "crm",
     tags: ["Laravel", "Next.js", "OpenRouter / LLM", "Meta API"],
     description:
       "AI layer for a CRM: Meta Messenger/Instagram conversations drafted and auto-replied by an LLM, with safety guardrails and human handoff. Built, pending Meta app review.",
@@ -60,6 +64,8 @@ const featuredProjects = [
   },
   {
     title: "Appointment-Booking SaaS",
+    realName: "Slotflo",
+    icon: "booking",
     tags: ["Laravel", "Next.js", "Multi-tenant"],
     description:
       "Multi-tenant appointment-booking platform: timezone-aware availability, row-locking against double-booking, prepaid package credits, and public self-booking. ~97 tests, pre-launch.",
@@ -71,6 +77,8 @@ const featuredProjects = [
   },
   {
     title: "Inventory Management SaaS",
+    realName: "Stockflo",
+    icon: "inventory",
     tags: ["Laravel", "Next.js", "Multi-tenant"],
     description:
       "Multi-tenant inventory system: transactional stock-movement ledger, FEFO batch/expiry tracking, moving-average valuation, and purchase & sales orders. ~37 tests, pre-launch.",
@@ -82,6 +90,8 @@ const featuredProjects = [
   },
   {
     title: "ViteSEO Systems — Unified Platform",
+    realName: "ViteSEO Systems",
+    icon: "platform",
     tags: ["Laravel", "Next.js", "Multi-tenant", "Tech Lead"],
     description:
       "As technical lead, unified three standalone systems (HRIS/CRM/PMS) into one multi-tenant platform; owned integration & release and built the access-lifecycle test-first.",
@@ -92,6 +102,13 @@ const featuredProjects = [
     imageInset: "px-2",
   },
 ] as const;
+
+const productIcons: Record<string, IconType> = {
+  crm: LuHandshake,
+  booking: LuCalendarDays,
+  inventory: LuBoxes,
+  platform: LuLayoutGrid,
+};
 
 const kiploProducts = [
   {
@@ -537,7 +554,9 @@ export default function Home() {
             onMouseMove={handleProjMove}
             onMouseLeave={() => setProjHover(null)}
           >
-            {featuredProjects.map((project, i) => (
+            {featuredProjects.map((project, i) => {
+              const Icon = productIcons[project.icon];
+              return (
               <Reveal key={project.title} as="li" delay={i * 80} className="border-b border-[var(--border-color)]">
                 <a
                   href={project.href}
@@ -545,10 +564,11 @@ export default function Home() {
                   onMouseEnter={() => setProjHover(i)}
                   className="group flex flex-col gap-3 py-5 transition-colors duration-200 hover:bg-[var(--accent-soft)] lg:flex-row lg:items-center lg:gap-6 lg:py-7"
                 >
-                  {/* Placeholder preview on mobile/tablet — screenshots land in Phase 2 */}
-                  <div className="relative flex h-44 w-full shrink-0 items-center justify-center overflow-hidden border border-[#111213] bg-[var(--accent)] p-4 sm:h-52 lg:hidden">
-                    <span className="text-center font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#111213]">
-                      {project.title}
+                  {/* Branded preview on mobile/tablet — real product icon + name */}
+                  <div className="relative flex h-44 w-full shrink-0 flex-col items-center justify-center gap-3 overflow-hidden border border-[#111213] bg-[var(--accent)] p-4 sm:h-52 lg:hidden">
+                    <Icon aria-hidden="true" className="icon-float h-12 w-12 text-[#111213]" />
+                    <span className="text-center font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#111213]">
+                      {project.realName}
                     </span>
                   </div>
                   <span className="hidden shrink-0 font-mono text-sm tabular-nums text-[var(--text-muted)] lg:block">
@@ -570,7 +590,8 @@ export default function Home() {
                   </span>
                 </a>
               </Reveal>
-            ))}
+              );
+            })}
 
             {/* Cursor-following image preview (desktop pointer only) */}
             <div
@@ -585,9 +606,16 @@ export default function Home() {
               }}
             >
               <div className="w-[22rem] overflow-hidden border border-[var(--accent)] bg-white shadow-[var(--shadow-md)]">
-                <div className="relative flex aspect-[16/10] items-center justify-center bg-[var(--accent)] p-5">
-                  <span className="text-center font-mono text-xs font-semibold uppercase tracking-[0.18em] text-[#111213]">
-                    {projHover !== null ? featuredProjects[projHover].title : ""}
+                <div className="relative flex aspect-[16/10] flex-col items-center justify-center gap-3 bg-[var(--accent)] p-5">
+                  {projHover !== null &&
+                    (() => {
+                      const PreviewIcon = productIcons[featuredProjects[projHover].icon];
+                      return (
+                        <PreviewIcon aria-hidden="true" className="icon-float h-14 w-14 text-[#111213]" />
+                      );
+                    })()}
+                  <span className="text-center font-mono text-sm font-semibold uppercase tracking-[0.2em] text-[#111213]">
+                    {projHover !== null ? featuredProjects[projHover].realName : ""}
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-3 border-t border-[#d2d7d9] px-3 py-2">
