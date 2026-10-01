@@ -8,6 +8,7 @@ import type { IconType } from "react-icons";
 import { useState, useEffect, useRef, type MouseEvent } from "react";
 import { useThemeMode } from "./hooks/useThemeMode";
 import { Reveal, CountUp, ScrambleText } from "./components/motion";
+import { ProductDemoModal } from "./components/ProductDemo";
 
 const navigationLinks = [
   { label: "Home", href: "/" },
@@ -264,6 +265,7 @@ export default function Home() {
   // and swaps as you move between rows (pointer devices only).
   const [projHover, setProjHover] = useState<number | null>(null);
   const [projPos, setProjPos] = useState({ x: 0, y: 0 });
+  const [demoProduct, setDemoProduct] = useState<{ key: string; title: string } | null>(null);
   const handleProjMove = (event: MouseEvent<HTMLUListElement>) =>
     setProjPos({ x: event.clientX, y: event.clientY });
 
@@ -282,13 +284,13 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (mobileMenuOpen) {
+    if (mobileMenuOpen || demoProduct) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
     return () => { document.body.style.overflow = ""; };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, demoProduct]);
 
   // Token-driven: the CSS variables handle light/dark, so these are the same in
   // both modes. Only the ring subtly differs so the header reads on either bg.
@@ -560,9 +562,13 @@ export default function Home() {
               <Reveal key={project.title} as="li" delay={i * 80} className="border-b border-[var(--border-color)]">
                 <a
                   href={project.href}
-                  aria-label={`View ${project.title}`}
+                  aria-label={`Watch ${project.title} demo`}
                   onMouseEnter={() => setProjHover(i)}
-                  className="group flex flex-col gap-3 py-5 transition-colors duration-200 hover:bg-[var(--accent-soft)] lg:flex-row lg:items-center lg:gap-6 lg:py-7"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setDemoProduct({ key: project.icon, title: project.title });
+                  }}
+                  className="group flex cursor-pointer flex-col gap-3 py-5 transition-colors duration-200 hover:bg-[var(--accent-soft)] lg:flex-row lg:items-center lg:gap-6 lg:py-7"
                 >
                   {/* Branded preview on mobile/tablet — real product icon + name */}
                   <div className="relative flex h-44 w-full shrink-0 flex-col items-center justify-center gap-3 overflow-hidden border border-[#111213] bg-[var(--accent)] p-4 sm:h-52 lg:hidden">
@@ -586,7 +592,7 @@ export default function Home() {
                     </p>
                   </div>
                   <span className="shrink-0 self-start font-semibold text-[var(--accent-ink)] transition-transform duration-200 group-hover:translate-x-0.5 lg:self-center lg:pl-4">
-                    <span className="hidden sm:inline">Visit </span>↗
+                    <span className="hidden sm:inline">Demo </span>▶
                   </span>
                 </a>
               </Reveal>
@@ -1028,6 +1034,12 @@ export default function Home() {
           reserved.
         </div>
       </footer>
+
+      <ProductDemoModal
+        productKey={demoProduct?.key ?? null}
+        title={demoProduct?.title ?? ""}
+        onClose={() => setDemoProduct(null)}
+      />
 
       <style jsx>{`
         @keyframes fadeUp {
